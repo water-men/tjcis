@@ -10,21 +10,23 @@
         <img slot="cover" src="@/assets/logo.png" />
       </div>
       <a-menu
-        :default-selected-keys="['hello-world']"
+        :default-selected-keys="['home-page']"
         theme="dark"
         mode="inline"
         @select="itemSelected"
       >
-        <a-menu-item key="hello-world">
-          <a-icon type="user" />
+        <a-menu-item key="home-page">
+          <a-icon type="home" />
           <span class="nav-text">主页</span>
         </a-menu-item>
-        <a-menu-item key="depart-list">
-          <a-icon type="video-camera" />
-          <span class="nav-text">查找课程</span>
-        </a-menu-item>
+        <a-sub-menu key="check-course">
+          <span slot="title"><a-icon type="search" /> 查找课程</span>
+          <a-menu-item key="check-course-all">所有课程</a-menu-item>
+          <a-menu-item key="check-course-depart">按学院查找</a-menu-item>
+          <a-menu-item key="check-course-type">按类别查找</a-menu-item>
+        </a-sub-menu>
         <a-menu-item key="3">
-          <a-icon type="upload" />
+          <a-icon type="mail" />
           <span class="nav-text">热门评价</span>
         </a-menu-item>
         <a-menu-item key="4">
@@ -49,7 +51,6 @@
               ！
             </h3>
           </a-col>
-          <a-col :span="2"> </a-col>
           <a-col :span="2">
             <router-link to="/Welcom" style="color: white">
               <a-icon type="logout" />&nbsp;退出登录
@@ -58,38 +59,44 @@
         </a-row>
       </a-layout-header>
       <a-layout-content :style="{ margin: '24px 16px 0' }">
-        <div
-          :style="{ padding: '24px', background: '#fff', minHeight: '360px' }"
+        <a-card
+          :style="{ padding: '24px', background: '#fff', minHeight: '600px' }"
         >
           <!-- 页面主要内容部分 根据菜单选择显示不同的组件 -->
-          <hello-world v-if="currentContent == 'hello-world'"></hello-world>
-          <depart-list v-if="currentContent == 'depart-list'"></depart-list>
-        </div>
+          <check-course-all v-if="currentContent == 'check-course-all' "></check-course-all>
+          <check-course-depart v-if="currentContent == 'check-course-depart' "></check-course-depart>
+          <check-course-type v-if="currentContent == 'check-course-type' "></check-course-type>
+        </a-card>
       </a-layout-content>
+      <a-back-top />
       <a-layout-footer style="textalign: center">
         TJ course information system ©2020 Created by water-man
       </a-layout-footer>
     </a-layout>
   </a-layout>
+  
 </template>
 <script>
-import HelloWorld from "@/components/HelloWorld"
-import DepartList from "@/components/DepartList"
+import CheckCourseAll from "@/components/CheckCourse/CheckCourseAll"
+import CheckCourseDepart from "@/components/CheckCourse/CheckCourseDepart"
+import CheckCourseType from "@/components/CheckCourse/CheckCourseType"
 export default {
   components: {
-    HelloWorld,
-    DepartList,
+    CheckCourseAll,
+    CheckCourseDepart,
+    CheckCourseType,
   },
   data () {
     return {
       currentContent: "hello-world",
+      departNumber: "",
     }
   },
   methods: {
     //将显示内容currentContent设置为菜单选中的key
     itemSelected (selected) {
       this.currentContent = selected.key;
-      // console.log(this.currentContent)
+      console.log(this.currentContent);
     },
     onCollapse (collapsed, type) {
       console.log(collapsed, type);
@@ -104,13 +111,13 @@ export default {
 <style>
 #components-layout-demo-responsive .logo {
   height: 32px;
-  background: rgba(255, 255, 255, 0.2);
+  /* background: rgba(255, 255, 255, 0.2); */
   margin: 16px;
 }
 
 img {
   width: auto;
-  height: 25px;
+  height: 36px;
   margin: 0 auto;
 }
 </style>

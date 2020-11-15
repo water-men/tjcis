@@ -3,39 +3,35 @@
     <a-layout>
       <a-layout-header></a-layout-header>
       <a-layout-content>
-        <br /><br />
+        <br />
+        <br />
         <a-row>
           <a-col :span="8" />
           <a-col :span="8">
             <a-card hoverable style="width: flex">
               <div>
                 <img slot="cover" alt="example" src="@/assets/logo.png" />
-                <h1 style="font-size: 28px; font-weight: bolder; color: white">
-                  欢迎使用 课程信息平台
-                </h1>
+                <h1 style="font-size: 28px; font-weight: bolder; color: white">欢迎使用 课程信息平台</h1>
               </div>
               <!-- 登录按钮弹窗 -->
-              <a-button type="primary" @click="() => (loginVisible = true)">
-                登录
-              </a-button>
+              <a-button type="primary" @click="() => (loginVisible = true)">登录</a-button>
               <a-modal
                 v-model="loginVisible"
                 title="课程信息推荐系统"
-                footer=""
+                footer
                 centered
                 @ok="() => (loginVisible = false)"
               >
                 <login></login>
               </a-modal>
-              <br /><br />
+              <br />
+              <br />
               <!-- 注册按钮弹窗 -->
-              <a-button type="primary" @click="() => (registerVisible = true)">
-                注册
-              </a-button>
+              <a-button type="primary" @click="() => (registerVisible = true)">注册</a-button>
               <a-modal
                 v-model="registerVisible"
                 title="课程信息推荐系统"
-                footer=""
+                footer
                 centered
                 @ok="() => (registerVisible = false)"
               >
@@ -52,8 +48,8 @@
 </template>
 
 <script>
-import Login from "@/components/Login"
-import Register from "@/components/Register"
+import Login from "@/components/Welcom/Login"
+import Register from "@/components/Welcom/Register"
 export default {
   components: {
     Login,
