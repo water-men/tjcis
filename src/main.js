@@ -5,7 +5,7 @@ import {
   DatePicker, Button, Layout, Menu,
   Breadcrumb, Icon, Form, Input, Row, Col,
   Radio, Modal, Tag, Card, Table, Descriptions,
-  Popconfirm, FormModel, Select
+  Popconfirm, FormModel, Select, Progress, Statistic
 } from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 import App from './App'
@@ -32,6 +32,8 @@ Vue.use(Popconfirm)
 Vue.use(FormModel)
 Vue.use(Select)
 Vue.use(DatePicker)
+Vue.use(Progress)
+Vue.use(Statistic)
 
 /* eslint-disable no-new */
 new Vue({

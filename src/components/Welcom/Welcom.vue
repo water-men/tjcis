@@ -10,7 +10,7 @@
           <a-col :span="8">
             <a-card hoverable style="width: flex">
               <div>
-                <img slot="cover" alt="example" src="@/assets/logo.png" />
+                <img slot="cover" alt="example" src="@/assets/logo-tj.png" />
                 <h1 style="font-size: 28px; font-weight: bolder; color: white">欢迎使用 课程信息平台</h1>
               </div>
               <!-- 登录按钮弹窗 -->
@@ -67,7 +67,7 @@ export default {
 <style>
 .ant-card {
   border-radius: 5px;
-  background-color: bisque;
+  /* background-color: bisque; */
 }
 img {
   width: auto;
