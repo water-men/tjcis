@@ -1,20 +1,23 @@
 <template>
-  <div>
+  <div class="welcom">
     <a-layout>
       <a-layout-header></a-layout-header>
       <a-layout-content>
         <br />
         <br />
         <a-row>
-          <a-col :span="8" />
-          <a-col :span="8">
+          <a-col :span="6"/>
+          <a-col :span="12">
             <a-card hoverable style="width: flex">
               <div>
                 <img slot="cover" alt="example" src="@/assets/logo-tj.png" />
-                <h1 style="font-size: 28px; font-weight: bolder; color: white">欢迎使用 课程信息平台</h1>
+                <br />
+                <img slot="cover" alt="example" src="@/assets/logo-cis.png" />
               </div>
+              <br />
+              <br />
               <!-- 登录按钮弹窗 -->
-              <a-button type="primary" @click="() => (loginVisible = true)">登录</a-button>
+              <a-button type="primary" size="large" @click="() => (loginVisible = true)">登录</a-button>
               <a-modal
                 v-model="loginVisible"
                 title="课程信息推荐系统"
@@ -24,10 +27,9 @@
               >
                 <login></login>
               </a-modal>
-              <br />
-              <br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <!-- 注册按钮弹窗 -->
-              <a-button type="primary" @click="() => (registerVisible = true)">注册</a-button>
+              <a-button type="normal" size="large" @click="() => (registerVisible = true)">注册</a-button>
               <a-modal
                 v-model="registerVisible"
                 title="课程信息推荐系统"
@@ -39,7 +41,7 @@
               </a-modal>
             </a-card>
           </a-col>
-          <a-col :span="8" />
+          <a-col :span="6" />
         </a-row>
       </a-layout-content>
       <a-layout-footer></a-layout-footer>
@@ -67,7 +69,9 @@ export default {
 <style>
 .ant-card {
   border-radius: 5px;
-  /* background-color: bisque; */
+}
+.welcom {
+  background-color: bisque;
 }
 img {
   width: auto;

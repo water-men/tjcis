@@ -112,9 +112,11 @@ export default {
   },
   methods: {
     submitForm (formName) {
+      let formData = JSON.stringify(this.ruleForm); //取得注册表单中的数据并转化为JSON字符串
       this.$refs[formName].validate(valid => {
         if (valid) {
           alert('submit!');
+          console.log("提交内容"+formData);
         } else {
           console.log('error submit!!');
           return false;

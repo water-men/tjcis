@@ -3,8 +3,8 @@
     <a-card>
       <h2>所有课程</h2>
       <a-divider />
-      <!-- 计划 直接引入courselist 参数为all -->
-      <course-list :checktype="checktype"></course-list>
+      <!-- 引入courselist checktype参数为all 使用 v-on="$listeners" 把 Home中的getCourse事件绑定到CourseList  -->
+      <course-list :checktype="checktype" v-on="$listeners"></course-list>
     </a-card>
   </div>
 </template>

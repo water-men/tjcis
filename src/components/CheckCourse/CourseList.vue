@@ -4,13 +4,17 @@
       <a-col :span="8">
         <a-input-search
           v-model="searchName"
-          placeholder="项目名称模糊搜索"
+          placeholder="课程名称模糊搜索"
           enter-button
           @search="onSearch"
         />
       </a-col>
       <a-col :span="8">
         查找类型{{ checktype }}
+      </a-col>
+      <!-- 测试爷孙传值用按钮 -->
+      <a-col :span="8">
+        <a-button @click="selectCourse">传值给home实现跳转</a-button>
       </a-col>
     </a-row>
     <a-divider />
@@ -106,7 +110,13 @@ export default {
     return {
       data,
       columns,
+      selectedcourse: 'hello',
     };
   },
+  methods: {
+    selectCourse () {
+      this.$listeners.getCourse(this.selectedcourse)
+    }
+  }
 };
 </script>
