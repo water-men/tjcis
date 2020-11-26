@@ -1,122 +1,129 @@
 <template>
   <div>
     <a-row>
-      <a-col :span="8">
+      <a-col :span="12">
         <a-input-search
-          v-model="searchName"
-          placeholder="课程名称模糊搜索"
+          v-model="searchCourse"
+          placeholder="课程模糊搜索"
           enter-button
           @search="onSearch"
         />
       </a-col>
-      <a-col :span="8">
-        查找类型{{ checktype }}
+      <a-col :span="12">
+        查找类型{{ checkType }}
       </a-col>
       <!-- 测试爷孙传值用按钮 -->
-      <a-col :span="8">
+      <!-- <a-col :span="8">
         <a-button @click="selectCourse">传值给home实现跳转</a-button>
-      </a-col>
+      </a-col> -->
     </a-row>
     <a-divider />
     <a-row style="min-height: 0.9rem; font-size: 0.4rem;">
-      <a-table :columns="columns" :data-source="data">
-        <a slot="name" slot-scope="text">{{ text }}</a>
-        <span slot="customTitle">Name</span>
+      <a-table :columns="columns" :data-source="datalt" :custom-row="selectCourse">
         <span slot="tags" slot-scope="tags">
           <a-tag
             v-for="tag in tags"
             :key="tag"
-            :color="tag === 'loser' ? 'volcano' : tag.length > 5 ? 'geekblue' : 'green'"
+            :color="tag.length > 5 ? 'geekblue' : 'green'"
           >{{ tag.toUpperCase() }}</a-tag>
-        </span>
-        <span slot="action" slot-scope="text, record">
-          <a>Invite 一 {{ record.name }}</a>
-          <a-divider type="vertical" />
-          <a>Delete</a>
-          <a-divider type="vertical" />
-          <a class="ant-dropdown-link">
-            More actions
-            <a-icon type="down" />
-          </a>
         </span>
       </a-table>
     </a-row>
   </div>
 </template>
 <script>
-const columns = [
-  {
-    dataIndex: 'name',
-    key: 'name',
-    slots: { title: 'customTitle' },
-    scopedSlots: { customRender: 'name' },
-  },
-  {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-    scopedSlots: { customRender: 'tags' },
-  },
-  {
-    title: 'Action',
-    key: 'action',
-    scopedSlots: { customRender: 'action' },
-  },
-];
-
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-];
-
+var courseList = [
+        {
+          key: '1',
+          Cno: '10038802',
+          Cname: '离散数学',
+          Tname: '王成',
+          tags: ['nice', 'developer'],
+        },
+        {
+          key: '2',
+          Cno: '10038901',
+          Cname: '数据结构',
+          Tname: '武研',
+          tags: ['hello'],
+        },
+        {
+          key: '3',
+          Cno: '10034005',
+          Cname: '计算机网络',
+          Tname: '沈坚',
+          tags: ['cool', 'teacher'],
+        },
+      ]
 export default {
   props: {
-    checktype: {
+    //课程筛选方式，取值all为不进行筛选直接展示全部列表，depart为按照院系进行筛选，type为按照类型进行筛选
+    checkType: {
       type: String,
       default: "all",
       require: true
     },
+    //若筛选方式为all，该参数忽略；如果为depart，该参数对象中id为院系编号，name为院系名称；如果为type，该参数对象id为类型编号，name为类型名称
+    filterContent: {
+      type: Object,
+      default: () => ({
+        id:'',
+        name:'',
+      }),
+    }
   },
   data () {
     return {
-      data,
-      columns,
-      selectedcourse: 'hello',
+      searchCourse: '',
+      courseList,
+      columns: [
+        {
+          title: '课程号',
+          dataIndex: 'Cno',
+          key: 'Cno',
+        },
+        {
+          title: '课程名称',
+          dataIndex: 'Cname',
+          key: 'Cname',
+        },
+        {
+          title: '授课老师',
+          dataIndex: 'Tname',
+          key: 'Tname',
+        },
+        {
+          title: '课程标签',
+          key: 'tags',
+          dataIndex: 'tags',
+          scopedSlots: { customRender: 'tags' },
+        },
+      ],
+      datalt: courseList,
     };
   },
   methods: {
-    selectCourse () {
-      this.$listeners.getCourse(this.selectedcourse)
-    }
+    selectCourse(record, index){
+        return {
+            on: {
+               click: () => {
+                    console.log(record,index)
+                    console.log(record.Cno)
+                    console.log(record.Cname)
+                    this.$listeners.getCourse(record)
+               }
+            }
+        }
+    },
+    onSearch() {
+      if (this.searchCourse && this.searchCourse !== '') {
+        this.datalt = this.courseList.filter(
+          (p) => (p.Cname.indexOf(this.searchCourse) !== -1)|(p.Cno.indexOf(this.searchCourse)!== -1)|(p.Tname.indexOf(this.searchCourse)!== -1)
+        )
+      } else {
+        this.datalt = this.courseList
+      }
+    },
   }
 };
 </script>

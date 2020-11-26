@@ -1,17 +1,17 @@
 <template>
   <div>
-    <a-card style="width: 100%" title="注册">
+    <a-card :bordered="false" style="width: 100%" title="注册">
       <a-form-model
         ref="ruleForm"
         :model="ruleForm"
         :rules="rules"
         v-bind="layout"
       >
-        <a-form-model-item ref="name" has-feedback label="用户名" prop="name">
-          <a-input v-model="ruleForm.name" />
+        <a-form-model-item ref="username" has-feedback label="用户名" prop="username">
+          <a-input v-model="ruleForm.username" />
         </a-form-model-item>
-        <a-form-model-item has-feedback label="密码" prop="pass">
-          <a-input v-model="ruleForm.pass" type="password" autocomplete="off" />
+        <a-form-model-item has-feedback label="密码" prop="password">
+          <a-input v-model="ruleForm.password" type="password" autocomplete="off" />
         </a-form-model-item>
         <a-form-model-item has-feedback label="确认密码" prop="checkPass">
           <a-input
@@ -19,9 +19,6 @@
             type="password"
             autocomplete="off"
           />
-        </a-form-model-item>
-        <a-form-model-item has-feedback label="年龄" prop="age">
-          <a-input v-model.number="ruleForm.age" />
         </a-form-model-item>
         <a-form-model-item label="所在学院" prop="depart">
           <a-select v-model="ruleForm.region" placeholder="请选择">
@@ -93,14 +90,14 @@ export default {
     };
     return {
       ruleForm: {
-        name: '',
-        pass: '',
+        username: '',
+        password: '',
         checkPass: '',
         age: '',
       },
       rules: {
-        name: [{ validator: validateName, trigger: 'change' }],
-        pass: [{ validator: validatePass, trigger: 'change' }],
+        username: [{ validator: validateName, trigger: 'change' }],
+        password: [{ validator: validatePass, trigger: 'change' }],
         checkPass: [{ validator: validatePass2, trigger: 'change' }],
         age: [{ validator: checkAge, trigger: 'change' }],
       },

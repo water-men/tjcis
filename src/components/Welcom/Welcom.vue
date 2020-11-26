@@ -2,18 +2,22 @@
   <div class="welcom">
     <a-layout>
       <a-layout-header></a-layout-header>
-      <a-layout-content>
+      <a-layout-content :style="{ margin: '24px 16px 0', minHeight: '670px' }">
         <br />
         <br />
         <a-row>
           <a-col :span="6"/>
           <a-col :span="12">
-            <a-card hoverable style="width: flex">
+            <a-card :style="{ margin: '24px 16px 0', minHeight: '480px' }" hoverable style="width: flex">
               <div>
                 <img slot="cover" alt="example" src="@/assets/logo-tj.png" />
                 <br />
                 <img slot="cover" alt="example" src="@/assets/logo-cis.png" />
               </div>
+              <br />
+              <br />
+              <br />
+              <br />
               <br />
               <br />
               <!-- 登录按钮弹窗 -->

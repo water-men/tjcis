@@ -1,15 +1,18 @@
 <template>
   <div>
-    <a-card title="请选择开课学院">
+    <a-card >
+      <br />
+      <h2>请选择学院</h2>
       <a-card-grid v-for="depart in departlist" :key="depart.id" :class="{active : active == depart.Dname}" hoverable style="
         width: 20%;
         text-align: center;
-        font-size: 16px;
+        font-size: 1.2rem;
         font-weight: bolder;
       "><div @click="selectDepart(depart)">
         {{ depart.Dname }}
       </div></a-card-grid>
     </a-card>
+    <br />
     <a-card>
       <h2>{{ selecteddepart.Dname }}学院的课程</h2>
       <a-divider />

@@ -1,102 +1,154 @@
 <template>
   <div>
-    <a-card title="根据您近期的浏览和评价，为您推荐以下课程" align="left">
-      <a-row :gutter="16">
-        <a-col v-for="course in recommendlist" :key="course.id" :bordered="true" :span="8">
-          <a-card :title="course.Cname" hoverable>
-            课程名:{{ course.Cname }}
-            <br />
-            授课老师:{{ course.Tname }}
-            <br />
-            课程标签:
-            <a-tag
-              v-for="tag in course.tags"
-              :key="tag"
-              :color="tag === tag.length > 5 ? 'geekblue' : 'green'"
-            >{{ tag.toUpperCase() }}</a-tag>
-          </a-card>
-        </a-col>
-      </a-row>
+    <!-- 推荐课程卡片 -->
+    <a-card>
+      <a-tabs default-active-key="1" align="left" size="large">
+        <a-tab-pane key="1" tab="课程推荐" >
+          <h2 align="left">根据您近期的浏览和评价，为您推荐以下课程</h2>
+          <a-row :gutter="16" >
+            <a-col v-for="course in recommendlist" :key="course.key" :bordered="true" :span="8" >
+              <a-card hoverable>
+                <h3>{{ course.Cname }}</h3>
+                <a-divider />
+                <div @click="selectCourse(course)">
+                  授课老师:{{ course.Tname }}
+                  <a-divider />
+                  课程标签:
+                  <a-tag
+                    v-for="tag in course.tags"
+                    :key="tag"
+                    :color="tag === tag.length > 5 ? 'geekblue' : 'green'"
+                  >{{ tag.toUpperCase() }}</a-tag>
+                </div>
+              </a-card>
+            </a-col> 
+          </a-row>
+        </a-tab-pane>
+        <a-tab-pane key="2" tab="公告信息" >
+          <div align="center">
+            <a-list :data-source="data" item-layout="horizontal">
+              <a-list-item slot="renderItem" slot-scope="item">
+                <a-list-item-meta
+                  description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                >
+                  <a slot="title" href="https://www.antdv.com/">{{ item.title }}</a>
+                </a-list-item-meta>
+              </a-list-item>
+          </a-list></div>
+        </a-tab-pane>
+      </a-tabs>
     </a-card>
     <br />
+    <!-- 功能选单卡片 -->
     <a-card>
-      <a-progress :percent="75" :format="percent => `${percent} Days`" type="circle" />
-      <a-progress :percent="100" :format="() => 'Done'" type="circle" />
-      <a-progress :percent="75" type="circle">
-        <template #format="percent">
-          <span style="color: red">{{ percent }}</span>
-        </template>
-      </a-progress>
+      <a-tabs default-active-key="1" align="left" size="large">
+        <a-tab-pane key="1" tab="功能选单" >
+          <a-row :gutter="16">
+            <a-col :span="8">
+              <a-card hoverable>
+                <a-statistic
+                  :value="12"
+                  :value-style="{ color: '#3f8600' }"
+                  title="我的评价"
+                  suffix="条"
+                  style="margin-right: 50px"
+                >
+                  <template #prefix>
+                    <a-icon type="arrow-right" />
+                  </template>
+                </a-statistic>
+              </a-card>
+            </a-col>
+            <a-col :span="8">
+              <a-card hoverable>
+                <a-statistic
+                  :value="5"
+                  :value-style="{ color: '#cf1322' }"
+                  title="我的收藏"
+                  suffix="个"
+                >
+                  <template #prefix>
+                    <a-icon type="arrow-right" />
+                  </template>
+                </a-statistic>
+              </a-card>
+            </a-col>
+            <a-col :span="8">
+              <a-card hoverable>
+                <a-statistic
+                  :value="5"
+                  :value-style="{ color: '#cf1322' }"
+                  title="待办"
+                  suffix="个"
+                >
+                  <template #prefix>
+                    <a-icon type="arrow-right" />
+                  </template>
+                </a-statistic>
+              </a-card>
+            </a-col>
+          </a-row>
+        </a-tab-pane>
+      </a-tabs>
     </a-card>
     <br />
+    <!-- 统计数据卡片 -->
     <a-card>
-      <a-row :gutter="16">
-        <a-col :span="8">
-          <a-card hoverable>
-            <a-statistic
-              :value="12"
-              :value-style="{ color: '#3f8600' }"
-              title="我的评价"
-              suffix="条"
-              style="margin-right: 50px"
-            >
-              <template #prefix>
-                <a-icon type="arrow-right" />
+      <a-tabs default-active-key="1" align="left" size="large">
+        <a-tab-pane key="1" tab="统计数据" >
+          <div align="center">
+            <a-progress :percent="75" :format="percent => `${percent} Days`" type="circle" />
+            <a-progress :percent="100" :format="() => 'Done'" type="circle" />
+            <a-progress :percent="75" type="circle">
+              <template #format="percent">
+                <span style="color: red">{{ percent }}</span>
               </template>
-            </a-statistic>
-          </a-card>
-        </a-col>
-        <a-col :span="8">
-          <a-card hoverable>
-            <a-statistic
-              :value="5"
-              :value-style="{ color: '#cf1322' }"
-              title="我的收藏"
-              suffix="个"
-            >
-              <template #prefix>
-                <a-icon type="arrow-right" />
-              </template>
-            </a-statistic>
-          </a-card>
-        </a-col>
-        <a-col :span="8">
-          <a-card hoverable>
-            <a-statistic
-              :value="5"
-              :value-style="{ color: '#cf1322' }"
-              title="待办"
-              suffix="个"
-            >
-              <template #prefix>
-                <a-icon type="arrow-right" />
-              </template>
-            </a-statistic>
-          </a-card>
-        </a-col>
-      </a-row>
+            </a-progress>
+          </div>
+        </a-tab-pane>
+      </a-tabs>
     </a-card>
+    <br />
   </div>
 </template>
 <script>
+
 export default {
   data () {
     return {
+      //推荐课程列表，先写死数据，以后要加载时发送请求，根据用户信息从后台获取
       recommendlist:[
-        {id:1,Cname:'C1', Tname:'zs1',tags:[
-        'hello',
-        'bye'
-      ]},
-        {id:2,Cname:'C2', Tname:'zs2',tags:[
-        'hello1',
-        'bye1'
-      ]},
-        {id:3,Cname:'C3', Tname:'zs3',tags:[
-        'hello2',
-        'bye2'
-      ]},
+        {
+          key: '1',
+          Cno: '10038802',
+          Cname: '离散数学',
+          Tname: '王成',
+          tags: ['nice', 'developer'],
+        },
+        {
+          key: '2',
+          Cno: '10038901',
+          Cname: '数据结构',
+          Tname: '武研',
+          tags: ['hello'],
+        },
+        {
+          key: '3',
+          Cno: '10034005',
+          Cname: '计算机网络',
+          Tname: '沈坚',
+          tags: ['cool', 'teacher'],
+        },
       ],
     }
+  },
+   methods: {
+    selectCourse(record){
+        this.$emit('getCourse',record)
+    },
+    onChange(a, b, c) {
+      console.log(a, b, c);
+    },
   }
 }
 </script>
@@ -107,4 +159,18 @@ div.ant-progress-line {
   margin-right: 8px;
   margin-bottom: 8px;
 }
+
+/* For demo */
+.ant-carousel >>> .slick-slide {
+  text-align: center;
+  height: 160px;
+  line-height: 160px;
+  background: #364d79;
+  overflow: hidden;
+}
+
+.ant-carousel >>> .slick-slide h3 {
+  color: #fff;
+}
+
 </style>

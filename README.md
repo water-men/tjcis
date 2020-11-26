@@ -50,7 +50,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
         |              |
         |              ----(WriteComment 写评论)
         |              |
-        |              ----(RecommendList 相关推荐课程)
+        |              ----(RelatedList 相关推荐课程)
         |
         --(CommentDetail)
 

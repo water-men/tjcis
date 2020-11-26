@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card style="width: 100%" title="登录">
+    <a-card :bordered="false" style="width: 100%" title="登录">
       <a-form-model
         ref="ruleForm"
         :model="ruleForm"

@@ -1,5 +1,5 @@
 <template>
-  <a-layout id="components-layout-demo-responsive">
+  <a-layout id="layout-responsive">
     <a-layout-sider
       breakpoint="lg"
       collapsed-width="0"
@@ -33,6 +33,10 @@
           <a-icon type="user" />
           <span class="nav-text">个人中心</span>
         </a-menu-item>
+        <a-menu-item key="schedule-table" @click="itemSelected">
+          <a-icon type="calendar" />
+          <span class="nav-text">待办事项</span>
+        </a-menu-item>
       </a-menu>
     </a-layout-sider>
     <a-layout>
@@ -49,29 +53,27 @@
             </a-button>
           </a-col>
           <a-col :span="8" align="right">
-            <h3 style="color: white">
-              欢迎,{{ username }}
+            <h3 style="color: white;font-size:125%">
+              <a-avatar icon="user" />{{ userinfo.username }}
             </h3>
           </a-col>
           <a-col :span="4">
-            <router-link to="/Welcom" style="color: white">
+            <router-link to="/Welcom" style="color: white;font-size:125%">
               <a-icon type="logout" />&nbsp;注销&nbsp;&nbsp;&nbsp;
             </router-link>
           </a-col>
         </a-row>
       </a-layout-header>
-      <a-layout-content :style="{ margin: '24px 16px 0' }">
-        <a-card
-          :style="{ padding: '24px', background: '#fff', minHeight: '670px' }"
-        >
-          <!-- 页面主要内容部分 根据菜单选择显示不同的组件 -->
-          <home-page v-if="currentContent == 'home-page' "></home-page>
-          <check-course-all v-if="currentContent == 'check-course-all' " @getCourse="getCourse"></check-course-all>
-          <check-course-depart v-if="currentContent == 'check-course-depart' " @getCourse="getCourse"></check-course-depart>
-          <check-course-type v-if="currentContent == 'check-course-type' " @getCourse="getCourse"></check-course-type>
-          <course-info v-if="currentContent =='course-info'"></course-info>
-          <user-center v-if="currentContent == 'user-center' "></user-center>
-        </a-card>
+      <a-layout-content :style="{ margin: '24px 16px 0', minHeight: '670px' }">  
+        <!-- 页面主要内容部分 根据菜单选择显示不同的组件 -->
+        <home-page v-if="currentContent == 'home-page' " @getCourse="getCourse"></home-page>
+        <check-course-all v-if="currentContent == 'check-course-all' " @getCourse="getCourse"></check-course-all>
+        <check-course-depart v-if="currentContent == 'check-course-depart' " @getCourse="getCourse"></check-course-depart>
+        <check-course-type v-if="currentContent == 'check-course-type' " @getCourse="getCourse"></check-course-type>
+        <course-info v-if="currentContent =='course-info'" :selected-course="selectedCourse" ></course-info>
+        <user-center v-if="currentContent == 'user-center' " :userinfo="userinfo"></user-center>
+        <hot-comments v-if="currentContent == 'hot-comments' "></hot-comments>
+        <schedule-table v-if="currentContent == 'schedule-table' "></schedule-table>
       </a-layout-content>
       <a-back-top />
       <a-layout-footer style="textalign: center">
@@ -83,14 +85,13 @@
 </template>
 <script>
 import HomePage from "@/components/HomePage/HomePage"
-
 import CheckCourseAll from "@/components/CheckCourse/CheckCourseAll"
 import CheckCourseDepart from "@/components/CheckCourse/CheckCourseDepart"
 import CheckCourseType from "@/components/CheckCourse/CheckCourseType"
 import CourseInfo from "@/components/CourseInfo/CourseInfo"
-
 import UserCenter from "@/components/UserCenter/UserCenter"
-
+import HotComments from "@/components/HotComments/HotComments"
+import ScheduleTable from "@/components/ScheduleTable/ScheduleTable"
 
 export default {
   components: {
@@ -100,13 +101,15 @@ export default {
     CourseInfo,
     HomePage,
     UserCenter,
+    HotComments,
+    ScheduleTable,
   },
   data () {
     return {
       currentContent: "home-page",
-      selectedCourse: "",
+      selectedCourse: {Cno:'',Cname:''},
       selectedComment: "",
-      username: "zsx"
+      userinfo:{userid:"1752528",username: "zsx"}
     }
   },
   methods: {
@@ -117,9 +120,10 @@ export default {
     },
     //绑定的自定义事件，用于在CourseList中触发，获取选中的课程(params)并跳转到课程信息页面
     getCourse (params) {
-      /* alert("收到了来自CourseList的信息") */
       this.currentContent = "course-info";
-      this.selectedCourse = params;
+      this.selectedCourse.Cno=params.Cno;
+      this.selectedCourse.Cname=params.Cname;
+      /* alert("收到了来自CourseList的信息"+this.selectedCourse.Cno)  */
     },
     toHomeView(){
       this.currentContent = "home-page";
@@ -135,12 +139,12 @@ export default {
 </script>
 
 <style>
-#components-layout-demo-responsive .logo-sider {
+#layout-responsive .logo-sider {
   height: 64px;
   margin: 16px;
 }
 
-#components-layout-demo-responsive .logo-header {
+#layout-responsive .logo-header {
   height: 200px;
   margin: 16px;
 }
