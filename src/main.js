@@ -5,7 +5,7 @@ import {
   DatePicker, Button, Layout, Menu, List,
   Breadcrumb, Icon, Form, Input, Row, Col, Tabs,
   Radio, Modal, Tag, Card, Table, Descriptions, Dropdown,
-  Popconfirm, FormModel, Select, Progress, Statistic,
+  Popconfirm, FormModel, Select, Progress, Statistic, Rate,
   BackTop, Divider, Avatar, Drawer, Carousel, Calendar
 } from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
@@ -45,6 +45,7 @@ Vue.use(Carousel)
 Vue.use(Calendar)
 Vue.use(List)
 Vue.use(Tabs)
+Vue.use(Rate)
 
 Vue.use(installCardDragger)
 

@@ -1,18 +1,22 @@
 <template>
   <a-card>
-    <a-calendar>
-      <ul slot="dateCellRender" slot-scope="value" class="events">
-        <li v-for="item in getListData(value)" :key="item.content">
-          <a-badge :status="item.type" :text="item.content" />
-        </li>
-      </ul>
-      <template slot="monthCellRender" slot-scope="value">
-        <div v-if="getMonthData(value)" class="notes-month">
-          <section>{{ getMonthData(value) }}</section>
-          <span>Backlog number</span>
-        </div>
-      </template>
-    </a-calendar>
+    <a-tabs default-active-key="1" align="left" size="large">
+      <a-tab-pane key="1" tab="日程记录" >
+        <a-calendar>
+          <ul slot="dateCellRender" slot-scope="value" class="events">
+            <li v-for="item in getListData(value)" :key="item.content">
+              <a-badge :status="item.type" :text="item.content" />
+            </li>
+          </ul>
+          <template slot="monthCellRender" slot-scope="value">
+            <div v-if="getMonthData(value)" class="notes-month">
+              <section>{{ getMonthData(value) }}</section>
+              <span>Backlog number</span>
+            </div>
+          </template>
+        </a-calendar>
+      </a-tab-pane>
+    </a-tabs>
   </a-card>
 </template>
 <script>

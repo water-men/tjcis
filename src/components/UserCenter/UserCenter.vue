@@ -6,21 +6,24 @@
           <a-avatar :size="96" icon="user" />
           <p class="name"><span>{{ userinfo.username }}</span></p> 
           <a-divider />
-          <a-descriptions :column="{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }" title="个人信息" layout="vertical">
+          <a-descriptions :column="{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }" title="个人信息" layout="vertical" bordered>
             <a-descriptions-item label="姓名">
               <p class="descript"><span>{{ realname }}</span></p>
             </a-descriptions-item>
             <a-descriptions-item label="学号">
               <p class="descript"><span>{{ userinfo.userid }}</span></p>
             </a-descriptions-item>
-            <a-descriptions-item label="所在院系">
+            <a-descriptions-item label="所在院系" span="2">
               <p class="descript"><span>{{ depart }}</span></p>
             </a-descriptions-item>
-            <a-descriptions-item label="签名" span="2">
+            <a-descriptions-item label="签名" span="3">
               <p class="descript"><span>{{ slogan }}</span></p>
             </a-descriptions-item>
           </a-descriptions>
+          <br />
           <a-divider />
+          <br />
+          <!-- 修改个人信息按钮 弹出抽屉中包含表单 -->
           <a-button :size="btnsize" type="primary" shape="round" @click="() => (editUserinfo = true)"><a-icon type="edit" />修改个人信息</a-button>
           <a-drawer
             :width="420"
@@ -61,6 +64,7 @@
             </a-form>
           </a-drawer>
           &nbsp;&nbsp;&nbsp;
+          <!-- 重置账户密码按钮 弹出抽屉中包含表单 -->
           <a-button :size="btnsize" type="danger" shape="round" @click="() => (changePassword = true)"><a-icon type="redo" />重置账户密码</a-button>
           <a-drawer
             :width="420"

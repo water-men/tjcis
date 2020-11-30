@@ -1,15 +1,18 @@
 <template>
   <a-card>
-    <a-list :grid="{ gutter: 16, column: 4 }" :data-source="data">
-      <a-list-item slot="renderItem" slot-scope="item">
-        <a-card :title="item.title">
-          课程名称:{{ item.Cname }}
-          
-          授课老师:{{ item.Tname }}
-          评价内容:{{ item.content }}
-        </a-card>
-      </a-list-item>
-    </a-list>
+    <a-tabs default-active-key="1" align="left" size="large">
+      <a-tab-pane key="1" tab="近期热门评价" >
+        <a-list :grid="{ gutter: 16, column: 4 }" :data-source="data">
+          <a-list-item slot="renderItem" slot-scope="item">
+            <a-card :title="item.title">
+              课程名称:{{ item.Cname }}
+              授课老师:{{ item.Tname }}
+              评价内容:{{ item.content }}
+            </a-card>
+          </a-list-item>
+        </a-list>
+      </a-tab-pane>
+    </a-tabs>
   </a-card>
 </template>
 <script>

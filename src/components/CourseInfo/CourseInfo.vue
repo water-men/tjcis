@@ -4,7 +4,13 @@
       <a-layout>       
         <a-layout-content :style="{ margin: '8px 10px 0', minHeight: '670px',background: 'white'}">
           <a-card>
-            {{ selectedCourse.Cname }}课程信息页面
+            <!-- 展示课程信息组件 将课号和课程名称作为一个对象传进去-->
+            <course-detail :selected-course="selectedCourse"></course-detail>
+            <a-divider />
+            <!-- 展示课程评价列表组件 将课号和课程名称作为一个对象传进去-->
+            <comment-list :selected-course="selectedCourse"></comment-list>
+            <a-row>
+            </a-row>
           </a-card>
         </a-layout-content>
       </a-layout>
@@ -18,7 +24,13 @@
 </template>
 
 <script>
+import CourseDetail from "@/components/CourseInfo/CourseDetail"
+import CommentList from "@/components/CourseInfo/CommentList"
 export default {
+  components: {
+    CourseDetail,
+    CommentList,
+  },
   props: {
     selectedCourse: {
       type: Object,

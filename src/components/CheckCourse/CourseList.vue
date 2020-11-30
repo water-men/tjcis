@@ -1,34 +1,39 @@
 <template>
   <div>
-    <a-row>
-      <a-col :span="12">
-        <a-input-search
-          v-model="searchCourse"
-          placeholder="课程模糊搜索"
-          enter-button
-          @search="onSearch"
-        />
-      </a-col>
-      <a-col :span="12">
-        查找类型{{ checkType }}
-      </a-col>
-      <!-- 测试爷孙传值用按钮 -->
-      <!-- <a-col :span="8">
+    <a-tabs default-active-key="1" align="left" size="large">
+      <a-tab-pane key="1" tab="课程列表" >
+        <h2>{{ filterContent.name }} 课程列表</h2>
+        <a-row>
+          <a-col :span="12">
+            <a-input-search
+              v-model="searchCourse"
+              placeholder="课程模糊搜索"
+              enter-button
+              @search="onSearch"
+            />
+          </a-col>
+          <a-col :span="12">
+            查找类型{{ checkType }}
+          </a-col>
+          <!-- 测试爷孙传值用按钮 -->
+          <!-- <a-col :span="8">
         <a-button @click="selectCourse">传值给home实现跳转</a-button>
       </a-col> -->
-    </a-row>
-    <a-divider />
-    <a-row style="min-height: 0.9rem; font-size: 0.4rem;">
-      <a-table :columns="columns" :data-source="datalt" :custom-row="selectCourse">
-        <span slot="tags" slot-scope="tags">
-          <a-tag
-            v-for="tag in tags"
-            :key="tag"
-            :color="tag.length > 5 ? 'geekblue' : 'green'"
-          >{{ tag.toUpperCase() }}</a-tag>
-        </span>
-      </a-table>
-    </a-row>
+        </a-row>
+        <a-divider />
+        <a-row style="min-height: 0.9rem; font-size: 0.4rem;">
+          <a-table :columns="columns" :data-source="datalt" :custom-row="selectCourse">
+            <span slot="tags" slot-scope="tags">
+              <a-tag
+                v-for="tag in tags"
+                :key="tag"
+                :color="tag.length > 5 ? 'geekblue' : 'green'"
+              >{{ tag.toUpperCase() }}</a-tag>
+            </span>
+          </a-table>
+        </a-row>
+      </a-tab-pane>
+    </a-tabs>
   </div>
 </template>
 <script>
