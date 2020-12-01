@@ -32,33 +32,35 @@
             title="修改个人信息"
             @close="() => (editUserinfo = false)"
           >
-            <p>Some contents...</p>
             <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }" @submit="handleSubmit">
-              <a-form-item label="Note">
+              <a-form-item label="签名">
                 <a-input
-                  v-decorator="['note', { rules: [{ required: true, message: 'Please input your note!' }] }]"
+                  v-decorator="['slogan', { rules: [{ required: true, message: '请输入新的签名!' }] }]"
                 />
               </a-form-item>
-              <a-form-item label="Gender">
+              <a-form-item label="学院">
                 <a-select
                   v-decorator="[
-                    'gender',
-                    { rules: [{ required: true, message: 'Please select your gender!' }] },
+                    '学院',
+                    { rules: [{ required: true, message: '请选择新的学院' }] },
                   ]"
                   placeholder="Select a option and change input text above"
                   @change="handleSelectChange"
                 >
-                  <a-select-option value="male">
-                    male
+                  <a-select-option value="1">
+                    建筑与城市规划学院
                   </a-select-option>
-                  <a-select-option value="female">
-                    female
+                  <a-select-option value="2">
+                    土木工程学院
+                  </a-select-option>
+                  <a-select-option value="3">
+                    机械与能源工程学院
                   </a-select-option>
                 </a-select>
               </a-form-item>
               <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
                 <a-button type="primary" html-type="submit">
-                  Submit
+                  更新信息
                 </a-button>
               </a-form-item>
             </a-form>
@@ -73,7 +75,28 @@
             title="修改账户密码"
             @close="() => (changePassword = false)"
           >
-            <p>Some contents...</p>
+            <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }" @submit="handleSubmit">
+              <a-form-item label="用户名">
+                <a-input
+                  v-decorator="['username', { rules: [{ required: true, message: '请输入用户名!' }] }]"
+                />
+              </a-form-item>
+              <a-form-item label="原密码">
+                <a-puint
+                  ref="oldpass"
+                />
+              </a-form-item>
+              <a-form-item label="新密码">
+                <a-puint
+                  ref="newpass"
+                />
+              </a-form-item>
+              <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
+                <a-button type="primary" html-type="submit">
+                  更新信息
+                </a-button>
+              </a-form-item>
+            </a-form>
           </a-drawer>
         </a-card>
       </a-col>
@@ -128,6 +151,7 @@
             <a-divider />
             <a-row :gutter="16">
               <a-col>
+                <!-- 看着好看先放上来占个位置 并没有什么屌用 -->
                 <cardDragger :data="cardList" :col-num="1"
                              :card-outside-width="480"
                              :card-inside-width="460"
@@ -170,30 +194,29 @@ export default {
       realname:'朱世轩',
       depart:'电子与信息工程学院',
       slogan:'你好，很高兴认识你',
+      username:'',
+      oldpass:'',
+      newpass:'',
       cardList: [
         {
           positionNum: 1,
           name: "演示卡片1",
           id: "card1",
-          //componentData:exampleChild1,
         },
         {
           positionNum: 2,
           name: "演示卡片2",
           id: "card2",
-          //componentData:exampleChild1,
         },
         {
           positionNum: 3,
           name: "演示卡片3",
           id: "card3",
-          //componentData:exampleChild1,
         },
         {
           positionNum: 4,
           name: "演示卡片4",
           id: "card4",
-          //componentData:exampleChild1
         },
       ],
     }

@@ -9,7 +9,7 @@
               alt="图片无法显示"
               src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
             />
-            <a-card-meta title="课程简介">
+            <a-card-meta title="课程名称">
               <template slot="description">
                 {{ selectedCourse.Cname }}
               </template>
@@ -40,7 +40,7 @@
               >{{ tag.toUpperCase() }}</a-tag>
             </a-descriptions-item>
             <a-descriptions-item label="综合评分" span="2"> 
-              <a-rate :default-value="3" :value="Tscore/2" disabled />
+              <a-rate :default-value="3" :value="Tscore/2" disabled allow-half />
               <a-statistic
                 :value="Tscore"
                 :precision="0"

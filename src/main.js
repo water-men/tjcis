@@ -6,7 +6,7 @@ import {
   Breadcrumb, Icon, Form, Input, Row, Col, Tabs,
   Radio, Modal, Tag, Card, Table, Descriptions, Dropdown,
   Popconfirm, FormModel, Select, Progress, Statistic, Rate,
-  BackTop, Divider, Avatar, Drawer, Carousel, Calendar
+  BackTop, Divider, Avatar, Drawer, Carousel, Calendar, Comment
 } from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 import { installCardDragger } from 'carddragger' //卡片拖拽组件
@@ -46,6 +46,7 @@ Vue.use(Calendar)
 Vue.use(List)
 Vue.use(Tabs)
 Vue.use(Rate)
+Vue.use(Comment)
 
 Vue.use(installCardDragger)
 

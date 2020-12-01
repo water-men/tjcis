@@ -16,7 +16,8 @@
       </a-layout>
       <a-layout-sider :style="{ margin: '8px 10px 0', minHeight: '670px',background: 'white' }">
         <a-card>
-          相关课程列表
+          <!-- 展示相关课程列表组件  -->
+          <related-list v-on="$listeners"></related-list>
         </a-card>
       </a-layout-sider>
     </a-layout>
@@ -26,10 +27,12 @@
 <script>
 import CourseDetail from "@/components/CourseInfo/CourseDetail"
 import CommentList from "@/components/CourseInfo/CommentList"
+import RelatedList from "@/components/CourseInfo/RelatedList"
 export default {
   components: {
     CourseDetail,
     CommentList,
+    RelatedList,
   },
   props: {
     selectedCourse: {

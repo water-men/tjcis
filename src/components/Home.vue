@@ -70,7 +70,7 @@
         <check-course-all v-if="currentContent == 'check-course-all' " @getCourse="getCourse"></check-course-all>
         <check-course-depart v-if="currentContent == 'check-course-depart' " @getCourse="getCourse"></check-course-depart>
         <check-course-type v-if="currentContent == 'check-course-type' " @getCourse="getCourse"></check-course-type>
-        <course-info v-if="currentContent =='course-info'" :selected-course="selectedCourse" ></course-info>
+        <course-info v-if="currentContent =='course-info'" :selected-course="selectedCourse" @getCourse="getCourse"></course-info>
         <user-center v-if="currentContent == 'user-center' " :userinfo="userinfo"></user-center>
         <hot-comments v-if="currentContent == 'hot-comments' "></hot-comments>
         <schedule-table v-if="currentContent == 'schedule-table' "></schedule-table>
@@ -118,7 +118,7 @@ export default {
       this.currentContent = selected.key;
       console.log(this.currentContent);
     },
-    //绑定的自定义事件，用于在CourseList中触发，获取选中的课程(params)并跳转到课程信息页面
+    //绑定的自定义事件，用于在CourseList和CourseInfo中触发，获取选中的课程(params)并跳转到课程信息页面
     getCourse (params) {
       this.currentContent = "course-info";
       this.selectedCourse.Cno=params.Cno;
