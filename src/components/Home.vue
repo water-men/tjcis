@@ -54,7 +54,7 @@
           </a-col>
           <a-col :span="8" align="right">
             <h3 style="color: white;font-size:125%">
-              <a-avatar icon="user" />{{ userinfo.username }}
+              <a-avatar icon="user" />{{ userInfo.username }}
             </h3>
           </a-col>
           <a-col :span="4">
@@ -66,14 +66,15 @@
       </a-layout-header>
       <a-layout-content :style="{ margin: '24px 16px 0', minHeight: '670px' }">  
         <!-- 页面主要内容部分 根据菜单选择显示不同的组件 -->
-        <home-page v-if="currentContent == 'home-page' " @getCourse="getCourse"></home-page>
+        <home-page v-if="currentContent == 'home-page' " @getCourse="getCourse" @toMyComments="toMyComments" @toMyFavorite="toMyFavorite" @toScheduleTable="toScheduleTable"></home-page>
         <check-course-all v-if="currentContent == 'check-course-all' " @getCourse="getCourse"></check-course-all>
         <check-course-depart v-if="currentContent == 'check-course-depart' " @getCourse="getCourse"></check-course-depart>
         <check-course-type v-if="currentContent == 'check-course-type' " @getCourse="getCourse"></check-course-type>
-        <course-info v-if="currentContent =='course-info'" :selected-course="selectedCourse" @getCourse="getCourse"></course-info>
-        <user-center v-if="currentContent == 'user-center' " :userinfo="userinfo"></user-center>
-        <hot-comments v-if="currentContent == 'hot-comments' "></hot-comments>
-        <schedule-table v-if="currentContent == 'schedule-table' "></schedule-table>
+        <course-info v-if="currentContent =='course-info'" :selected-course="selectedCourse" :user-info="userInfo" @getCourse="getCourse"></course-info>
+        <user-center v-if="currentContent == 'user-center' " :user-info="userInfo"></user-center>
+        <hot-comments v-if="currentContent == 'hot-comments' " :user-info="userInfo"></hot-comments>
+        <schedule-table v-if="currentContent == 'schedule-table' " :user-info="userInfo"></schedule-table>
+        <my-comments v-if="currentContent == 'my-comments' " :user-info="userInfo"></my-comments>
       </a-layout-content>
       <a-back-top />
       <a-layout-footer style="textalign: center">
@@ -92,6 +93,7 @@ import CourseInfo from "@/components/CourseInfo/CourseInfo"
 import UserCenter from "@/components/UserCenter/UserCenter"
 import HotComments from "@/components/HotComments/HotComments"
 import ScheduleTable from "@/components/ScheduleTable/ScheduleTable"
+import MyComments from "@/components/CommonPages/MyComments"
 
 export default {
   components: {
@@ -103,13 +105,14 @@ export default {
     UserCenter,
     HotComments,
     ScheduleTable,
+    MyComments,
   },
   data () {
     return {
       currentContent: "home-page",
       selectedCourse: {Cno:'',Cname:''},
       selectedComment: "",
-      userinfo:{userid:"1752528",username: "zsx"}
+      userInfo:{Sno:"1752528",username: "tohkazsx"}
     }
   },
   methods: {
@@ -118,12 +121,22 @@ export default {
       this.currentContent = selected.key;
       console.log(this.currentContent);
     },
-    //绑定的自定义事件，用于在CourseList和CourseInfo中触发，获取选中的课程(params)并跳转到课程信息页面
+    //绑定的自定义事件，用于在CourseList和CourseInfo中触发，获取选中的课程(params)并显示课程信息子页面组件
     getCourse (params) {
       this.currentContent = "course-info";
       this.selectedCourse.Cno=params.Cno;
       this.selectedCourse.Cname=params.Cname;
       /* alert("收到了来自CourseList的信息"+this.selectedCourse.Cno)  */
+    },
+    //绑定的自定义事件，用于在HomePage中触发 显示对应子页面组件
+    toMyComments () {
+      this.currentContent = "my-comments";
+    },
+    toMyFavorite () {
+      this.currentContent = "my-favorite";
+    },
+    toScheduleTable () {
+      this.currentContent = "schedule-table";
     },
     toHomeView(){
       this.currentContent = "home-page";

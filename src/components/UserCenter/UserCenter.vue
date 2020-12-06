@@ -4,14 +4,14 @@
       <a-col :span="12" :style="{ minWidth: '540px'}">  
         <a-card :style="{ minHeight: '670px'}"> 
           <a-avatar :size="96" icon="user" />
-          <p class="name"><span>{{ userinfo.username }}</span></p> 
+          <p class="name"><span>{{ userInfo.username }}</span></p> 
           <a-divider />
           <a-descriptions :column="{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }" title="个人信息" layout="vertical" bordered>
             <a-descriptions-item label="姓名">
               <p class="descript"><span>{{ realname }}</span></p>
             </a-descriptions-item>
             <a-descriptions-item label="学号">
-              <p class="descript"><span>{{ userinfo.userid }}</span></p>
+              <p class="descript"><span>{{ userInfo.Sno }}</span></p>
             </a-descriptions-item>
             <a-descriptions-item label="所在院系" span="2">
               <p class="descript"><span>{{ depart }}</span></p>
@@ -177,10 +177,10 @@ export default {
     cardDragger,
   },
   props: {
-    userinfo: {
+    userInfo: {
       type: Object,
       default: () => ({
-        userid:'',
+        Sno:'',
         username:'',
       }),
       require: true

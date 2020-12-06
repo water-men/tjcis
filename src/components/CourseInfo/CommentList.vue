@@ -3,8 +3,8 @@
     <a-tabs default-active-key="1" align="left" size="large">
       <a-tab-pane key="1" tab="评价列表" >
         <a-list
-          :header="`课号:${selectedCourse.Cno} 名称:${selectedCourse.Cname} 共有 ${data.length} 条评价`"
-          :data-source="data"
+          :header="`课号:${selectedCourse.Cno} 名称:${selectedCourse.Cname} 共有 ${commentlist.length} 条评价`"
+          :data-source="commentlist"
           class="comment-list"
           item-layout="horizontal"
         >
@@ -41,10 +41,18 @@ export default {
       }),
       require: true
     },
+    userInfo: {
+      type: Object,
+      default: () => ({
+        Sno:'',
+        username:'',
+      }),
+      require: true
+    },
   },
   data() {
     return {
-      data: [
+      commentlist: [
         {
           Cmid:"1",
           author: 'Zhu',

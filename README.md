@@ -44,15 +44,15 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
         --CheckCourseType------
         |
         --UserCenter  
-        |              ----(CourseDetail 显示课程主要信息如课程号 授课老师等)
+        |              ----CourseDetail 显示课程主要信息如课程号 授课老师等
         |              |
-        --(CourseInfo)-----(CommentList 评论列表)
-        |              |
-        |              ----(WriteComment 写评论)
-        |              |
-        |              ----(RelatedList 相关推荐课程)
-        |
-        --(CommentDetail)
+        --(CourseInfo)-----CommentList 评论列表
+                       |
+                       ----WriteComment 写评论
+                       |
+                       ----RelatedList 相关推荐课程
+        
+  
 
 ## 目前思路
 ### CourseList如何跳转到对应课程页面CourseInfo

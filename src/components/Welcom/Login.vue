@@ -1,28 +1,32 @@
 <template>
   <div>
-    <a-card :bordered="false" style="width: 100%" title="登录">
-      <a-form-model
-        ref="ruleForm"
-        :model="ruleForm"
-        :rules="rules"
-        v-bind="layout"
-      >
-        <a-form-model-item ref="name" has-feedback label="用户名" prop="name">
-          <a-input v-model="ruleForm.name" />
-        </a-form-model-item>
-        <a-form-model-item has-feedback label="密码" prop="pass">
-          <a-input v-model="ruleForm.pass" type="password" autocomplete="off" />
-        </a-form-model-item>
-        <a-form-model-item :wrapper-col="{ span: 14, offset: 4 }">
-          <a-button type="primary" @click="submitForm('ruleForm')">
-            立即登录
-          </a-button>
-          <a-button style="margin-left: 10px" @click="resetForm('ruleForm')">
-            重置表单
-          </a-button>
-        </a-form-model-item>
-      </a-form-model>
-    </a-card>
+    <a-tabs default-active-key="1" align="left" size="large">
+      <a-tab-pane key="1" tab="登录" >
+        <a-card :bordered="false" style="width: 100%">
+          <a-form-model
+            ref="ruleForm"
+            :model="ruleForm"
+            :rules="rules"
+            v-bind="layout"
+          >
+            <a-form-model-item ref="name" :wrapper-col="{ span: 18, offset: 0 }" has-feedback label="用户名" prop="name">
+              <a-input v-model="ruleForm.name" />
+            </a-form-model-item>
+            <a-form-model-item :wrapper-col="{ span: 18, offset: 0 }" has-feedback label="密码" prop="pass">
+              <a-input v-model="ruleForm.pass" type="password" autocomplete="off" />
+            </a-form-model-item>
+            <a-form-model-item :wrapper-col="{ span: 16, offset: 6 }">
+              <a-button type="primary" shape="round" size="normal" @click="submitForm('ruleForm')">
+                立即登录
+              </a-button>
+              <a-button style="margin-left: 50px;" shape="round" size="normal" @click="resetForm('ruleForm')">
+                重置表单
+              </a-button>
+            </a-form-model-item>
+          </a-form-model>
+        </a-card>
+      </a-tab-pane>
+    </a-tabs>
   </div>
 </template>
 

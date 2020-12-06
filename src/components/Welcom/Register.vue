@@ -1,43 +1,50 @@
 <template>
   <div>
-    <a-card :bordered="false" style="width: 100%" title="注册">
-      <a-form-model
-        ref="ruleForm"
-        :model="ruleForm"
-        :rules="rules"
-        v-bind="layout"
-      >
-        <a-form-model-item ref="username" has-feedback label="用户名" prop="username">
-          <a-input v-model="ruleForm.username" />
-        </a-form-model-item>
-        <a-form-model-item has-feedback label="密码" prop="password">
-          <a-input v-model="ruleForm.password" type="password" autocomplete="off" />
-        </a-form-model-item>
-        <a-form-model-item has-feedback label="确认密码" prop="checkPass">
-          <a-input
-            v-model="ruleForm.checkPass"
-            type="password"
-            autocomplete="off"
-          />
-        </a-form-model-item>
-        <a-form-model-item label="所在学院" prop="depart">
-          <a-select v-model="ruleForm.region" placeholder="请选择">
-            <a-select-option value="01"> 电子与信息工程学院 </a-select-option>
-            <a-select-option value="02"> 数学学院 </a-select-option>
-            <a-select-option value="03"> 物理学院 </a-select-option>
-            <a-select-option value="04"> 化学学院 </a-select-option>
-          </a-select>
-        </a-form-model-item>
-        <a-form-model-item :wrapper-col="{ span: 14, offset: 4 }">
-          <a-button type="primary" @click="submitForm('ruleForm')">
-            立即注册
-          </a-button>
-          <a-button style="margin-left: 10px" @click="resetForm('ruleForm')">
-            重置表单
-          </a-button>
-        </a-form-model-item>
-      </a-form-model>
-    </a-card>
+    <a-tabs default-active-key="1" align="left" size="large">
+      <a-tab-pane key="1" tab="注册" >
+        <a-card :bordered="false" style="width: 100%" >
+          <a-form-model
+            ref="ruleForm"
+            :model="ruleForm"
+            :rules="rules"
+            v-bind="layout"
+          >
+            <a-form-model-item ref="Sno" :wrapper-col="{ span: 18, offset: 0 }" has-feedback label="学号" prop="Sno">
+              <a-input v-model="ruleForm.username" />
+            </a-form-model-item>
+            <a-form-model-item ref="username" :wrapper-col="{ span: 18, offset: 0 }" has-feedback label="用户名" prop="username">
+              <a-input v-model="ruleForm.username" />
+            </a-form-model-item>
+            <a-form-model-item :wrapper-col="{ span: 18, offset: 0 }" has-feedback label="密码" prop="password">
+              <a-input v-model="ruleForm.password" type="password" autocomplete="off" />
+            </a-form-model-item>
+            <a-form-model-item :wrapper-col="{ span: 18, offset: 0 }" has-feedback label="确认密码" prop="checkPass">
+              <a-input
+                v-model="ruleForm.checkPass"
+                type="password"
+                autocomplete="off"
+              />
+            </a-form-model-item>
+            <a-form-model-item :wrapper-col="{ span: 18, offset: 0 }" label="所在学院" prop="depart">
+              <a-select v-model="ruleForm.region" placeholder="请选择">
+                <a-select-option value="01"> 电子与信息工程学院 </a-select-option>
+                <a-select-option value="02"> 数学学院 </a-select-option>
+                <a-select-option value="03"> 物理学院 </a-select-option>
+                <a-select-option value="04"> 化学学院 </a-select-option>
+              </a-select>
+            </a-form-model-item>
+            <a-form-model-item :wrapper-col="{ span: 16, offset: 6 }">
+              <a-button type="primary" shape="round" size="normal" @click="submitForm('ruleForm')">
+                立即注册
+              </a-button>
+              <a-button style="margin-left: 50px;" shape="round" size="normal" @click="resetForm('ruleForm')">
+                重置表单
+              </a-button>
+            </a-form-model-item>
+          </a-form-model>
+        </a-card>
+      </a-tab-pane>
+    </a-tabs>
   </div>
 </template>
 
@@ -90,12 +97,14 @@ export default {
     };
     return {
       ruleForm: {
+        Sno: '',
         username: '',
         password: '',
         checkPass: '',
         age: '',
       },
       rules: {
+        Sno: [{ validator: validateName, trigger: 'change' }],
         username: [{ validator: validateName, trigger: 'change' }],
         password: [{ validator: validatePass, trigger: 'change' }],
         checkPass: [{ validator: validatePass2, trigger: 'change' }],

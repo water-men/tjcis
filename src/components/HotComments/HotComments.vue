@@ -1,8 +1,8 @@
 <template>
-  <a-card>
+  <a-card :style="{ minHeight: '670px'}">
     <a-tabs default-active-key="1" align="left" size="large">
       <a-tab-pane key="1" tab="近期热门评价" >
-        <a-list :grid="{ gutter: 16, column: 4 }" :data-source="data">
+        <a-list :grid="{ gutter: 16, column: 3 }" :data-source="data">
           <a-list-item slot="renderItem" slot-scope="item">
             <a-card :title="item.title" hoverable>
               课程名称:{{ item.Cname }}

@@ -2,7 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import {
-  DatePicker, Button, Layout, Menu, List,
+  DatePicker, Button, Layout, Menu, List, Steps,
   Breadcrumb, Icon, Form, Input, Row, Col, Tabs,
   Radio, Modal, Tag, Card, Table, Descriptions, Dropdown,
   Popconfirm, FormModel, Select, Progress, Statistic, Rate,
@@ -47,6 +47,7 @@ Vue.use(List)
 Vue.use(Tabs)
 Vue.use(Rate)
 Vue.use(Comment)
+Vue.use(Steps)
 
 Vue.use(installCardDragger)
 

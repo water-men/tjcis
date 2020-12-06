@@ -7,10 +7,10 @@
           <h2 align="left">根据您近期的浏览和评价，为您推荐以下课程</h2>
           <a-row :gutter="16" >
             <a-col v-for="course in recommendlist" :key="course.key" :bordered="true" :span="8" >
-              <a-card hoverable>
-                <h3>{{ course.Cname }}</h3>
-                <a-divider />
-                <div @click="selectCourse(course)">
+              <div @click="selectCourse(course)">
+                <a-card hoverable>
+                  <h3>{{ course.Cname }}</h3>
+                  <a-divider />
                   授课老师:{{ course.Tname }}
                   <a-divider />
                   课程标签:
@@ -18,15 +18,15 @@
                     v-for="tag in course.tags"
                     :key="tag"
                     :color="tag === tag.length > 5 ? 'geekblue' : 'green'"
-                  >{{ tag.toUpperCase() }}</a-tag>
-                </div>
-              </a-card>
+                  >{{ tag.toUpperCase() }}</a-tag>    
+                </a-card>
+              </div>
             </a-col> 
           </a-row>
         </a-tab-pane>
         <a-tab-pane key="2" tab="公告信息" >
           <div align="center">
-            <a-list :data-source="data" item-layout="horizontal">
+            <a-list :data-source="noticelist" item-layout="horizontal">
               <a-list-item slot="renderItem" slot-scope="item">
                 <a-list-item-meta
                   description="Ant Design, a design language for background applications, is refined by Ant UED Team"
@@ -45,47 +45,53 @@
         <a-tab-pane key="1" tab="功能选单" >
           <a-row :gutter="16">
             <a-col :span="8">
-              <a-card hoverable>
-                <a-statistic
-                  :value="12"
-                  :value-style="{ color: '#3f8600' }"
-                  title="我的评价"
-                  suffix="条"
-                  style="margin-right: 50px"
-                >
-                  <template #prefix>
-                    <a-icon type="arrow-right" />
-                  </template>
-                </a-statistic>
-              </a-card>
+              <div @click="gotoMyComments()">
+                <a-card hoverable>
+                  <a-statistic
+                    :value="mycommentnum"
+                    :value-style="{ color: '#3f8600' }"
+                    title="我的评价"
+                    suffix="条"
+                    style="margin-right: 50px"
+                  >
+                    <template #prefix>
+                      <a-icon type="arrow-right" />
+                    </template>
+                  </a-statistic>
+                </a-card>
+              </div>
             </a-col>
             <a-col :span="8">
-              <a-card hoverable>
-                <a-statistic
-                  :value="5"
-                  :value-style="{ color: '#cf1322' }"
-                  title="我的收藏"
-                  suffix="个"
-                >
-                  <template #prefix>
-                    <a-icon type="arrow-right" />
-                  </template>
-                </a-statistic>
-              </a-card>
+              <div @click="gotoMyFavorite()">
+                <a-card hoverable>
+                  <a-statistic
+                    :value="myfavornum"
+                    :value-style="{ color: '#cf1322' }"
+                    title="我的收藏"
+                    suffix="个"
+                  >
+                    <template #prefix>
+                      <a-icon type="arrow-right" />
+                    </template>
+                  </a-statistic>
+                </a-card>
+              </div>
             </a-col>
             <a-col :span="8">
-              <a-card hoverable>
-                <a-statistic
-                  :value="5"
-                  :value-style="{ color: '#cf1322' }"
-                  title="待办"
-                  suffix="个"
-                >
-                  <template #prefix>
-                    <a-icon type="arrow-right" />
-                  </template>
-                </a-statistic>
-              </a-card>
+              <div @click="gotoScheduleTable()">
+                <a-card hoverable>
+                  <a-statistic
+                    :value="myshedulenum"
+                    :value-style="{ color: '#cf1322' }"
+                    title="待办"
+                    suffix="个"
+                  >
+                    <template #prefix>
+                      <a-icon type="arrow-right" />
+                    </template>
+                  </a-statistic>
+                </a-card>
+              </div>
             </a-col>
           </a-row>
         </a-tab-pane>
@@ -140,11 +146,26 @@ export default {
           tags: ['cool', 'teacher'],
         },
       ],
+      //通知列表
+      noticelist:[
+      ],
+      mycommentnum: 12,
+      myfavornum: 5,
+      myshedulenum: 5,
     }
   },
    methods: {
     selectCourse(record){
         this.$emit('getCourse',record)
+    },
+    gotoMyComments(){
+        this.$emit('toMyComments')
+    },
+    gotoMyFavorite(){
+        this.$emit('toMyFavorite')
+    },
+    gotoScheduleTable(){
+        this.$emit('toScheduleTable')
     },
     onChange(a, b, c) {
       console.log(a, b, c);
