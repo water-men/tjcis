@@ -105,47 +105,53 @@
           <a-card :style="{ minHeight: '670px'}">
             <a-row :gutter="16">
               <a-col :span="8">
-                <a-card hoverable>
-                  <a-statistic
-                    :value="12"
-                    :value-style="{ color: '#3f8600' }"
-                    title="我的评价"
-                    suffix="条"
-                    style="margin-right: 50px"
-                  >
-                    <template #prefix>
-                      <a-icon type="arrow-right" />
-                    </template>
-                  </a-statistic>
-                </a-card>
+                <div @click="gotoMyComments()">
+                  <a-card hoverable>
+                    <a-statistic
+                      :value="12"
+                      :value-style="{ color: '#3f8600' }"
+                      title="我的评价"
+                      suffix="条"
+                      style="margin-right: 50px"
+                    >
+                      <template #prefix>
+                        <a-icon type="arrow-right" />
+                      </template>
+                    </a-statistic>
+                  </a-card>
+                </div>
               </a-col>
               <a-col :span="8">
-                <a-card hoverable>
-                  <a-statistic
-                    :value="5"
-                    :value-style="{ color: '#cf1322' }"
-                    title="我的收藏"
-                    suffix="个"
-                  >
-                    <template #prefix>
-                      <a-icon type="arrow-right" />
-                    </template>
-                  </a-statistic>
-                </a-card>
+                <div @click="gotoMyFavorite()">
+                  <a-card hoverable>
+                    <a-statistic
+                      :value="5"
+                      :value-style="{ color: '#cf1322' }"
+                      title="我的收藏"
+                      suffix="个"
+                    >
+                      <template #prefix>
+                        <a-icon type="arrow-right" />
+                      </template>
+                    </a-statistic>
+                  </a-card>
+                </div>
               </a-col>
               <a-col :span="8">
-                <a-card hoverable>
-                  <a-statistic
-                    :value="5"
-                    :value-style="{ color: '#cf1322' }"
-                    title="待办"
-                    suffix="个"
-                  >
-                    <template #prefix>
-                      <a-icon type="arrow-right" />
-                    </template>
-                  </a-statistic>
-                </a-card>
+                <div @click="gotoScheduleTable()">
+                  <a-card hoverable>
+                    <a-statistic
+                      :value="5"
+                      :value-style="{ color: '#cf1322' }"
+                      title="待办"
+                      suffix="个"
+                    >
+                      <template #prefix>
+                        <a-icon type="arrow-right" />
+                      </template>
+                    </a-statistic>
+                  </a-card>
+                </div>
               </a-col>
             </a-row>
             <a-divider />
@@ -222,6 +228,15 @@ export default {
     }
   },
   methods: {
+    gotoMyComments(){
+        this.$emit('toMyComments')
+    },
+    gotoMyFavorite(){
+        this.$emit('toMyFavorite')
+    },
+    gotoScheduleTable(){
+        this.$emit('toScheduleTable')
+    },
   }
 }
 </script>

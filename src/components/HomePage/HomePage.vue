@@ -48,8 +48,8 @@
               <div @click="gotoMyComments()">
                 <a-card hoverable>
                   <a-statistic
-                    :value="mycommentnum"
                     :value-style="{ color: '#3f8600' }"
+                    :value="mycommentnum"
                     title="我的评价"
                     suffix="条"
                     style="margin-right: 50px"
@@ -117,9 +117,20 @@
     <br />
   </div>
 </template>
+
 <script>
 
 export default {
+  props: {
+    userInfo: {
+      type: Object,
+      default: () => ({
+        Sno:'',
+        username:'',
+      }),
+      require: true
+    },
+  },
   data () {
     return {
       //推荐课程列表，先写死数据，以后要加载时发送请求，根据用户信息从后台获取
@@ -154,7 +165,7 @@ export default {
       myshedulenum: 5,
     }
   },
-   methods: {
+  methods: {
     selectCourse(record){
         this.$emit('getCourse',record)
     },
@@ -170,7 +181,7 @@ export default {
     onChange(a, b, c) {
       console.log(a, b, c);
     },
-  }
+  },
 }
 </script>
 

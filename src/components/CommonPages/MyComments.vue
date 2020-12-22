@@ -1,6 +1,7 @@
 <template>
   <div>
     <a-card>
+      <h1>我的评价--{{ userInfo.username }}</h1>
       <a-comment>
         <template slot="actions">
           <span key="comment-basic-like">
@@ -43,6 +44,16 @@
 
 <script>
 export default {
+  props: {
+    userInfo: {
+      type: Object,
+      default: () => ({
+        Sno:'',
+        username:'',
+      }),
+      require: true
+    },
+  },
   data() {
     return {
       likes: 0,

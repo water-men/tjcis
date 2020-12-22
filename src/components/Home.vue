@@ -66,15 +66,16 @@
       </a-layout-header>
       <a-layout-content :style="{ margin: '24px 16px 0', minHeight: '670px' }">  
         <!-- 页面主要内容部分 根据菜单选择显示不同的组件 -->
-        <home-page v-if="currentContent == 'home-page' " @getCourse="getCourse" @toMyComments="toMyComments" @toMyFavorite="toMyFavorite" @toScheduleTable="toScheduleTable"></home-page>
+        <home-page v-if="currentContent == 'home-page' " :user-info="userInfo" @getCourse="getCourse" @toMyComments="toMyComments" @toMyFavorite="toMyFavorite" @toScheduleTable="toScheduleTable"></home-page>
         <check-course-all v-if="currentContent == 'check-course-all' " @getCourse="getCourse"></check-course-all>
         <check-course-depart v-if="currentContent == 'check-course-depart' " @getCourse="getCourse"></check-course-depart>
         <check-course-type v-if="currentContent == 'check-course-type' " @getCourse="getCourse"></check-course-type>
         <course-info v-if="currentContent =='course-info'" :selected-course="selectedCourse" :user-info="userInfo" @getCourse="getCourse"></course-info>
-        <user-center v-if="currentContent == 'user-center' " :user-info="userInfo"></user-center>
+        <user-center v-if="currentContent == 'user-center' " :user-info="userInfo" @toMyComments="toMyComments" @toMyFavorite="toMyFavorite" @toScheduleTable="toScheduleTable"></user-center>
         <hot-comments v-if="currentContent == 'hot-comments' " :user-info="userInfo"></hot-comments>
         <schedule-table v-if="currentContent == 'schedule-table' " :user-info="userInfo"></schedule-table>
         <my-comments v-if="currentContent == 'my-comments' " :user-info="userInfo"></my-comments>
+        <my-favorite v-if="currentContent == 'my-favorite' " :user-info="userInfo"></my-favorite>
       </a-layout-content>
       <a-back-top />
       <a-layout-footer style="textalign: center">
@@ -94,6 +95,7 @@ import UserCenter from "@/components/UserCenter/UserCenter"
 import HotComments from "@/components/HotComments/HotComments"
 import ScheduleTable from "@/components/ScheduleTable/ScheduleTable"
 import MyComments from "@/components/CommonPages/MyComments"
+import MyFavorite from "@/components/CommonPages/MyFavorite"
 
 export default {
   components: {
@@ -106,6 +108,7 @@ export default {
     HotComments,
     ScheduleTable,
     MyComments,
+    MyFavorite,
   },
   data () {
     return {
