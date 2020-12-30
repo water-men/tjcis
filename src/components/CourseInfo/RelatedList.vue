@@ -4,10 +4,10 @@
       <a-tab-pane key="1" tab="相关课程" >
         <p v-for="course in relatedlist" :gutter="16" :key="course.key" :bordered="true" :span="8" hoverable>
           <a-card hoverable>
-            <h3>{{ course.Cname }}</h3>
-            <a-divider />
-            <!-- 点击推荐列表中的项目转到对应的课程页面 -->
             <div @click="selectCourse(course)">
+              <h3>{{ course.Cname }}</h3>
+              <a-divider />
+              <!-- 点击推荐列表中的项目转到对应的课程页面 -->
               授课老师:{{ course.Tname }}
             </div>
           </a-card>
