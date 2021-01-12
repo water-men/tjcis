@@ -34,7 +34,7 @@
         </a-row>
       </a-tab-pane>
     </a-tabs>
-  </div>
+  </div> 
 </template>
 <script>
 var courseList = [
