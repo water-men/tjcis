@@ -124,8 +124,12 @@ export default {
     }
   },
   beforeMount:function(){
-    sessionStorage.setItem("username","zsx");//后面要删掉 现在测试
+    //sessionStorage.setItem("username","zsx");//后面要删掉 现在测试
     this.userInfo.username = sessionStorage.getItem("username");
+    if(this.userInfo.username == null)
+    {
+      this.$router.push({name:"Welcom"});
+    }
   },
   methods: {
     //将显示内容currentContent设置为菜单选中的key
