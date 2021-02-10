@@ -23,7 +23,7 @@
           <span slot="title"><a-icon type="search" /> 查找课程</span>
           <a-menu-item key="check-course-all" @click="itemSelected">所有课程</a-menu-item>
           <a-menu-item key="check-course-depart" @click="itemSelected">按学院查找</a-menu-item>
-          <a-menu-item key="check-course-type" @click="itemSelected">按类别查找</a-menu-item>
+          <!-- <a-menu-item key="check-course-type" @click="itemSelected">按类别查找</a-menu-item> -->
         </a-sub-menu>
         <a-menu-item key="hot-comments" @click="itemSelected">
           <a-icon type="mail" />
@@ -58,9 +58,12 @@
             </h3>
           </a-col>
           <a-col :span="4">
-            <router-link to="/Welcom" style="color: white;font-size:125%">
+            <!-- <router-link to="/Welcom" style="color: white;font-size:125%">
               <a-icon type="logout" />&nbsp;注销&nbsp;&nbsp;&nbsp;
-            </router-link>
+            </router-link> -->
+            <a style="color: white;font-size:125%" @click="logOutWeb">
+              <a-icon type="logout" />&nbsp;注销&nbsp;&nbsp;&nbsp;
+            </a>
           </a-col>
         </a-row>
       </a-layout-header>
@@ -69,13 +72,13 @@
         <home-page v-if="currentContent == 'home-page' " :user-info="userInfo" @getCourse="getCourse" @toMyComments="toMyComments" @toMyFavorite="toMyFavorite" @toScheduleTable="toScheduleTable"></home-page>
         <check-course-all v-if="currentContent == 'check-course-all' " @getCourse="getCourse"></check-course-all>
         <check-course-depart v-if="currentContent == 'check-course-depart' " @getCourse="getCourse"></check-course-depart>
-        <check-course-type v-if="currentContent == 'check-course-type' " @getCourse="getCourse"></check-course-type>
+        <!-- <check-course-type v-if="currentContent == 'check-course-type' " @getCourse="getCourse"></check-course-type> -->
         <course-info v-if="currentContent =='course-info'" :selected-course="selectedCourse" :user-info="userInfo" @getCourse="getCourse"></course-info>
         <user-center v-if="currentContent == 'user-center' " :user-info="userInfo" @toMyComments="toMyComments" @toMyFavorite="toMyFavorite" @toScheduleTable="toScheduleTable"></user-center>
         <hot-comments v-if="currentContent == 'hot-comments' " :user-info="userInfo"></hot-comments>
         <schedule-table v-if="currentContent == 'schedule-table' " :user-info="userInfo"></schedule-table>
         <my-comments v-if="currentContent == 'my-comments' " :user-info="userInfo"></my-comments>
-        <my-favorite v-if="currentContent == 'my-favorite' " :user-info="userInfo"></my-favorite>
+        <my-favorite v-if="currentContent == 'my-favorite' " :user-info="userInfo" @getCourse="getCourse"></my-favorite>
       </a-layout-content>
       <a-back-top />
       <a-layout-footer style="textalign: center">
@@ -113,22 +116,26 @@ export default {
   data () {
     return {
       currentContent: "home-page",
-      selectedCourse: {Cno:'',Cname:''},
+      selectedCourse: {
+
+      },
       selectedComment: "",
-      userInfo:{Sno:"1752528",username: "tohkazsx"}
+      userInfo:{username: ""}
     }
+  },
+  beforeMount:function(){
+    sessionStorage.setItem("username","zsx");//后面要删掉 现在测试
+    this.userInfo.username = sessionStorage.getItem("username");
   },
   methods: {
     //将显示内容currentContent设置为菜单选中的key
     itemSelected (selected) {
       this.currentContent = selected.key;
-      console.log(this.currentContent);
     },
     //绑定的自定义事件，用于在CourseList和CourseInfo中触发，获取选中的课程(params)并显示课程信息子页面组件
     getCourse (params) {
       this.currentContent = "course-info";
-      this.selectedCourse.Cno=params.Cno;
-      this.selectedCourse.Cname=params.Cname;
+      this.selectedCourse = params;
       /* alert("收到了来自CourseList的信息"+this.selectedCourse.Cno)  */
     },
     //绑定的自定义事件，用于在HomePage中触发 显示对应子页面组件
@@ -144,6 +151,10 @@ export default {
     toHomeView(){
       this.currentContent = "home-page";
     },
+    logOutWeb () {
+      sessionStorage.clear();
+      this.$router.push({name: "Welcom"});
+    },
     onCollapse (collapsed, type) {
       console.log(collapsed, type);
     },
@@ -151,6 +162,7 @@ export default {
       console.log(broken);
     },
   },
+  
 };
 </script>
 

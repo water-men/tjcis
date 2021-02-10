@@ -20,29 +20,26 @@
         </a-col>
         <a-col :span="14">
           <a-descriptions :column="{ xxl: 4, xl: 2, lg: 2, md: 2, sm: 2, xs: 1 }" layout="vertical" bordered>
-            <a-descriptions-item label="课号">
+            <a-descriptions-item label="课号" >
               <p class="descript"><span>{{ selectedCourse.Cno }}</span></p>
             </a-descriptions-item>
-            <a-descriptions-item label="授课老师">
-              <p class="descript"><span>{{ Tname }}</span></p>
+            <a-descriptions-item label="授课老师" >
+              <p class="descript"><span>{{ selectedCourse.Tname }}</span></p>
             </a-descriptions-item>
-            <a-descriptions-item label="开课院系">
-              <p class="descript"><span>{{ Depart }}</span></p>
-            </a-descriptions-item>
-            <a-descriptions-item label="课程类别">
-              <p class="descript"><span>{{ Ctype }}</span></p>
+            <a-descriptions-item label="开课院系" span="2">
+              <p class="descript"><span>{{ selectedCourse.Dname }}</span></p>
             </a-descriptions-item>
             <a-descriptions-item label="课程标签" span="2"> 
               <a-tag
-                v-for="tag in tags"
-                :key="tag"
-                :color="tag.length > 5 ? 'geekblue' : 'green'"
+                v-for="(tag,index) in selectedCourse.tags"
+                :key="index"
+                :color="index%2 == 1 ? 'geekblue' : 'green'"
               >{{ tag.toUpperCase() }}</a-tag>
             </a-descriptions-item>
             <a-descriptions-item label="综合评分" span="2"> 
-              <a-rate :default-value="3" :value="Tscore/2" disabled allow-half />
+              <a-rate :default-value="3" :value="(selectedCourse.Cscore)/2" disabled allow-half />
               <a-statistic
-                :value="Tscore"
+                :value="selectedCourse.Cscore"
                 :precision="0"
                 :value-style="{ color: '#3f8600' }"
                 suffix="/10"
@@ -54,6 +51,8 @@
               </a-statistic>
             </a-descriptions-item>
           </a-descriptions>
+          <a-button v-if="hasCollected" style="margin-top:8px;" type="primary" size="large" icon="star" @click="cancelCollect">取消收藏</a-button>
+          <a-button v-else style="margin-top:8px;" size="large" icon="star" @click="collect">收藏</a-button>
         </a-col>
       </a-row>
     </a-tab-pane>
@@ -66,21 +65,39 @@ export default {
     selectedCourse: {
       type: Object,
       default: () => ({
-        Cno:'',
-        Cname:'',
+        Cid: '',
+        Cno: '',
+        Cname: '',
+        Tname: '',
+        Dname: '',
+        tags: [
+        ],
+        Cscore: undefined,
       }),
+      require: true
+    },
+    collected: {
+      type: Boolean,
+      default: false,
       require: true
     },
   },
   data() {
     return {
-    Tname:"张三",
-    Depart:"电子与信息工程学院",
-    Ctype:"专业必修课",
-    tags: ['nice', 'developer','讲课好','作业较少'],
-    Tscore: 9,
-  }
-}
+      hasCollected: this.collected,
+    }
+  },
+  beforeMount(){
+    console.log(this.collected);
+  },
+  methods:{
+    collect(){
+      this.hasCollected = true;
+    },
+    cancelCollect(){
+      this.hasCollected = false;
+    },
+  },
 }
 
 </script>

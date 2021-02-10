@@ -21,7 +21,7 @@
               <br />
               <br />
               <!-- 登录按钮弹窗 -->
-              <a-button type="primary" shape="round" size="large" @click="() => (loginVisible = true)">登录</a-button>
+              <a-button type="primary" shape="round" @click="() => (loginVisible = true)">登录</a-button>
               <a-modal
                 v-model="loginVisible"
                 footer
@@ -32,7 +32,7 @@
               </a-modal>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <!-- 注册按钮弹窗 -->
-              <a-button type="normal" size="large" shape="round" @click="() => (registerVisible = true)">注册</a-button>
+              <a-button type="normal" shape="round" @click="() => (registerVisible = true)">注册</a-button>
               <a-modal
                 v-model="registerVisible"
                 footer
@@ -63,6 +63,11 @@ export default {
     return {
       loginVisible: false,
       registerVisible: false
+    }
+  },
+  beforeMount:function() {
+    if(JSON.parse(sessionStorage.getItem("username")) != null) {
+      this.$router.push({name:"home"});
     }
   },
 }

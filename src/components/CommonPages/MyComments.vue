@@ -1,45 +1,40 @@
 <template>
-  <div>
-    <a-card>
-      <h1>我的评价--{{ userInfo.username }}</h1>
-      <a-comment>
-        <template slot="actions">
-          <span key="comment-basic-like">
-            <a-tooltip title="Like">
-              <a-icon :theme="action === 'liked' ? 'filled' : 'outlined'" type="like" @click="like" />
-            </a-tooltip>
-            <span style="padding-left: '8px';cursor: 'auto'">
-              {{ likes }}
-            </span>
-          </span>
-          <span key="comment-basic-dislike">
-            <a-tooltip title="Dislike">
-              <a-icon
-                :theme="action === 'disliked' ? 'filled' : 'outlined'"
-                type="dislike"
-                @click="dislike"
-              />
-            </a-tooltip>
-            <span style="padding-left: '8px';cursor: 'auto'">
-              {{ dislikes }}
-            </span>
-          </span>
-          <span key="comment-basic-reply-to">Reply to</span>
-        </template>
-        <a slot="author">Han Solo</a>
-        <a-avatar
-          slot="avatar"
-          src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-          alt="Han Solo"
-        />
-        <p slot="content">
-          We supply a series of design principles, practical patterns and high quality design resources
-          (Sketch and Axure), to help people create their product prototypes beautifully and
-          efficiently.
-        </p>
-      </a-comment>
-    </a-card>
-  </div>
+  <a-card :style="{ minHeight: '670px'}">
+    <a-tabs default-active-key="1" align="left" size="large">
+      <a-tab-pane key="1" tab="我的评价" >
+        <a-card v-for="(item,index) in myComments" :title="item.cardTile" :key="index" style="margin-top:8px;text-align:left;">
+          <a-comment >
+            <template slot="actions">
+              <span key="comment-basic-like">
+                <a-icon :theme="outlined" type="like"/>
+                <span style="padding-left: '8px';cursor: 'auto'">
+                  {{ item.likes }}
+                </span>
+              </span>
+              <span key="comment-basic-dislike">
+                <a-icon :theme="outlined" type="dislike" />
+                <span style="padding-left: '8px';cursor: 'auto'">
+                  {{ item.dislikes }}
+                </span>
+              </span>
+            </template>
+            <a slot="author">{{ item.author }}</a>
+            <a-avatar
+              slot="avatar"
+              icon="user"
+            />
+            <p slot="content">
+              {{ item.title }}
+              &nbsp;&nbsp;&nbsp;&nbsp;{{ item.content }}
+            </p>
+            <span slot="datetime">{{ $moment(item.Cmtime).fromNow() }}</span>
+            <a-rate :value="(item.score)/2" disabled allow-half></a-rate>&nbsp;&nbsp;
+            <span>{{ item.score }}/10分</span>
+          </a-comment>
+        </a-card>
+      </a-tab-pane>
+    </a-tabs>
+  </a-card>
 </template>
 
 <script>
@@ -48,7 +43,6 @@ export default {
     userInfo: {
       type: Object,
       default: () => ({
-        Sno:'',
         username:'',
       }),
       require: true
@@ -56,23 +50,55 @@ export default {
   },
   data() {
     return {
-      likes: 0,
-      dislikes: 0,
-      action: null,
+      myComments:[
+        // {
+        //   Cmid:"1",
+        //   Cno:'102021020',
+        //   Cname:'离散数学',
+        //   Tname:'王成',
+        //   author: 'Zhu',
+        //   title: 'Comment1',
+        //   content:
+        //     '阿巴阿巴',
+        //   score: 7,
+        //   likes: 0,
+        //   dislikes: 0,
+        //   Cmtime: '2012-02-21 22:11:33',
+        // },
+        // {
+        //   Cmid:"2",
+        //   Cno:'10086',
+        //   Cname:'电信',
+        //   Tname:'王朝和马汉',
+        //   author: 'Jiang Hao',
+        //   title: 'Comment2',
+        //   content:
+        //     '哈哈哈哈哈',
+        //   score: 10,
+        //   likes: 0,
+        //   dislikes: 0,
+        //   Cmtime: '2013-04-02 10:12:53',
+        // },
+      ],
     };
   },
-  methods: {
-    like() {
-      this.likes = 1;
-      this.dislikes = 0;
-      this.action = 'liked';
-    },
-    dislike() {
-      this.likes = 0;
-      this.dislikes = 1;
-      this.action = 'disliked';
-    },
+  beforeMount(){
+    let submitData = JSON.stringify(this.userInfo);
+    this.$axios.post("/api/getMyComments",submitData).then((response) => {
+      if(response.ret_msg == "success") {
+        this.myComments = response.data.comments;
+      }
+      else
+        this.$message.error("获取我的评价失败");
+    }).catch(() => { this.$message.error("获取我的评价失败"); }); //获取我的评价
+
+    for(let i=0;i<this.myComments.length;i++)
+    {
+      this.myComments[i].cardTile = '课号：'+this.myComments[i].Cno+' 课程名称：'+this.myComments[i].Cname+' 授课老师：'+this.myComments[i].Tname;
+    }
   },
+  methods: {
+  }
 }
 </script>
 
