@@ -43,7 +43,6 @@ export default {
     selectedCourse: {
       type: Object,
       default: () => ({
-        Cid: '',
         Cno: '',
         Cname: '',
         Tname: '',
@@ -240,17 +239,16 @@ export default {
     };
   },
   beforeMount(){
-    let that = this;
     let submitData = new Object();
-    submitData.course_id = this.selectedCourse.Cid;
+    submitData.course_id = this.selectedCourse.Cno;
     submitData.username = this.userInfo.username;
     let request = JSON.stringify(submitData);
     this.$axios.post("/api/getCourseComments",request).then((response)=>{
       if(response.ret_msg == "success")
       {
-        that.my_comment = response.my_comment;
-        that.commentList = response.data.comments;
-        that.collected = response.collected;
+        this.my_comment = response.my_comment;
+        this.commentList = response.data.comments;
+        this.collected = response.collected;
       }
       else
         this.$message.error("获取课程评价列表失败");

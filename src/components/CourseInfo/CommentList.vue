@@ -47,7 +47,6 @@ export default {
     selectedCourse: {
       type: Object,
       default: () => ({
-        Cid: '',
         Cno: '',
         Cname: '',
         Tname: '',

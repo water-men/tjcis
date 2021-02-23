@@ -311,7 +311,7 @@ export default {
                 //接下来发写评论请求
                 submitData = {
                   username: this.userInfo.username,
-                  course_id: this.selectedCourse.Cid,
+                  course_id: this.selectedCourse.Cno,
                   comm_title: this.title,
                   comm_content: this.content,
                   comm_score: this.rate,

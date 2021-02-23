@@ -23,7 +23,6 @@ export default {
     selectedCourse: {
       type: Object,
       default: () => ({
-        Cid: '',
         Cno: '',
         Cname: '',
         Tname: '',
@@ -74,7 +73,7 @@ export default {
   },
   beforeMount(){
     let submitData = {
-      course_id: this.selectedCourse.Cid,
+      course_id: this.selectedCourse.Cno,
     }
     let request = JSON.stringify(submitData);
     this.$axios.post("/api/getSimilarCoursesList",request).then((response)=>{
