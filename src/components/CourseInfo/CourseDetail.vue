@@ -51,13 +51,7 @@
               </a-statistic>
             </a-descriptions-item>
           </a-descriptions>
-          <a-button v-if="hasCollected" style="margin-top:8px;" type="primary" size="large" icon="star" @click="cancelCollect">取消收藏</a-button>
-          <a-button v-else style="margin-top:8px;" size="large" icon="star" @click="collect">收藏</a-button>
-          <a-button style="margin-top:8px;" size="large" icon="folder" @click="showFileList">文件</a-button>
-          <a-modal v-model="showModal" title="文件列表" centered on-cancel="handleCancel">
-            <template slot="footer">
-              <a-button type="primary" @click="handleCancel">确定</a-button>
-            </template>
+          <a-card style="margin-top:8px;">
             <a-upload
               :multiple="true"
               :file-list="fileList"
@@ -66,7 +60,9 @@
             >
               <a-button> <a-icon type="upload" /> 上传文件 </a-button>
             </a-upload>
-          </a-modal>
+          </a-card>
+          <a-button v-if="hasCollected" style="margin-top:8px;" type="primary" size="large" icon="star" @click="cancelCollect">取消收藏</a-button>
+          <a-button v-else style="margin-top:8px;" size="large" icon="star" @click="collect">收藏</a-button>
         </a-col>
       </a-row>
     </a-tab-pane>
@@ -99,7 +95,6 @@ export default {
   data() {
     return {
       hasCollected: this.collected,
-      showModal: false,
       fileList: [
         {
           uid: '1',
@@ -131,12 +126,6 @@ export default {
     },
     cancelCollect(){
       this.hasCollected = false;
-    },
-    showFileList(){
-      this.showModal = true;
-    },
-    handleCancel(){
-      this.showModal = false;
     },
     handleChange(info) {
       let fileList = [...info.fileList];

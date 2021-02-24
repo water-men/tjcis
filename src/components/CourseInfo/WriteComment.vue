@@ -317,6 +317,10 @@ export default {
                   comm_score: this.rate,
                   //标签
                 }
+                if(submitData.comm_title==null)
+                  submitData.comm_title="默认标题";
+                if(submitData.comm_content==null)
+                  submitData.comm_content="这个人很懒，什么也没有写";
                 request = JSON.stringify(submitData);
                 this.$axios.post("/api/writeComments",request).then((response)=>{
                   if(response.ret_msg=="success")
@@ -345,6 +349,10 @@ export default {
           comm_score: this.rate,
           //标签
         }
+        if(submitData.comm_title==null)
+          submitData.comm_title="默认标题";
+        if(submitData.comm_content==null)
+          submitData.comm_content="这个人很懒，什么也没有写";
         let request = JSON.stringify(submitData);
         this.$axios.post("/api/writeComments",request).then((response)=>{
           if(response.ret_msg=="success")
