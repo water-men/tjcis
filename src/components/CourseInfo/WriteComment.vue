@@ -323,6 +323,7 @@ export default {
                   {
                     this.$message.success("提交成功");
                     this.disableComment = true;
+                    this.visible = false;
                   }  
                   else
                     this.$message.error("提交失败，请稍后重试");
@@ -352,7 +353,7 @@ export default {
             this.$message.error("提交失败，请稍后重试");
         }).catch(()=>{this.$message.error("提交失败，请稍后重试")});
       }
-      this.visible = false;
+
     },
     showConfirm(){
       this.$confirm({

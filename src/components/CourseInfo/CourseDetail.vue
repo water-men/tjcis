@@ -53,6 +53,20 @@
           </a-descriptions>
           <a-button v-if="hasCollected" style="margin-top:8px;" type="primary" size="large" icon="star" @click="cancelCollect">取消收藏</a-button>
           <a-button v-else style="margin-top:8px;" size="large" icon="star" @click="collect">收藏</a-button>
+          <a-button style="margin-top:8px;" size="large" icon="folder" @click="showFileList">文件</a-button>
+          <a-modal v-model="showModal" title="文件列表" centered on-cancel="handleCancel">
+            <template slot="footer">
+              <a-button type="primary" @click="handleCancel">确定</a-button>
+            </template>
+            <a-upload
+              :multiple="true"
+              :file-list="fileList"
+              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              @change="handleChange"
+            >
+              <a-button> <a-icon type="upload" /> 上传文件 </a-button>
+            </a-upload>
+          </a-modal>
         </a-col>
       </a-row>
     </a-tab-pane>
@@ -85,6 +99,27 @@ export default {
   data() {
     return {
       hasCollected: this.collected,
+      showModal: false,
+      fileList: [
+        {
+          uid: '1',
+          name: '课程信息.pdf',
+          status: 'done',
+          url: 'http://www.baidu.com/课程信息.pdf',
+        },
+        {
+          uid: '2',
+          name: '第一次作业.pdf',
+          status: 'done',
+          url: 'http://www.baidu.com/第一次作业.pdf',
+        },
+        {
+          uid: '3',
+          name: 'chapter1.ppt',
+          status: 'done',
+          url: 'http://www.baidu.com/chapter1.ppt',
+        },
+      ],
     }
   },
   beforeMount(){
@@ -96,6 +131,26 @@ export default {
     },
     cancelCollect(){
       this.hasCollected = false;
+    },
+    showFileList(){
+      this.showModal = true;
+    },
+    handleCancel(){
+      this.showModal = false;
+    },
+    handleChange(info) {
+      let fileList = [...info.fileList];
+
+      // read from response and show file link
+      fileList = fileList.map(file => {
+        if (file.response) {
+          // Component will show file.url as link
+          file.url = file.response.url;
+        }
+        return file;
+      });
+
+      this.fileList = fileList;
     },
   },
 }
