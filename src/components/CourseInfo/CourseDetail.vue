@@ -9,11 +9,16 @@
               alt="图片无法显示"
               src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
             />
+           
             <a-card-meta title="课程名称">
               <template slot="description">
-                {{ selectedCourse.Cname }}
+                <h1>{{ selectedCourse.Cname }}</h1>
               </template>
-            </a-card-meta>
+            </a-card-meta>   
+         
+            <a-button v-if="hasCollected" style="margin-top:8px;" type="primary" size="large" icon="star" @click="cancelCollect">取消收藏</a-button>
+            <a-button v-else style="margin-top:8px;" size="large" icon="star" @click="collect">收藏</a-button>
+
           </a-card>
         </a-col>
         <a-col :span="1">
@@ -51,19 +56,21 @@
               </a-statistic>
             </a-descriptions-item>
           </a-descriptions>
-          <a-card style="margin-top:8px;">
-            <a-upload
-              :multiple="true"
-              :file-list="fileList"
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-              @change="handleChange"
-            >
-              <a-button> <a-icon type="upload" /> 上传文件 </a-button>
-            </a-upload>
-          </a-card>
-          <a-button v-if="hasCollected" style="margin-top:8px;" type="primary" size="large" icon="star" @click="cancelCollect">取消收藏</a-button>
-          <a-button v-else style="margin-top:8px;" size="large" icon="star" @click="collect">收藏</a-button>
         </a-col>
+      </a-row>
+      <a-divider />
+      <!-- 文件列表 -->
+      <a-row>
+        <a-card style="margin-top:8px;">
+          <a-upload
+            :multiple="true"
+            :file-list="fileList"
+            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+            @change="handleChange"
+          >
+            <a-button> <a-icon type="upload" /> 上传文件 </a-button>
+          </a-upload>
+        </a-card>
       </a-row>
     </a-tab-pane>
   </a-tabs>

@@ -103,9 +103,9 @@
       <a-tabs default-active-key="1" align="left" size="large">
         <a-tab-pane key="1" tab="统计数据" >
           <div align="center">
-            <a-progress :percent="75" :format="percent => `${percent} Days`" type="circle" />
-            <a-progress :percent="100" :format="() => 'Done'" type="circle" />
-            <a-progress :percent="75" type="circle">
+            <a-progress :percent="13" :format="percent => `${percent} 条评论`" type="circle" />
+            <a-progress :percent="7" :format="percent => `${percent}个上传文件`" type="circle" />
+            <a-progress :percent="76" :format="percent => `${percent}次获赞`" type="circle">
               <template #format="percent">
                 <span style="color: red">{{ percent }}</span>
               </template>
