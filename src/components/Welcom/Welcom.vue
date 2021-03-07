@@ -80,11 +80,4 @@ export default {
 .welcom {
   background-color: bisque;
 }
-img {
-  width: auto;
-  height: auto;
-  margin: 0 auto;
-  max-width: 50%;
-  max-height: 50%;
-}
 </style>
