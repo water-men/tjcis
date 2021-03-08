@@ -21,6 +21,7 @@ Vue.prototype.$axios = axios
 Vue.prototype.$confirm = Modal.confirm
 Vue.prototype.$moment = moment
 Vue.prototype.$message = message
+axios.defaults.baseURL = 'http://112.126.93.26:7001'
 
 Vue.use(Timeline)
 Vue.use(Upload)
