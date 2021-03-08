@@ -8,28 +8,28 @@
               <span key="comment-basic-like" @click="like(index)" >
                 <a-icon :theme="item.action === 'liked' ? 'filled' : 'outlined'" type="like"/>
                 <span style="padding-left: '8px';cursor: 'auto'">
-                  {{ item.likes }}
+                  {{ item.comm_positive }}
                 </span>
               </span>
               <span key="comment-basic-dislike" @click="dislike(index)" >
                 <a-icon :theme="item.action === 'disliked' ? 'filled' : 'outlined'" type="dislike" />
                 <span style="padding-left: '8px';cursor: 'auto'">
-                  {{ item.dislikes }}
+                  {{ item.comm_negative }}
                 </span>
               </span>
             </template>
-            <a slot="author">{{ item.author }}</a>
+            <a slot="author">{{ item.stu_username }}</a>
             <a-avatar
               slot="avatar"
               icon="user"
             />
             <p slot="content">
-              {{ item.title }}
-              &nbsp;&nbsp;&nbsp;&nbsp;{{ item.content }}
+              {{ item.comm_title }}
+              &nbsp;&nbsp;&nbsp;&nbsp;{{ item.comm_content }}
             </p>
-            <span slot="datetime">{{ $moment(item.Cmtime).fromNow() }}</span>
-            <a-rate :value="(item.score)/2" disabled allow-half></a-rate>&nbsp;&nbsp;
-            <span>{{ item.score }}/10分</span>
+            <span slot="datetime">{{ $moment(item.comm_time).fromNow() }}</span>
+            <a-rate :value="(item.comm_score)/2" disabled allow-half></a-rate>&nbsp;&nbsp;
+            <span>{{ item.comm_score }}/10分</span>
           </a-comment>
         </a-card>
       </a-tab-pane>
@@ -41,45 +41,44 @@ export default {
   data() {
     return {
       HotComments:[
-        {
-          Cmid:"1",
-          Cno:'102021020',
-          Cname:'离散数学',
-          Tname:'王成',
-          author: 'Zhu',
-          title: 'Comment1',
-          content:
-            '阿巴阿巴',
-          score: 7,
-          likes: 0,
-          dislikes: 0,
-          Cmtime: '2012-02-21 22:11:33',
-          action:null,
-        },
-        {
-          Cmid:"2",
-          Cno:'10086',
-          Cname:'电信',
-          Tname:'王朝和马汉',
-          author: 'Jiang Hao',
-          title: 'Comment2',
-          content:
-            '哈哈哈哈哈',
-          score: 10,
-          likes: 0,
-          dislikes: 0,
-          Cmtime: '2013-04-02 10:12:53',
-          action:null,
-        },
+        // {
+        //   user_no: '12345678',
+        //   course_no:'102021020',
+        //   course_name:'离散数学',
+        //   course_teacher:'王成',
+        //   stu_username: 'Zhu',
+        //   comm_title: 'Comment1',
+        //   comm_content:
+        //     '阿巴阿巴',
+        //   comm_score: 7,
+        //   comm_positive: 0,
+        //   comm_negative: 0,
+        //   comm_time: '2012-02-21 22:11:33',
+        //   action:null,
+        // },
+        // {
+        //   user_no: '123',
+        //   course_no:'10086',
+        //   course_name:'电信',
+        //   course_teacher:'王朝和马汉',
+        //   stu_username: 'Jiang Hao',
+        //   comm_title: 'Comment2',
+        //   comm_content:
+        //     '哈哈哈哈哈',
+        //   comm_score: 10,
+        //   comm_positive: 0,
+        //   comm_negative: 0,
+        //   comm_time: '2013-04-02 10:12:53',
+        //   action:null,
+        // },
       ],
     };
   },
   beforeMount(){
-    let that = this;
     this.$axios.get("/api/getHotComments").then((response)=>{
       if(response.ret_msg=="success")
       {
-        that.HotComments = response.data.comments;
+        this.HotComments = response.data.comments;
       }
       else
         this.$message.error("获取热门评价失败");
@@ -87,38 +86,41 @@ export default {
 
     for(let i=0;i<this.HotComments.length;i++)
     {
-      that.HotComments[i].cardTile = '课号：'+that.HotComments[i].Cno+' 课程名称：'+that.HotComments[i].Cname+' 授课老师：'+that.HotComments[i].Tname;
+      this.HotComments[i].cardTile = '课号：'+this.HotComments[i].course_no+' 课程名称：'+this.HotComments[i].course_name+' 授课老师：'+this.HotComments[i].course_teacher;
+      this.HotComments[i].action = null;
     }
   },
   methods: {
     like(index) {
       if(this.HotComments[index].action=='liked')
       {
-        this.HotComments[index].likes--;
+        this.HotComments[index].comm_positive--;
         this.HotComments[index].action=null;
         let submitData = new Object();
-        submitData.comment_id = this.HotComments[index].Cmid;
-        submitData.positive = -1;
+        submitData.user_no = this.HotComments[index].user_no;
+        submitData.course_no = this.HotComments[index].course_no;
+        submitData.positive = false;
         let request = JSON.stringify(submitData);
         this.$axios.post("/api/positive",request);
       }
       else 
       {
-        let that = this;
         if(this.HotComments[index].action=='disliked')
         {
-          this.HotComments[index].dislikes--;
+          this.HotComments[index].comm_negative--;
           let dislike = new Object();
-          dislike.comment_id = this.HotComments[index].Cmid;
-          dislike.negative = -1;
+          dislike.user_no = this.HotComments[index].user_no;
+          dislike.course_no = this.HotComments[index].course_no;
+          dislike.negative = false;
           let request = JSON.stringify(dislike);
           this.$axios.post("/api/negative",request);
         }  
-        that.HotComments[index].likes++;
-        that.HotComments[index].action = 'liked';
+        this.HotComments[index].comm_positive++;
+        this.HotComments[index].action = 'liked';
         let submitData = new Object();
-        submitData.comment_id = this.HotComments[index].Cmid;
-        submitData.positive = 1;
+        submitData.user_no = this.HotComments[index].user_no;
+        submitData.course_no = this.HotComments[index].course_no;
+        submitData.positive = true;
         let like_request = JSON.stringify(submitData);
         this.$axios.post("/api/positive",like_request);
       }
@@ -126,11 +128,12 @@ export default {
     dislike(index) {
       if(this.HotComments[index].action=='disliked')
       {
-        this.HotComments[index].dislikes--;
+        this.HotComments[index].comm_negative--;
         this.HotComments[index].action=null;
         let submitData = new Object();
-        submitData.comment_id = this.HotComments[index].Cmid;
-        submitData.negative = -1;
+        submitData.user_no = this.HotComments[index].user_no;
+        submitData.course_no = this.HotComments[index].course_no;
+        submitData.negative = false;
         let request = JSON.stringify(submitData);
         this.$axios.post("/api/negative",request);
       }
@@ -139,18 +142,20 @@ export default {
         let that = this;
         if(this.HotComments[index].action=='liked')
         {
-          this.HotComments[index].likes--;
+          this.HotComments[index].comm_positive--;
           let like = new Object();
-          like.comment_id = this.HotComments[index].Cmid;
-          like.positive = -1;
+          like.user_no = this.HotComments[index].user_no;
+          like.course_no = this.HotComments[index].course_no;
+          like.positive = false;
           let request = JSON.stringify(like);
           this.$axios.post("/api/positive",request);
         }  
-        that.HotComments[index].dislikes++;
+        that.HotComments[index].comm_negative++;
         that.HotComments[index].action = 'disliked';
         let submitData = new Object();
-        submitData.comment_id = this.HotComments[index].Cmid;
-        submitData.negative = 1;
+        submitData.user_no = this.HotComments[index].user_no;
+        submitData.course_no = this.HotComments[index].course_no;
+        submitData.negative = true;
         let dislike_request = JSON.stringify(submitData);
         this.$axios.post("/api/negative",dislike_request);
       }

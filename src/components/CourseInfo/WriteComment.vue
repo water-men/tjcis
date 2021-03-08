@@ -66,7 +66,7 @@
               shape="round" 
               style="margin-left:8px;margin-top:8px"
               @click="tagset(index)">
-              {{ tag.name }}
+              {{ tag.tag_content }}
             </a-button>
           </template>
         </div>
@@ -96,28 +96,29 @@ export default {
     selectedCourse: {
       type: Object,
       default: () => ({
-        Cno:'',
-        Cname:'',
+        course_no: '',
+        course_name: '',
+        course_teacher: '',
+        course_depart: '',
+        course_tag: [
+        ],
+        course_score: 5,
       }),
       require: true
     },
     userInfo: {
       type: Object,
       default: () => ({
+        user_no:'',
         username:'',
       }),
       require: true
     },
-    my_comment: {
-      type: Boolean,
-      default: false,
-      require: true
-    }
   },
   data() {
     return {
       showInput: false,
-      disableComment: this.my_comment,
+      disableComment: true,
       disabledInput: false,
       visible: false,
       current: 0,
@@ -170,22 +171,38 @@ export default {
     };
   },
   beforeMount() {
-    this.$axios.get("/api/getTag").then((response)=>
-    {
-      if(response.ret_msg=="success")
+    let submitObject = {
+      user_no: this.userInfo.user_no,
+      course_no: this.selectedCourse.course_no,
+    };
+    let request = JSON.stringify(submitObject);
+    this.$axios.post("/api/isComment",request).then((response)=>{
+      if(response.ret_code == 0)
       {
-        this.tags = response.data.tags;
+        this.disableComment = response.data.commented;
       }
-      else
-        this.$message.error('初始化标签列表失败');
-    }).catch(()=>{this.$message.error('初始化标签列表失败')});
-    for(let i=0;i<this.tags.length;i++) {
-      this.tagsStyle.push({
-        type: "dashed",
-        value: 0,
-        disable: false,
-      });
+    });
+    if(this.disableComment == false)
+    {
+      this.$axios.get("/api/getTag").then((response)=>
+      {
+        if(response.ret_code==0)
+        {
+          this.tags = response.data.tags;
+          for(let i=0;i<this.tags.length;i++) {
+            this.tagsStyle.push({
+              type: "dashed",
+              value: 0,
+              disable: false,
+            });
+          }
+        }
+        else
+          this.$message.error('初始化标签列表失败');
+      }).catch(()=>{this.$message.error('初始化标签列表失败')});
+      
     }
+    
   },
   methods: {
     showDrawer() {
@@ -282,86 +299,72 @@ export default {
     submitComment(){
       if(this.addTags.length>0)
       {
-        let submitData = new Object();
-        submitData.addTags = this.addTags;
-        let request = JSON.stringify(submitData);
-        this.$axios.post("/api/addTags",request).then((response)=>{
-          if(response.ret_msg=="success")
+        for(let i=0;i<this.addTags.length;i++)
+        {
+          let submitObject = {
+            tag_name: this.addTags[i].name,
+          };
+          let request = JSON.stringify(submitObject);
+          this.$axios.post("/api/addTag",request);
+        }//添加自定义标签
+      
+        this.$axios.get("/api/getTag").then((response)=>{
+          if(response.ret_code == 0)
           {
-            this.$axios.get("/api/getTag").then((response)=>{
-              if(response.ret_msg=="success")
-              {
-                this.tags=response.data.tags;
-                for(let i=this.tagsStyle.length;i<this.tags.length;i++) {
-                  this.tagsStyle.push({
-                  type: "dashed",
-                  value: 0,
-                  disable: false,
-                  });
-                  for(let j=0;j<this.addTags.length;i++)
-                  {
-                    if(this.addTags[j].name == this.tags[i].name)
-                    {
-                      this.tagsStyle[i].type="primary";
-                      this.tagsStyle[i].value=1;
-                      break;
-                    }
-                  }
-                }
-                //接下来发写评论请求
-                submitData = {
-                  username: this.userInfo.username,
-                  course_id: this.selectedCourse.Cno,
-                  comm_title: this.title,
-                  comm_content: this.content,
-                  comm_score: this.rate,
-                  //标签
-                }
-                if(submitData.comm_title==null)
-                  submitData.comm_title="默认标题";
-                if(submitData.comm_content==null)
-                  submitData.comm_content="这个人很懒，什么也没有写";
-                request = JSON.stringify(submitData);
-                this.$axios.post("/api/writeComments",request).then((response)=>{
-                  if(response.ret_msg=="success")
-                  {
-                    this.$message.success("提交成功");
-                    this.disableComment = true;
-                    this.visible = false;
-                  }  
-                  else
-                    this.$message.error("提交失败，请稍后重试");
-                }).catch(()=>{this.$message.error("提交失败，请稍后重试")});
-              }
-            })
+            this.tags = response.data.tags;
           }
-          else
-            this.$message.error('提交失败，请稍后重试');
-        }).catch(()=>{this.$message.error('提交失败，请稍后重试');});
-      }
-      else
-      {
-        let submitData = {
-          username: this.userInfo.username,
-          course_id: this.selectedCourse.Cid,
-          comm_title: this.title,
-          comm_content: this.content,
-          comm_score: this.rate,
-          //标签
-        }
-        if(submitData.comm_title==null)
-          submitData.comm_title="默认标题";
-        if(submitData.comm_content==null)
-          submitData.comm_content="这个人很懒，什么也没有写";
-        let request = JSON.stringify(submitData);
-        this.$axios.post("/api/writeComments",request).then((response)=>{
-          if(response.ret_msg=="success")
-            this.$message.success("提交成功");
-          else
-            this.$message.error("提交失败，请稍后重试");
-        }).catch(()=>{this.$message.error("提交失败，请稍后重试")});
+        });//重新调用一次获取标签
       }
 
+      let selectedTags = [];
+      for(let i=0;i<this.tags.length;i++)
+      {
+        if(i<this.tagsStyle.length)
+        {
+          if(this.tagsStyle[i].value == 1)
+            selectedTags.push(this.tags[i].tag_index);
+        }
+        else 
+        {
+          if(this.addTags.length>0)
+          {  
+            if(this.addTags.name.indexOf(this.tags[i].tag_content,0) != -1)
+            {
+              selectedTags.push(this.tags[i].tag_index);
+            }
+          }
+        }
+      }//找出所有已选标签的索引
+
+      if(this.title == '' || this.title == null)
+      {
+        this.title = "默认标题";
+      }
+      if(this.content == '' || this.content == null)
+      {
+        this.content = "这个人很懒，什么也没有写";
+      }
+      let submitObject = {
+        user_no: this.userInfo.user_no,
+        course_no: this.selectedCourse.course_no,
+        comm_title: this.title,
+        comm_content: this.content,
+        comm_score: this.rate,
+        comm_tag: selectedTags,
+      };
+      let request = JSON.stringify(submitObject);
+      this.$axios.post("/api/writeComments",request).then((response)=>{
+        if(response.ret_code == 0)
+        {
+          this.$message.success("评论提交成功!");
+          this.disableComment=true;
+          this.visible=false;
+        }
+        else
+        {
+          this.$message.error("评论提交失败，请重试");
+        }
+      }).catch(()=>{this.$message.error("评论提交失败，请重试")});//提交评论
     },
     showConfirm(){
       this.$confirm({

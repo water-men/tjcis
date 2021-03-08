@@ -57,14 +57,11 @@
               <a-avatar icon="user" />{{ userInfo.username }}
             </h3>
           </a-col>
-          <a-col :span="4">
-            <!-- <router-link to="/Welcom" style="color: white;font-size:125%">
-              <a-icon type="logout" />&nbsp;注销&nbsp;&nbsp;&nbsp;
-            </router-link> -->
+          <!-- <a-col :span="4">
             <a style="color: white;font-size:125%" @click="logOutWeb">
               <a-icon type="logout" />&nbsp;注销&nbsp;&nbsp;&nbsp;
             </a>
-          </a-col>
+          </a-col> -->
         </a-row>
       </a-layout-header>
       <a-layout-content :style="{ margin: '24px 16px 0', minHeight: '670px' }">  
@@ -117,16 +114,17 @@ export default {
     return {
       currentContent: "home-page",
       selectedCourse: {
-
       },
       selectedComment: "",
-      userInfo:{username: ""}
+      userInfo:{user_no: null,username: null},
     }
   },
   beforeMount:function(){
-    sessionStorage.setItem("username","zsx");//后面要删掉 现在测试
+    sessionStorage.setItem("user_no","1750000");//后面要删掉 现在测试
+    sessionStorage.setItem("username","zsx");
+    this.userInfo.user_no = sessionStorage.getItem("user_no");
     this.userInfo.username = sessionStorage.getItem("username");
-    if(this.userInfo.username == null)
+    if(this.userInfo.user_no == null)
     {
       this.$router.push({name:"Welcom"});
     }

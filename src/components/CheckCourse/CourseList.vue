@@ -12,23 +12,16 @@
               @search="onSearch"
             />
           </a-col>
-          <!-- <a-col :span="12">
-            查找类型{{ checkType }}
-          </a-col> -->
-          <!-- 测试爷孙传值用按钮 -->
-          <!-- <a-col :span="8">
-        <a-button @click="selectCourse">传值给home实现跳转</a-button>
-      </a-col> -->
         </a-row>
         <a-divider />
         <a-row style="min-height: 0.9rem; font-size: 0.4rem;">
           <a-table :columns="columns" :data-source="datalt" :custom-row="selectCourse">
-            <span slot="tags" slot-scope="tags">
+            <span slot="course_tag" slot-scope="course_tag">
               <a-tag
-                v-for="(tag,index) in tags"
+                v-for="(tag,index) in course_tag"
                 :key="index"
                 :color="index%2 == 1 ? 'geekblue' : 'green'"
-              >{{ tag.toUpperCase() }}</a-tag>
+              >{{ tag.tag_content.toUpperCase() }}</a-tag>
             </span>
           </a-table>
         </a-row>
@@ -59,191 +52,49 @@ export default {
       courseList: [
         {
           key: '1',
-          Cid: '',
-          Cno: '10038802',
-          Cname: '离散数学',
-          Tname: '王成',
-          Dname: '电子与信息工程学院',
-          tags: ['nice', 'developer','jsjsjsjs','djsjdjsdjs','dj1djs','djsj2sdjs'],
-          Cscore: 9,
+          course_no: '10038802',
+          course_name: '离散数学',
+          course_teacher: '王成',
+          course_depart: '电子与信息工程学院',
+          course_tag: ['nice', 'developer','jsjsjsjs','djsjdjsdjs','dj1djs','djsj2sdjs'],
+          course_score: 9,
         },
         {
           key: '2',
-          Cid: '',
-          Cno: '10038901',
-          Cname: '数据结构',
-          Tname: '武研',
-          Dname: '电子与信息工程学院',
-          tags: ['hello'],
-          Cscore: 8,
+          course_no: '10038901',
+          course_name: '数据结构',
+          course_teacher: '武研',
+          course_depart: '电子与信息工程学院',
+          course_tag: ['hello'],
+          course_score: 8,
         },
-        // {
-        //   key: '3',
-        //   Cid: '',
-        //   Cno: '10034005',
-        //   Cname: '计算机网络',
-        //   Tname: '沈',
-        //   Dname: '电子与信息工程学院',
-        //   tags: ['cool', 'teacher'],
-        //   Cscore: 7,
-        // },
-        // {
-        //   key: '4',
-        //   Cid: '',
-        //   Cno: '10034005',
-        //   Cname: '计算机网络',
-        //   Tname: '沈',
-        //   Dname: '电子与信息工程学院',
-        //   tags: ['cool', 'teacher'],
-        //   Cscore: 7,
-        // },
-        // {
-        //   key: '5',
-        //   Cid: '',
-        //   Cno: '10034005',
-        //   Cname: '计算机网络',
-        //   Tname: '沈',
-        //   Dname: '电子与信息工程学院',
-        //   tags: ['cool', 'teacher'],
-        //   Cscore: 7,
-        // },
-        // {
-        //   key: '6',
-        //   Cid: '',
-        //   Cno: '10034005',
-        //   Cname: '计算机网络',
-        //   Tname: '沈',
-        //   Dname: '电子与信息工程学院',
-        //   tags: ['cool', 'teacher'],
-        //   Cscore: 7,
-        // },
-        // {
-        //   key: '7',
-        //   Cid: '',
-        //   Cno: '10034005',
-        //   Cname: '计算机网络',
-        //   Tname: '沈',
-        //   Dname: '电子与信息工程学院',
-        //   tags: ['cool', 'teacher'],
-        //   Cscore: 7,
-        // },
-        // {
-        //   key: '8',
-        //   Cid: '',
-        //   Cno: '10034005',
-        //   Cname: '计算机网络',
-        //   Tname: '沈',
-        //   Dname: '电子与信息工程学院',
-        //   tags: ['cool', 'teacher'],
-        //   Cscore: 7,
-        // },
-        // {
-        //   key: '9',
-        //   Cid: '',
-        //   Cno: '10034005',
-        //   Cname: '计算机网络',
-        //   Tname: '沈',
-        //   Dname: '电子与信息工程学院',
-        //   tags: ['cool', 'teacher'],
-        //   Cscore: 7,
-        // },
-        // {
-        //   key: '10',
-        //   Cid: '',
-        //   Cno: '10034005',
-        //   Cname: '计算机网络',
-        //   Tname: '沈',
-        //   Dname: '电子与信息工程学院',
-        //   tags: ['cool', 'teacher'],
-        //   Cscore: 7,
-        // },
-        // {
-        //   key: '11',
-        //   Cid: '',
-        //   Cno: '10034005',
-        //   Cname: '计算机网络',
-        //   Tname: '沈',
-        //   Dname: '电子与信息工程学院',
-        //   tags: ['cool', 'teacher'],
-        //   Cscore: 7,
-        // },
-        // {
-        //   key: '12',
-        //   Cid: '',
-        //   Cno: '10034005',
-        //   Cname: '计算机网络',
-        //   Tname: '沈',
-        //   Dname: '电子与信息工程学院',
-        //   tags: ['cool', 'teacher'],
-        //   Cscore: 7,
-        // },
-        // {
-        //   key: '13',
-        //   Cid: '',
-        //   Cno: '10034005',
-        //   Cname: '计算机网络',
-        //   Tname: '沈',
-        //   Dname: '电子与信息工程学院',
-        //   tags: ['cool', 'teacher'],
-        //   Cscore: 7,
-        // },
-        // {
-        //   key: '14',
-        //   Cid: '',
-        //   Cno: '10034005',
-        //   Cname: '计算机网络',
-        //   Tname: '沈',
-        //   Dname: '电子与信息工程学院',
-        //   tags: ['cool', 'teacher'],
-        //   Cscore: 7,
-        // },
-        // {
-        //   key: '15',
-        //   Cid: '',
-        //   Cno: '10034005',
-        //   Cname: '计算机网络',
-        //   Tname: '沈',
-        //   Dname: '电子与信息工程学院',
-        //   tags: ['cool', 'teacher'],
-        //   Cscore: 7,
-        // },
-        // {
-        //   key: '16',
-        //   Cid: '',
-        //   Cno: '10034005',
-        //   Cname: '计算机网络',
-        //   Tname: '沈',
-        //   Dname: '电子与信息工程学院',
-        //   tags: ['cool', 'teacher'],
-        //   Cscore: 7,
-        // },
       ],
       columns: [
         {
           title: '课程号',
-          dataIndex: 'Cno',
-          key: 'Cno',
+          dataIndex: 'course_no',
+          key: 'course_no',
         },
         {
           title: '课程名称',
-          dataIndex: 'Cname',
-          key: 'Cname',
+          dataIndex: 'course_name',
+          key: 'course_name',
         },
         {
           title: '授课老师',
-          dataIndex: 'Tname',
-          key: 'Tname',
+          dataIndex: 'course_teacher',
+          key: 'course_teacher',
         },
         {
           title: '开课学院',
-          dataIndex: 'Dname',
-          key: 'Dname',
+          dataIndex: 'course_depart',
+          key: 'course_depart',
         },
         {
           title: '课程标签',
-          key: 'tags',
-          dataIndex: 'tags',
-          scopedSlots: { customRender: 'tags' },
+          key: 'course_tag',
+          dataIndex: 'course_tag',
+          scopedSlots: { customRender: 'course_tag' },
         },
       ],
       datalt:[
@@ -271,9 +122,9 @@ export default {
         }
     },
     onSearch() {
-      if (this.searchCourse && this.searchCourse !== '') {
+      if (this.searchCourse) {
         this.datalt = this.courseList.filter(
-          (p) => (p.Cname.indexOf(this.searchCourse) !== -1)|(p.Cno.indexOf(this.searchCourse)!== -1)|(p.Dname.indexOf(this.searchCourse)!== -1)|(p.Tname.indexOf(this.searchCourse)!== -1)
+          (p) => (p.course_name.indexOf(this.searchCourse) !== -1)|(p.course_no.indexOf(this.searchCourse)!== -1)|(p.course_depart.indexOf(this.searchCourse)!== -1)|(p.course_teacher.indexOf(this.searchCourse)!== -1)
         )
       } else {
         this.datalt = this.courseList
@@ -283,12 +134,10 @@ export default {
       let submitData = new Object();
       if(this.checkType == "all" || this.filterContent.name == "所有")
       {
-        submitData.select_code = 0;
-        submitData.depart = "null";
+        submitData.depart = null;
       }
       else
       {
-        submitData.select_code = 1;
         submitData.depart = this.filterContent.name;
       }
       let request = JSON.stringify(submitData);

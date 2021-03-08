@@ -5,10 +5,10 @@
         <p v-for="course in relatedlist" :gutter="16" :key="course.key" :bordered="true" :span="8" hoverable>
           <a-card hoverable>
             <div @click="selectCourse(course)">
-              <h3>{{ course.Cname }}</h3>
+              <h3>{{ course.course_name }}</h3>
               <a-divider />
               <!-- 点击推荐列表中的项目转到对应的课程页面 -->
-              授课老师:{{ course.Tname }}
+              授课老师:{{ course.course_teacher }}
             </div>
           </a-card>
         </p>
@@ -23,13 +23,13 @@ export default {
     selectedCourse: {
       type: Object,
       default: () => ({
-        Cno: '',
-        Cname: '',
-        Tname: '',
-        Dname: '',
-        tags: [
+        course_no: '',
+        course_name: '',
+        course_teacher: '',
+        course_depart: '',
+        course_tag: [
         ],
-        Cscore: undefined,
+        course_score: 5,
       }),
       require: true
     },
@@ -73,7 +73,7 @@ export default {
   },
   beforeMount(){
     let submitData = {
-      course_id: this.selectedCourse.Cno,
+      course_no: this.selectedCourse.course_no,
     }
     let request = JSON.stringify(submitData);
     this.$axios.post("/api/getSimilarCoursesList",request).then((response)=>{

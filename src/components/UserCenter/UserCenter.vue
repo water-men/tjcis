@@ -11,7 +11,7 @@
               <p class="descript"><span>{{ realname }}</span></p>
             </a-descriptions-item>
             <a-descriptions-item label="学号">
-              <p class="descript"><span>{{ userInfo.Sno }}</span></p>
+              <p class="descript"><span>{{ userInfo.user_no }}</span></p>
             </a-descriptions-item>
             <a-descriptions-item label="所在院系" span="2">
               <p class="descript"><span>{{ depart }}</span></p>
@@ -35,15 +35,12 @@
             <a-form :form="formUserInfo" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }" @submit="handleUserInfoSubmit">
               <a-form-item label="签名">
                 <a-input
-                  v-decorator="['slogan', { rules: [{ required: true, message: '请输入新的签名!' }] }]"
+                  v-decorator="['slogan', { rules: [{ required: false }] }]"
                 />
               </a-form-item>
               <a-form-item label="学院">
                 <a-select
-                  v-decorator="[
-                    'depart',
-                    { rules: [{ required: true, message: '请选择新的学院' }] },
-                  ]"
+                  v-decorator="['depart', { rules: [{ required: false }] }]"
                   placeholder="请选择新的学院"
                 >
                   <a-select-option v-for="item in Department" :key="item" :value="item">
@@ -71,7 +68,7 @@
             <a-form :form="formUserPass" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }" @submit="handleUserPassSubmit">
               <a-form-item label="用户名">
                 <a-input 
-                  v-model="userInfo.username" disabled="disabled"
+                  v-model="username" disabled="disabled"
                 />
               </a-form-item>
               <a-form-item label="原密码" has-feedback>
@@ -84,9 +81,6 @@
                           required: true,
                           message: '请输入原密码',
                         },
-                        {
-                          validator: validateOldPassword,
-                        }
                       ],
                     },
                   ]"
@@ -135,6 +129,7 @@
                 <a-button type="primary" html-type="submit">
                   更新信息
                 </a-button>
+                <a-alert v-if="(ret.ret_code==1||ret.ret_code==2)" :message="ret.ret_msg" type="error" />
               </a-form-item>
             </a-form>
           </a-drawer>
@@ -226,7 +221,8 @@ export default {
     userInfo: {
       type: Object,
       default: () => ({
-        username:'',
+        user_no: null,
+        username: null,
       }),
       require: true
     },
@@ -236,13 +232,15 @@ export default {
       btnsize:'large',         //按钮大小
       editUserinfo: false,     //修改弹出抽屉是否显示
       changePassword: false,     //弹出抽屉是否显示
-      realname:'朱世轩',
-      depart:'电子与信息工程学院',
-      slogan:'你好，很高兴认识你',
+      realname:'',
+      depart:'',
+      slogan:'',
       formUserInfo: this.$form.createForm(this),
       formUserPass: this.$form.createForm(this),
-      Sno:'',
-      password:'',
+      ret:{
+        ret_code: null,
+        ret_msg: '',
+      },
       Department:[
         '建筑与城市规划学院','土木工程学院','机械与能源工程学院','经济与管理学院','环境科学与工程学院','材料科学与工程学院','电子与信息工程学院','人文学院','外国语学院',
         '法学院','马克思主义学院','政治与国际关系学院','理学部','海洋与地球科学学院','航空航天与力学学院','数学科学学院','物理科学与工程学院','化学科学与工程学院',
@@ -275,16 +273,16 @@ export default {
     }
   },
   beforeMount: function() {
-    let submitData = JSON.stringify(this.userInfo);
-    let that = this;
+    let request = {
+      user_no: this.userInfo.user_no,
+    }
+    let submitData = JSON.stringify(request);
 
     this.$axios.post("/api/getUserInfo",submitData).then((response) => {
       if(response.ret_code == 0) {
-        that.realname = response.data.stu_name;
-        that.slogan = response.data.stu_slogan;
-        that.depart = response.data.stu_depart;
-        that.Sno = response.data.stu_id;
-        that.password = response.data.stu_password;
+        this.realname = response.data.stu_name;
+        this.slogan = response.data.stu_slogan;
+        this.depart = response.data.stu_depart;
       }
     }).catch(() => { this.$message.error('获取用户个人信息失败!') }); //获取推荐课程列表
   },
@@ -302,31 +300,34 @@ export default {
       e.preventDefault();
       this.formUserInfo.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values);
+          if(values.depart == null && values.slogan == null)
+          {
+            this.editUserinfo = false;
+            return;
+          }
           let submitObject = new Object();
+          submitObject.user_no = this.userInfo.user_no;
           submitObject.username = this.userInfo.username;
-          submitObject.password = this.password;
-          submitObject.depart = values.depart;
-          submitObject.stu_slogan = values.slogan;
+          if(values.depart != null)
+            submitObject.depart = values.depart;
+          else
+            submitObject.depart = this.depart;
+          if(values.slogan != null)
+            submitObject.stu_slogan = values.slogan;
+          else
+            submitObject.stu_slogan = this.slogan;
           let submitForm = JSON.stringify(submitObject);
-          let that = this;
           this.$axios.post("/api/updateUserInfo", submitForm).then((response) => {
             if(response.ret_code == 0) {
-              that.slogan = that.formUserInfo.slogan;
-              that.depart = that.formUserInfo.depart;
+              if(values.depart != null)
+                this.depart = values.depart;
+              if(values.slogan != null)
+                this.slogan = values.slogan;
+              this.$message.success('修改成功');
             }
-          }).catch((response)=>{console.log(response)});
-          alert('submit!');
-          console.log("提交内容"+submitForm);
+          }).catch(()=>{this.$message.error('修改失败，请重试');});
         }
       });
-    },
-    validateOldPassword(rule,value,callback) {
-      if (value != this.password) {
-        callback('原密码错误');
-      } else {
-        callback();
-      }
     },
     compareToFirstPassword(rule, value, callback) {
       const form = this.formUserPass;
@@ -338,11 +339,8 @@ export default {
     },
     validateToNextPassword(rule, value, callback) {
       const form = this.formUserPass;
-      if (value && this.confirmDirty) {
+      if (form.getFieldValue('confirm') != null) {
         form.validateFields(['confirm'], { force: true });
-      }
-      if (value == this.password) {
-        callback('新密码不能与旧密码一致!');
       }
       callback();
     },
@@ -350,21 +348,21 @@ export default {
       e.preventDefault();
       this.formUserPass.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values);
           let submitObject = new Object();
-          submitObject.username = this.userInfo.username;
-          submitObject.password = values.newpass;
-          submitObject.depart = this.depart;
-          submitObject.stu_slogan = this.slogan;
+          submitObject.user_no = this.userInfo.user_no;
+          submitObject.oldPassword = values.oldpass;
+          submitObject.newPassword = values.newpass;
           let submitForm = JSON.stringify(submitObject);
-          let that = this;
-          this.$axios.post("/api/updateUserInfo", submitForm).then((response) => {
+          this.$axios.post("/api/updateUserPassword", submitForm).then((response) => {
             if(response.ret_code == 0) {
-              that.password = values.newpass;
+              this.$message.success('修改成功');
             }
-          }).catch((response)=>{console.log(response)});
-          alert('submit!');
-          console.log("提交内容"+submitForm);
+            else
+            {
+              this.ret.ret_code = response.ret_code;
+              this.ret.ret_msg = response.ret_msg;
+            }
+          }).catch(()=>{this.$message.error('修改失败，请重试')});
         }
       });
     },

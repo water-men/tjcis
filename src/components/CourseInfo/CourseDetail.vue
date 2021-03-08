@@ -12,7 +12,7 @@
            
             <a-card-meta title="课程名称">
               <template slot="description">
-                <h1>{{ selectedCourse.Cname }}</h1>
+                <h1>{{ selectedCourse.course_name }}</h1>
               </template>
             </a-card-meta>   
          
@@ -26,25 +26,25 @@
         <a-col :span="14">
           <a-descriptions :column="{ xxl: 4, xl: 2, lg: 2, md: 2, sm: 2, xs: 1 }" layout="vertical" bordered>
             <a-descriptions-item label="课号" >
-              <p class="descript"><span>{{ selectedCourse.Cno }}</span></p>
+              <p class="descript"><span>{{ selectedCourse.course_no }}</span></p>
             </a-descriptions-item>
             <a-descriptions-item label="授课老师" >
-              <p class="descript"><span>{{ selectedCourse.Tname }}</span></p>
+              <p class="descript"><span>{{ selectedCourse.course_teacher }}</span></p>
             </a-descriptions-item>
             <a-descriptions-item label="开课院系" span="2">
-              <p class="descript"><span>{{ selectedCourse.Dname }}</span></p>
+              <p class="descript"><span>{{ selectedCourse.course_depart }}</span></p>
             </a-descriptions-item>
             <a-descriptions-item label="课程标签" span="2"> 
               <a-tag
-                v-for="(tag,index) in selectedCourse.tags"
+                v-for="(tag,index) in selectedCourse.course_tag"
                 :key="index"
                 :color="index%2 == 1 ? 'geekblue' : 'green'"
-              >{{ tag.toUpperCase() }}</a-tag>
+              >{{ tag.tag_content.toUpperCase() }}</a-tag>
             </a-descriptions-item>
             <a-descriptions-item label="综合评分" span="2"> 
-              <a-rate :default-value="3" :value="(selectedCourse.Cscore)/2" disabled allow-half />
+              <a-rate :default-value="3" :value="(selectedCourse.course_score)/2" disabled allow-half />
               <a-statistic
-                :value="selectedCourse.Cscore"
+                :value="selectedCourse.course_score"
                 :precision="0"
                 :value-style="{ color: '#3f8600' }"
                 suffix="/10"
@@ -82,26 +82,28 @@ export default {
     selectedCourse: {
       type: Object,
       default: () => ({
-        Cid: '',
-        Cno: '',
-        Cname: '',
-        Tname: '',
-        Dname: '',
-        tags: [
+        course_no: '',
+        course_name: '',
+        course_teacher: '',
+        course_depart: '',
+        course_tag: [
         ],
-        Cscore: undefined,
+        course_score: 5,
       }),
       require: true
     },
-    collected: {
-      type: Boolean,
-      default: false,
+    userInfo: {
+      type: Object,
+      default: () => ({
+        user_no:'',
+        username:'',
+      }),
       require: true
     },
   },
   data() {
     return {
-      hasCollected: this.collected,
+      hasCollected: null,
       fileList: [
         {
           uid: '1',
@@ -125,11 +127,27 @@ export default {
     }
   },
   beforeMount(){
-    console.log(this.collected);
+    let submitObject = {
+      user_no: this.userInfo.user_no,
+      course_no: this.selectedCourse.course_no,
+    };
+    let request = JSON.stringify(submitObject);
+    this.$axios.post("/api/isFavorite",request).then((response)=>{
+      if(response.ret_code == 0)
+      {
+        this.hasCollected = response.data.favorite;
+      }
+    });
   },
   methods:{
     collect(){
       this.hasCollected = true;
+      let submitObject = {
+        user_no: this.userInfo.user_no,
+        course_no: this.selectedCourse.course_no,
+      };
+      let collect_request = JSON.stringify(submitObject);
+      this.$axios.post("/api/addToFavorite",collect_request);
     },
     cancelCollect(){
       this.hasCollected = false;

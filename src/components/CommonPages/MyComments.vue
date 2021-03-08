@@ -8,28 +8,28 @@
               <span key="comment-basic-like">
                 <a-icon :theme="outlined" type="like"/>
                 <span style="padding-left: '8px';cursor: 'auto'">
-                  {{ item.likes }}
+                  {{ item.comm_positive }}
                 </span>
               </span>
               <span key="comment-basic-dislike">
                 <a-icon :theme="outlined" type="dislike" />
                 <span style="padding-left: '8px';cursor: 'auto'">
-                  {{ item.dislikes }}
+                  {{ item.comm_negative }}
                 </span>
               </span>
             </template>
-            <a slot="author">{{ item.author }}</a>
+            <a slot="author">{{ item.stu_username }}</a>
             <a-avatar
               slot="avatar"
               icon="user"
             />
             <p slot="content">
-              {{ item.title }}
-              &nbsp;&nbsp;&nbsp;&nbsp;{{ item.content }}
+              {{ item.comm_title }}
+              &nbsp;&nbsp;&nbsp;&nbsp;{{ item.comm_content }}
             </p>
-            <span slot="datetime">{{ $moment(item.Cmtime).fromNow() }}</span>
-            <a-rate :value="(item.score)/2" disabled allow-half></a-rate>&nbsp;&nbsp;
-            <span>{{ item.score }}/10分</span>
+            <span slot="datetime">{{ $moment(item.comm_time).fromNow() }}</span>
+            <a-rate :value="(item.comm_score)/2" disabled allow-half></a-rate>&nbsp;&nbsp;
+            <span>{{ item.comm_score }}/10分</span>
           </a-comment>
         </a-card>
       </a-tab-pane>
@@ -43,6 +43,7 @@ export default {
     userInfo: {
       type: Object,
       default: () => ({
+        user_no:'',
         username:'',
       }),
       require: true
@@ -83,7 +84,10 @@ export default {
     };
   },
   beforeMount(){
-    let submitData = JSON.stringify(this.userInfo);
+    let submitObject = {
+      user_no: this.userInfo.user_no,
+    };
+    let submitData = JSON.stringify(submitObject);
     this.$axios.post("/api/getMyComments",submitData).then((response) => {
       if(response.ret_msg == "success") {
         this.myComments = response.data.comments;
@@ -94,7 +98,7 @@ export default {
 
     for(let i=0;i<this.myComments.length;i++)
     {
-      this.myComments[i].cardTile = '课号：'+this.myComments[i].Cno+' 课程名称：'+this.myComments[i].Cname+' 授课老师：'+this.myComments[i].Tname;
+      this.myComments[i].cardTile = '课号：'+this.myComments[i].course_no+' 课程名称：'+this.myComments[i].course_name+' 授课老师：'+this.myComments[i].course_teacher;
     }
   },
   methods: {

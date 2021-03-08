@@ -9,8 +9,8 @@
             :rules="rules"
             v-bind="layout"
           >
-            <a-form-model-item ref="username" :wrapper-col="{ span: 18, offset: 0 }" label="用户名" prop="username">
-              <a-input v-model="ruleForm.username" />
+            <a-form-model-item ref="user_no" :wrapper-col="{ span: 18, offset: 0 }" label="学号" prop="user_no">
+              <a-input v-model="ruleForm.user_no" />
             </a-form-model-item>
             <a-form-model-item :wrapper-col="{ span: 18, offset: 0 }" label="密码" prop="password">
               <a-input v-model="ruleForm.password" type="password" autocomplete="off" />
@@ -34,9 +34,9 @@
 <script>
 export default {
   data () {
-    let validateUsername = (rule, value, callback) => {
+    let validateStuNo = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('用户名不能为空'));
+        callback(new Error('学号不能为空'));
       } else {
         callback();
       }
@@ -50,11 +50,11 @@ export default {
     };
     return {
       ruleForm: {
-        username: '',
+        user_no: '',
         password: '',
       },
       rules: {
-        username: [{ validator: validateUsername, trigger: 'change' }],
+        user_no: [{ validator: validateStuNo, trigger: 'change' }],
         password: [{ validator: validatePass, trigger: 'change' }],
       },
       layout: {
@@ -78,15 +78,11 @@ export default {
               this.ret.ret_msg=response.ret_msg;
               this.ret.data=response.data;
           });
-          alert("submit!");
-          console.log("提交内容"+formData);
           if (this.ret.ret_code==0) {
-            sessionStorage.setItem("username",this.formData.username);
+            sessionStorage.setItem("user_no",this.ruleForm.user_no);
+            sessionStorage.setItem("username",this.ret.data.stu_username);
             this.$router.push({name: 'home',});
           }
-        } else {
-          console.log('error submit!!');
-          return false;
         }
       });
     },

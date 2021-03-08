@@ -5,13 +5,13 @@
         <a-layout-content :style="{ margin: '8px 10px 0', minHeight: '670px',background: 'white'}">
           <a-card>
             <!-- 展示课程信息组件 将当前选择的课号和课程名称作为一个对象传进去 不需要用户信息-->
-            <course-detail :selected-course="selectedCourse" :collected="collected"></course-detail>
+            <course-detail :selected-course="selectedCourse" :user-info="userInfo"></course-detail>
             <a-divider />
             <!-- 写评价按钮及弹出表单 将课号和课程名称作为一个对象selectedCourse传进去 将用户信息作为userInfo传进去 -->
-            <write-comment :selected-course="selectedCourse" :user-info="userInfo" :my_comment="my_comment"></write-comment>
+            <write-comment :selected-course="selectedCourse" :user-info="userInfo"></write-comment>
             <a-divider />
             <!-- 展示课程评价列表组件 将课号和课程名称作为一个对象selectedCourse传进去 将用户信息作为userInfo传进去(点赞等操作需要使用) -->
-            <comment-list :selected-course="selectedCourse" :user-info="userInfo" :comment-list="commentList"></comment-list>
+            <comment-list :selected-course="selectedCourse" :user-info="userInfo"></comment-list>
             <a-row>
             </a-row>
           </a-card>
@@ -43,19 +43,20 @@ export default {
     selectedCourse: {
       type: Object,
       default: () => ({
-        Cno: '',
-        Cname: '',
-        Tname: '',
-        Dname: '',
-        tags: [
+        course_no: '',
+        course_name: '',
+        course_teacher: '',
+        course_depart: '',
+        course_tag: [
         ],
-        Cscore: undefined,
+        course_score: 5,
       }),
       require: true
     },
     userInfo: {
       type: Object,
       default: () => ({
+        user_no:'',
         username:'',
       }),
       require: true
@@ -234,25 +235,7 @@ export default {
         //   action:null,
         // },
       ],
-      my_comment: null,
-      collected: null,
     };
-  },
-  beforeMount(){
-    let submitData = new Object();
-    submitData.course_id = this.selectedCourse.Cno;
-    submitData.username = this.userInfo.username;
-    let request = JSON.stringify(submitData);
-    this.$axios.post("/api/getCourseComments",request).then((response)=>{
-      if(response.ret_msg == "success")
-      {
-        this.my_comment = response.my_comment;
-        this.commentList = response.data.comments;
-        this.collected = response.collected;
-      }
-      else
-        this.$message.error("获取课程评价列表失败");
-    }).catch(()=>{this.$message.error("获取课程评价列表失败");});
   },
   methods:{
 

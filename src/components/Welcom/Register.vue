@@ -9,8 +9,8 @@
             :rules="rules"
             v-bind="layout"
           >
-            <a-form-model-item ref="no" :wrapper-col="{ span: 18, offset: 0 }" has-feedback label="学号" prop="no">
-              <a-input v-model="ruleForm.no" type="string" />
+            <a-form-model-item ref="user_no" :wrapper-col="{ span: 18, offset: 0 }" has-feedback label="学号" prop="user_no">
+              <a-input v-model="ruleForm.user_no" type="string" />
             </a-form-model-item>
             <a-form-model-item ref="username" :wrapper-col="{ span: 18, offset: 0 }" has-feedback label="用户名" prop="username">
               <a-input v-model="ruleForm.username" />
@@ -52,7 +52,7 @@
 <script>
 export default {
   data () {
-    let validateNo = (rule, value, callback) => {
+    let validateuser_no = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('学号不能为空'));
       } else if (isNaN(value)) {
@@ -110,14 +110,14 @@ export default {
       ruleForm: {
         username: '',
         password: '',
-        no: '',
+        user_no: '',
         name: '',
         depart: undefined,
         stu_slogan:'',
         checkPass: '',
       },
       rules: {
-        no: [{ validator: validateNo, trigger: 'change' }],
+        user_no: [{ validator: validateuser_no, trigger: 'change' }],
         username: [{ validator: validateUsername, trigger: 'change' }],
         password: [{ validator: validatePass, trigger: 'change' }],
         checkPass: [{ validator: validatePass2, trigger: 'change' }],
@@ -132,6 +132,7 @@ export default {
       ret:{
         ret_code: undefined,
         ret_msg: '',
+        data: {},
       },
       Department:[
         '建筑与城市规划学院','土木工程学院','机械与能源工程学院','经济与管理学院','环境科学与工程学院','材料科学与工程学院','电子与信息工程学院','人文学院','外国语学院',
@@ -144,32 +145,29 @@ export default {
   },
   methods: {
     submitForm (formName) {
-      let submit_form = new Object();
-      submit_form.username = this.ruleForm.username;
-      submit_form.password = this.ruleForm.password;
-      submit_form.no = this.ruleForm.no;
-      submit_form.name = this.ruleForm.name;
-      submit_form.depart = this.ruleForm.depart;
-      submit_form.stu_slogan = this.ruleForm.stu_slogan;
+      let submit_form = {
+        username: this.ruleForm.username,
+        password: this.ruleForm.password,
+        user_no: this.ruleForm.user_no,
+        name: this.ruleForm.name,
+        depart: this.ruleForm.depart,
+        stu_slogan: this.ruleForm.stu_slogan,
+      }
       if (submit_form.stu_slogan === '')
         submit_form.stu_slogan='这个人很懒，什么都没有写';
       let formData = JSON.stringify(submit_form); //取得注册表单中的数据并转化为JSON字符串
-      let that = this;
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.$axios.post("/api/register", formData).then((response) => {
-              that.ret.ret_code=response.ret_code;
-              that.ret.ret_msg=response.ret_msg;
-          }).catch((response)=>{console.log(response)});
-          alert('submit!');
-          console.log("提交内容"+formData);
-          if (that.ret.ret_code==0) {
-            sessionStorage.setItem("username",this.formData.username);
-            that.$router.push({name: 'home',});
+              this.ret.ret_code=response.ret_code;
+              this.ret.ret_msg=response.ret_msg;
+              this.ret.data=response.data;
+          }).catch((err)=>{console.log(err)});
+          if (this.ret.ret_code==0) {
+            sessionStorage.setItem("user_no",this.ruleForm.user_no);
+            sessionStorage.setItem("username",this.ruleForm.username);
+            this.$router.push({name: 'home',});
           }
-        } else {
-          console.log('error submit!!');
-          return false;
         }
       });
     },

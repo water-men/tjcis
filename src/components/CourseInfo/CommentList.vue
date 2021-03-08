@@ -8,28 +8,28 @@
               <span key="comment-basic-like" @click="like(index)" >
                 <a-icon :theme="item.action === 'liked' ? 'filled' : 'outlined'" type="like"/>
                 <span style="padding-left: '8px';cursor: 'auto'">
-                  {{ item.likes }}
+                  {{ item.comm_positive }}
                 </span>
               </span>
               <span key="comment-basic-dislike" @click="dislike(index)" >
                 <a-icon :theme="item.action === 'disliked' ? 'filled' : 'outlined'" type="dislike" />
                 <span style="padding-left: '8px';cursor: 'auto'">
-                  {{ item.dislikes }}
+                  {{ item.comm_negative }}
                 </span>
               </span>
             </template>
-            <a slot="author">{{ item.author }}</a>
+            <a slot="author">{{ item.stu_username }}</a>
             <a-avatar
               slot="avatar"
               icon="user"
             />
             <p slot="content">
-              {{ item.title }}
-              &nbsp;&nbsp;&nbsp;&nbsp;{{ item.content }}
+              {{ item.comm_title }}
+              &nbsp;&nbsp;&nbsp;&nbsp;{{ item.comm_content }}
             </p>
-            <span slot="datetime">{{ $moment(item.Cmtime).fromNow() }}</span>
-            <a-rate :value="(item.score)/2" disabled allow-half></a-rate>&nbsp;&nbsp;
-            <span>{{ item.score }}/10分</span>
+            <span slot="datetime">{{ $moment(item.comm_time).fromNow() }}</span>
+            <a-rate :value="(item.comm_score)/2" disabled allow-half></a-rate>&nbsp;&nbsp;
+            <span>{{ item.comm_score }}/10分</span>
           </a-comment>
         </a-card>
         <div style="text-align:center;margin-top:8px;">
@@ -47,34 +47,29 @@ export default {
     selectedCourse: {
       type: Object,
       default: () => ({
-        Cno: '',
-        Cname: '',
-        Tname: '',
-        Dname: '',
-        tags: [
+        course_no: '',
+        course_name: '',
+        course_teacher: '',
+        course_depart: '',
+        course_tag: [
         ],
-        Cscore: undefined,
+        course_score: 5,
       }),
       require: true
     },
     userInfo: {
       type: Object,
       default: () => ({
+        user_no:'',
         username:'',
       }),
       require: true
     },
-    commentList: {
-      type: Array,
-      default:() => (
-      []
-      ),
-      require:true,
-    }
   },
   data() {
     return {
-      commentlist: this.commentList,
+      commentlist:[
+      ],
       showList:[
       ],
       showCount:0,
@@ -83,6 +78,22 @@ export default {
     };
   },
   beforeMount(){
+    let submitObject = {
+      course_no : this.selectedCourse.course_no,
+    };
+    let request = JSON.stringify(submitObject);
+    this.$axios.post("/api/getCourseComments",request).then((response)=>{
+      if(response.ret_code == 0)
+      {
+        this.commentlist = response.data.comments;
+        for(let i=0;i<this.commentlist.length;i++)
+        {
+          this.commentlist[i].action = null;
+        }
+      }
+      else
+        this.$message.error("获取评价列表失败");
+    }).catch(()=>{this.$message.error("获取评价列表失败");});
     this.showList = this.commentlist.slice(0,8);
     this.showCount = this.showList.length;
     this.showLoadMore = !(this.showList.length==this.commentlist.length);
@@ -91,11 +102,12 @@ export default {
     like(index) {
       if(this.commentlist[index].action=='liked')
       {
-        this.commentlist[index].likes--;
+        this.commentlist[index].comm_positive--;
         this.commentlist[index].action=null;
         let submitData = new Object();
-        submitData.comment_id = this.commentlist[index].Cmid;
-        submitData.positive = -1;
+        submitData.user_no = this.HotComments[index].user_no;
+        submitData.course_no = this.HotComments[index].course_no;
+        submitData.positive = false;
         let request = JSON.stringify(submitData);
         this.$axios.post("/api/positive",request);
       }
@@ -105,16 +117,18 @@ export default {
         {
           this.commentlist[index].dislikes--;
           let dislike = new Object();
-          dislike.comment_id = this.commentlist[index].Cmid;
-          dislike.negative = -1;
+          dislike.user_no = this.HotComments[index].user_no;
+          dislike.course_no = this.HotComments[index].course_no;
+          dislike.negative = false;
           let request = JSON.stringify(dislike);
           this.$axios.post("/api/negative",request);
         }  
         this.commentlist[index].likes++;
         this.commentlist[index].action = 'liked';
         let submitData = new Object();
-        submitData.comment_id = this.commentlist[index].Cmid;
-        submitData.positive = 1;
+        submitData.user_no = this.HotComments[index].user_no;
+        submitData.course_no = this.HotComments[index].course_no;
+        submitData.positive = true;
         let like_request = JSON.stringify(submitData);
         this.$axios.post("/api/positive",like_request);
       }
@@ -125,8 +139,9 @@ export default {
         this.commentlist[index].dislikes--;
         this.commentlist[index].action=null;
         let submitData = new Object();
-        submitData.comment_id = this.commentlist[index].Cmid;
-        submitData.negative = -1;
+        submitData.user_no = this.commentlist[index].user_no;
+        submitData.course_no = this.commentlist[index].course_no;
+        submitData.negative = false;
         let request = JSON.stringify(submitData);
         this.$axios.post("/api/negative",request);
       }
@@ -136,16 +151,18 @@ export default {
         {
           this.commentlist[index].likes--;
           let like = new Object();
-          like.comment_id = this.commentlist[index].Cmid;
-          like.positive = -1;
+          like.user_no = this.commentlist[index].user_no;
+          like.course_no = this.commentlist[index].course_no;
+          like.positive = false;
           let request = JSON.stringify(like);
           this.$axios.post("/api/positive",request);
         }  
         this.commentlist[index].dislikes++;
         this.commentlist[index].action = 'disliked';
         let submitData = new Object();
-        submitData.comment_id = this.commentlist[index].Cmid;
-        submitData.negative = 1;
+        submitData.user_no = this.commentlist[index].user_no;
+        submitData.course_no = this.commentlist[index].course_no;
+        submitData.negative = true;
         let dislike_request = JSON.stringify(submitData);
         this.$axios.post("/api/negative",dislike_request);
       }

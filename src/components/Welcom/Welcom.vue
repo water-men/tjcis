@@ -66,7 +66,7 @@ export default {
     }
   },
   beforeMount:function() {
-    if(JSON.parse(sessionStorage.getItem("username")) != null) {
+    if(JSON.parse(sessionStorage.getItem("user_no")) != null) {
       this.$router.push({name:"home"});
     }
   },

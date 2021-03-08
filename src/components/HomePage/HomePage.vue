@@ -9,16 +9,16 @@
             <a-col v-for="(course,index) in recommendlist" :key="index" :bordered="true" :span="8" >
               <div @click="selectCourse(course)">
                 <a-card hoverable>
-                  <h3>{{ course.Cname }}</h3>
+                  <h3>{{ course.course_name }}</h3>
                   <a-divider />
-                  授课老师:{{ course.Tname }}
+                  授课老师:{{ course.course_teacher }}
                   <a-divider />
                   课程标签:
                   <a-tag
-                    v-for="tag in course.tags"
+                    v-for="tag in course.course_tag"
                     :key="tag"
                     :color="tag === tag.length > 5 ? 'geekblue' : 'green'"
-                  >{{ tag.toUpperCase() }}</a-tag>    
+                  >{{ tag.tag_content.toUpperCase() }}</a-tag>    
                 </a-card>
               </div>
             </a-col> 
@@ -28,13 +28,11 @@
           <div align="center">
             <a-list :data-source="noticelist" item-layout="horizontal">
               <a-list-item slot="renderItem" slot-scope="item">
-                <a-list-item-meta
-                  description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-                >
-                  <a slot="title" href="https://www.antdv.com/">{{ item.title }}</a>
-                </a-list-item-meta>
+                <a slot="title">{{ item.not_title }}</a>
+                <a slot="content">{{ item.not_content }}</a>
               </a-list-item>
-          </a-list></div>
+            </a-list>
+          </div>
         </a-tab-pane>
       </a-tabs>
     </a-card>
@@ -125,6 +123,7 @@ export default {
     userInfo: {
       type: Object,
       default: () => ({
+        user_no:'',
         username:'',
       }),
       require: true
@@ -165,24 +164,28 @@ export default {
     }
   },
   beforeMount: function() {
-    let submitData = JSON.stringify(this.userInfo);
-    let that = this;
+    let submitObject = {
+      user_no: this.userInfo.user_no,
+    }
+    let submitData = JSON.stringify(submitObject);
 
     this.$axios.post("/api/getRecommendCoursesList",submitData).then((response) => {
       if(response.ret_msg == "success") {
-        that.recommendlist = response.data.courses;
+        this.recommendlist = response.data.courses;
       }
-      else
-        this.$message.error('获取推荐课程列表失败')
-    }).catch(() => { this.$message.error('获取推荐课程列表失败') }); //获取推荐课程列表
+      // else
+      //   this.$message.error('获取推荐课程列表失败')
+    }).catch(() => { 
+      //this.$message.error('获取推荐课程列表失败') 
+    }); //获取推荐课程列表
 
-    that.$axios.get("/api/").then((response) => {
-      if(response.ret_msg == "success") {
-        that.noticelist = response.data.notice;
-      }
-      else
-        this.$message.error('获取公告失败');
-    }).catch(() => { this.$message.error('获取公告失败') }); //获取公告
+    // this.$axios.get("/api/").then((response) => {
+    //   if(response.ret_msg == "success") {
+    //     this.noticelist = response.data.notices;
+    //   }
+    //   else
+    //     this.$message.error('获取公告失败');
+    // }).catch(() => { this.$message.error('获取公告失败') }); //获取公告
   },
   methods: {
     selectCourse(record){

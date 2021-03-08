@@ -4,9 +4,9 @@
       <a-tab-pane key="1" tab="我的收藏" >
         <a-card>
           <a-table :columns="columns" :data-source="myFavorite" :custom-row="selectCourse">
-            <span slot="tags" slot-scope="tags">
+            <span slot="course_tag" slot-scope="course_tag">
               <a-tag
-                v-for="(tag,index) in tags"
+                v-for="(tag,index) in course_tag"
                 :key="index"
                 :color="index%2 == 1 ? 'geekblue' : 'green'"
               >{{ tag.toUpperCase() }}</a-tag>
@@ -24,6 +24,7 @@ export default {
     userInfo: {
       type: Object,
       default: () => ({
+        user_no:'',
         username:'',
       }),
       require: true
@@ -66,42 +67,45 @@ export default {
       columns: [
         {
           title: '课程号',
-          dataIndex: 'Cno',
-          key: 'Cno',
+          dataIndex: 'course_no',
+          key: 'course_no',
         },
         {
           title: '课程名称',
-          dataIndex: 'Cname',
-          key: 'Cname',
+          dataIndex: 'course_name',
+          key: 'course_name',
         },
         {
           title: '授课老师',
-          dataIndex: 'Tname',
-          key: 'Tname',
+          dataIndex: 'course_teacher',
+          key: 'course_teacher',
         },
         {
           title: '开课学院',
-          dataIndex: 'Dname',
-          key: 'Dname',
+          dataIndex: 'course_depart',
+          key: 'course_depart',
         },
         {
           title: '课程标签',
-          key: 'tags',
-          dataIndex: 'tags',
-          scopedSlots: { customRender: 'tags' },
+          key: 'course_tag',
+          dataIndex: 'course_tag',
+          scopedSlots: { customRender: 'course_tag' },
         },
       ],
     };
   },
   beforeMount(){
-    let submitData = JSON.stringify(this.userInfo);
+    let submitObject = {
+      user_no: this.userInfo.user_no,
+    };
+    let submitData = JSON.stringify(submitObject);
     this.$axios.post("/api/getMyFavorite",submitData).then((response) => {
       if(response.ret_msg == "success") {
         this.myFavorite = response.data.courses;
       }
       else
         this.$message.error("获取我的收藏失败");
-    }).catch(() => { this.$message.error("获取我的收藏失败"); }); //获取我的评价
+    }).catch(() => { this.$message.error("获取我的收藏失败"); }); //获取我的收藏
   },
   methods: {
     selectCourse(record){
