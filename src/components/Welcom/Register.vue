@@ -151,7 +151,7 @@ export default {
         user_no: this.ruleForm.user_no,
         name: this.ruleForm.name,
         depart: this.ruleForm.depart,
-        stu_slogan: this.ruleForm.stu_slogan,
+        slogan: this.ruleForm.stu_slogan,
       }
       if (submit_form.stu_slogan === '')
         submit_form.stu_slogan='这个人很懒，什么都没有写';
