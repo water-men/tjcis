@@ -2,7 +2,7 @@
   <div>
     <a-row :gutter="16">
       <a-col :span="12" :style="{ minWidth: '540px'}">  
-        <a-card :style="{ minHeight: '670px'}"> 
+        <a-card :style="{ minHeight: '500px'}"> 
           <a-avatar :size="96" icon="user" />
           <p class="name"><span>{{ userInfo.username }}</span></p> 
           <a-divider />
