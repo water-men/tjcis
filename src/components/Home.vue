@@ -120,8 +120,8 @@ export default {
     }
   },
   beforeMount:function(){
-    // sessionStorage.setItem("user_no","1750000");//后面要删掉 现在测试
-    // sessionStorage.setItem("username","zsx");
+    //  sessionStorage.setItem("user_no","1750000");//后面要删掉 现在测试
+    //  sessionStorage.setItem("username","zsx");
     this.userInfo.user_no = sessionStorage.getItem("user_no");
     this.userInfo.username = sessionStorage.getItem("username");
     if(this.userInfo.user_no == null)

@@ -50,24 +50,24 @@ export default {
     return {
       searchCourse: '',
       courseList: [
-        {
-          key: '1',
-          course_no: '10038802',
-          course_name: '离散数学',
-          course_teacher: '王成',
-          course_depart: '电子与信息工程学院',
-          course_tag: ['nice', 'developer','jsjsjsjs','djsjdjsdjs','dj1djs','djsj2sdjs'],
-          course_score: 9,
-        },
-        {
-          key: '2',
-          course_no: '10038901',
-          course_name: '数据结构',
-          course_teacher: '武研',
-          course_depart: '电子与信息工程学院',
-          course_tag: ['hello'],
-          course_score: 8,
-        },
+        // {
+        //   key: '1',
+        //   course_no: '10038802',
+        //   course_name: '离散数学',
+        //   course_teacher: '王成',
+        //   course_depart: '电子与信息工程学院',
+        //   course_tag: [{tag_content:'developer'}, {tag_content:'jsjsjsjs'},{tag_content:'djsjdjsdjs'},{tag_content:'dj1djs'},{tag_content:'djsj2sdjs'}],
+        //   course_score: 9,
+        // },
+        // {
+        //   key: '2',
+        //   course_no: '10038901',
+        //   course_name: '数据结构',
+        //   course_teacher: '武研',
+        //   course_depart: '电子与信息工程学院',
+        //   course_tag: [{tag_content:'hello'}],
+        //   course_score: 8,
+        // },
       ],
       columns: [
         {
