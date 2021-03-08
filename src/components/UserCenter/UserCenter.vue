@@ -68,7 +68,7 @@
             <a-form :form="formUserPass" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }" @submit="handleUserPassSubmit">
               <a-form-item label="用户名">
                 <a-input 
-                  v-model="username" disabled="disabled"
+                  v-model="userInfo.username" disabled="disabled"
                 />
               </a-form-item>
               <a-form-item label="原密码" has-feedback>
@@ -192,13 +192,11 @@
             <a-divider />
             <a-row :gutter="16">
               <a-col>
-                <!-- 看着好看先放上来占个位置 并没有什么屌用 -->
-                <cardDragger :data="cardList" :col-num="1"
-                             :card-outside-width="480"
-                             :card-inside-width="460"
-                             :card-outside-height="110"
-                             :card-inside-height="100">
-                </cardDragger>
+                <div style="margin-top:10%">
+                  <a-timeline mode="alternate">
+                    <a-timeline-item v-for="(todo,index) in todoList" :key="todo.todo_content" :color="index%2==0?'blue':'green'"> {{ todo.todo_content }} {{ todo.todo_date }} </a-timeline-item>
+                  </a-timeline>
+                </div>
               </a-col>
             </a-row>
           </a-card>
@@ -212,11 +210,7 @@
 </template>
 
 <script>
-import { cardDragger } from 'carddragger'
 export default {
-  components: {
-    cardDragger,
-  },
   props: {
     userInfo: {
       type: Object,
@@ -248,27 +242,27 @@ export default {
         '女子学院','职业技术教育学院','国际文化交流学院','中德学院','中法工程和管理学院','中德工程学院','中意学院','联合国环境规划署-同济大学环境与可持续发展学院',
         '中芬中心','新生院','中西学院','新农村发展研究院','国际足球学院','上海国际知识产权学院','创新创业学院',
       ],
-      cardList: [
+      todoList:[
         {
-          positionNum: 1,
-          name: "演示卡片1",
-          id: "card1",
+          todo_content:'SITP答辩',
+          todo_date:'2021-03-20',
         },
         {
-          positionNum: 2,
-          name: "演示卡片2",
-          id: "card2",
+          todo_content:'毕业设计中期检查',
+          todo_date:'2021-04-23',
         },
         {
-          positionNum: 3,
-          name: "演示卡片3",
-          id: "card3",
+          todo_content:'写毕设论文',
+          todo_date:'2021-05-10',
         },
         {
-          positionNum: 4,
-          name: "演示卡片4",
-          id: "card4",
+          todo_content:'毕设答辩',
+          todo_date:'2021-06-10',
         },
+        {
+          todo_content:'搬砖',
+          todo_date:'2021-06-30',
+        }
       ],
     }
   },

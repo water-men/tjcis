@@ -7,7 +7,7 @@ import {
   Radio, Modal, Tag, Card, Table, Descriptions, Dropdown,
   Popconfirm, FormModel, Select, Progress, Statistic, Rate,
   BackTop, Divider, Avatar, Drawer, Carousel, Calendar, Comment,Alert,Badge,
-  Space,message,Upload,
+  Space,message,Upload,Timeline,
 } from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 import { installCardDragger } from 'carddragger' //卡片拖拽组件
@@ -22,6 +22,7 @@ Vue.prototype.$confirm = Modal.confirm
 Vue.prototype.$moment = moment
 Vue.prototype.$message = message
 
+Vue.use(Timeline)
 Vue.use(Upload)
 Vue.use(Space)
 Vue.use(Badge)
