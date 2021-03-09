@@ -13,12 +13,13 @@
                   <a-divider />
                   授课老师:{{ course.course_teacher }}
                   <a-divider />
-                  课程标签:
+                  开课学院:{{ course.course_depart }}
+                  <!-- 课程标签:
                   <a-tag
                     v-for="tag in course.course_tag"
                     :key="tag"
                     :color="tag === tag.length > 5 ? 'geekblue' : 'green'"
-                  >{{ tag.tag_content.toUpperCase() }}</a-tag>    
+                  >{{ tag.tag_content.toUpperCase() }}</a-tag>     -->
                 </a-card>
               </div>
             </a-col> 

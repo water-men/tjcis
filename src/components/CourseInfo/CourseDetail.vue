@@ -132,6 +132,14 @@ export default {
       course_no: this.selectedCourse.course_no,
     };
     //let request = JSON.stringify(submitObject);
+    this.$axios.post("/api/getCourseInfo",{course_no: this.selectedCourse.course_no}).then((response)=>{
+      if(response.data.ret_code == 0)
+      {
+        this.course_tag = response.data.data.course_info.course_tag;
+      }
+    }).catch(()=>{
+      this.$message.error("加载课程标签失败");
+    })
     this.$axios.post("/api/isFavorite",submitObject).then((response)=>{
       if(response.data.ret_code == 0)
       {
