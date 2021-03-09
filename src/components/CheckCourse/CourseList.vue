@@ -104,12 +104,10 @@ export default {
   watch: {
     filterContent() {
       this.getCourseList();
-      this.datalt=this.courseList;
     }
   },
   beforeMount() {
     this.getCourseList();
-    this.datalt=this.courseList;
   },
   methods: {
     selectCourse(record){
@@ -149,6 +147,7 @@ export default {
           {
            this.courseList[i].key=toString(i+1);
           }
+          this.datalt=this.courseList;
         }
         else
           this.$message.error("获取课程列表失败");

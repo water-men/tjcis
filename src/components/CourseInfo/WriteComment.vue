@@ -175,34 +175,32 @@ export default {
       user_no: this.userInfo.user_no,
       course_no: this.selectedCourse.course_no,
     };
-    let request = JSON.stringify(submitObject);
-    this.$axios.post("/api/isComment",request).then((response)=>{
+    //let request = JSON.stringify(submitObject);
+    this.$axios.post("/api/isComment",submitObject).then((response)=>{
       if(response.ret_code == 0)
       {
         this.disableComment = response.data.commented;
-      }
-    });
-    if(this.disableComment == false)
-    {
-      this.$axios.get("/api/getTag").then((response)=>
-      {
-        if(response.ret_code==0)
+        if(this.disableComment == false)
         {
-          this.tags = response.data.tags;
-          for(let i=0;i<this.tags.length;i++) {
-            this.tagsStyle.push({
-              type: "dashed",
-              value: 0,
-              disable: false,
-            });
-          }
+          this.$axios.get("/api/getTag").then((response)=>
+          {
+            if(response.ret_code==0)
+            {
+              this.tags = response.data.tags;
+              for(let i=0;i<this.tags.length;i++) {
+                this.tagsStyle.push({
+                  type: "dashed",
+                  value: 0,
+                  disable: false,
+                });
+              }
+            }
+            else
+              this.$message.error('初始化标签列表失败');
+          }).catch(()=>{this.$message.error('初始化标签列表失败')});
         }
-        else
-          this.$message.error('初始化标签列表失败');
-      }).catch(()=>{this.$message.error('初始化标签列表失败')});
-      
-    }
-    
+      }
+    });   
   },
   methods: {
     showDrawer() {
@@ -304,8 +302,8 @@ export default {
           let submitObject = {
             tag_name: this.addTags[i].name,
           };
-          let request = JSON.stringify(submitObject);
-          this.$axios.post("/api/addTag",request);
+          //let request = JSON.stringify(submitObject);
+          this.$axios.post("/api/addTag",submitObject);
         }//添加自定义标签
       
         this.$axios.get("/api/getTag").then((response)=>{

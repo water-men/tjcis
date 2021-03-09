@@ -70,19 +70,20 @@ export default {
   },
   methods: {
     submitForm (formName) {
-      let formData = JSON.stringify(this.ruleForm); 
+      //let formData = JSON.stringify(this.ruleForm); 
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$axios.post("/api/login", formData).then((response) => {
-              this.ret.ret_code=response.ret_code;
-              this.ret.ret_msg=response.ret_msg;
-              this.ret.data=response.data;
+          this.$axios.post("/api/login", this.ruleForm).then((response) =>{ 
+            this.ret.ret_code=response.ret_code;
+            this.ret.ret_msg=response.ret_msg;
+            this.ret.data=response.data;
+            console.log(response);
+            if (this.ret.ret_code==0) {
+              sessionStorage.setItem("user_no",this.ruleForm.user_no);
+              sessionStorage.setItem("username",this.ret.data.stu_username);
+              this.$router.push({name: 'home',});
+            }
           });
-          if (this.ret.ret_code==0) {
-            sessionStorage.setItem("user_no",this.ruleForm.user_no);
-            sessionStorage.setItem("username",this.ret.data.stu_username);
-            this.$router.push({name: 'home',});
-          }
         }
       });
     },

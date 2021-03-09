@@ -87,19 +87,18 @@ export default {
     let submitObject = {
       user_no: this.userInfo.user_no,
     };
-    let submitData = JSON.stringify(submitObject);
-    this.$axios.post("/api/getMyComments",submitData).then((response) => {
-      if(response.ret_msg == "success") {
+    //let submitData = JSON.stringify(submitObject);
+    this.$axios.post("/api/getMyComments",submitObject).then((response) => {
+      if(response.ret_code == 0) {
         this.myComments = response.data.comments;
+        for(let i=0;i<this.myComments.length;i++)
+        {
+          this.myComments[i].cardTile = '课号：'+this.myComments[i].course_no+' 课程名称：'+this.myComments[i].course_name+' 授课老师：'+this.myComments[i].course_teacher;
+        }
       }
       else
         this.$message.error("获取我的评价失败");
     }).catch(() => { this.$message.error("获取我的评价失败"); }); //获取我的评价
-
-    for(let i=0;i<this.myComments.length;i++)
-    {
-      this.myComments[i].cardTile = '课号：'+this.myComments[i].course_no+' 课程名称：'+this.myComments[i].course_name+' 授课老师：'+this.myComments[i].course_teacher;
-    }
   },
   methods: {
   }

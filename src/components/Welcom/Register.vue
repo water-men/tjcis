@@ -155,19 +155,19 @@ export default {
       }
       if (submit_form.stu_slogan === '')
         submit_form.stu_slogan='这个人很懒，什么都没有写';
-      let formData = JSON.stringify(submit_form); //取得注册表单中的数据并转化为JSON字符串
+      //let formData = JSON.stringify(submit_form); //取得注册表单中的数据并转化为JSON字符串
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$axios.post("/api/register", formData).then((response) => {
-              this.ret.ret_code=response.ret_code;
-              this.ret.ret_msg=response.ret_msg;
-              this.ret.data=response.data;
+          this.$axios.post("/api/register", submit_form).then((response) => {
+            this.ret.ret_code=response.ret_code;
+            this.ret.ret_msg=response.ret_msg;
+            this.ret.data=response.data;
+            if (this.ret.ret_code==0) {
+              sessionStorage.setItem("user_no",this.ruleForm.user_no);
+              sessionStorage.setItem("username",this.ruleForm.username);
+              this.$router.push({name: 'home',});
+            }
           }).catch((err)=>{console.log(err)});
-          if (this.ret.ret_code==0) {
-            sessionStorage.setItem("user_no",this.ruleForm.user_no);
-            sessionStorage.setItem("username",this.ruleForm.username);
-            this.$router.push({name: 'home',});
-          }
         }
       });
     },

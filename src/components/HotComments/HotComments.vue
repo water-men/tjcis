@@ -76,19 +76,18 @@ export default {
   },
   beforeMount(){
     this.$axios.get("/api/getHotComments").then((response)=>{
-      if(response.ret_msg=="success")
+      if(response.ret_code==0)
       {
         this.HotComments = response.data.comments;
+        for(let i=0;i<this.HotComments.length;i++)
+        {
+          this.HotComments[i].cardTile = '课号：'+this.HotComments[i].course_no+' 课程名称：'+this.HotComments[i].course_name+' 授课老师：'+this.HotComments[i].course_teacher;
+          this.HotComments[i].action = null;
+        }
       }
       else
         this.$message.error("获取热门评价失败");
     }).catch(()=>{this.$message.error("获取热门评价失败");});
-
-    for(let i=0;i<this.HotComments.length;i++)
-    {
-      this.HotComments[i].cardTile = '课号：'+this.HotComments[i].course_no+' 课程名称：'+this.HotComments[i].course_name+' 授课老师：'+this.HotComments[i].course_teacher;
-      this.HotComments[i].action = null;
-    }
   },
   methods: {
     like(index) {
@@ -100,8 +99,8 @@ export default {
         submitData.user_no = this.HotComments[index].user_no;
         submitData.course_no = this.HotComments[index].course_no;
         submitData.positive = false;
-        let request = JSON.stringify(submitData);
-        this.$axios.post("/api/positive",request);
+        //let request = JSON.stringify(submitData);
+        this.$axios.post("/api/positive",submitData);
       }
       else 
       {
@@ -112,8 +111,8 @@ export default {
           dislike.user_no = this.HotComments[index].user_no;
           dislike.course_no = this.HotComments[index].course_no;
           dislike.negative = false;
-          let request = JSON.stringify(dislike);
-          this.$axios.post("/api/negative",request);
+          //let request = JSON.stringify(dislike);
+          this.$axios.post("/api/negative",dislike);
         }  
         this.HotComments[index].comm_positive++;
         this.HotComments[index].action = 'liked';
@@ -121,8 +120,8 @@ export default {
         submitData.user_no = this.HotComments[index].user_no;
         submitData.course_no = this.HotComments[index].course_no;
         submitData.positive = true;
-        let like_request = JSON.stringify(submitData);
-        this.$axios.post("/api/positive",like_request);
+        //let like_request = JSON.stringify(submitData);
+        this.$axios.post("/api/positive",submitData);
       }
     },
     dislike(index) {
@@ -134,8 +133,8 @@ export default {
         submitData.user_no = this.HotComments[index].user_no;
         submitData.course_no = this.HotComments[index].course_no;
         submitData.negative = false;
-        let request = JSON.stringify(submitData);
-        this.$axios.post("/api/negative",request);
+        //let request = JSON.stringify(submitData);
+        this.$axios.post("/api/negative",submitData);
       }
       else 
       {
@@ -147,8 +146,8 @@ export default {
           like.user_no = this.HotComments[index].user_no;
           like.course_no = this.HotComments[index].course_no;
           like.positive = false;
-          let request = JSON.stringify(like);
-          this.$axios.post("/api/positive",request);
+          //let request = JSON.stringify(like);
+          this.$axios.post("/api/positive",like);
         }  
         that.HotComments[index].comm_negative++;
         that.HotComments[index].action = 'disliked';
@@ -156,8 +155,8 @@ export default {
         submitData.user_no = this.HotComments[index].user_no;
         submitData.course_no = this.HotComments[index].course_no;
         submitData.negative = true;
-        let dislike_request = JSON.stringify(submitData);
-        this.$axios.post("/api/negative",dislike_request);
+        //let dislike_request = JSON.stringify(submitData);
+        this.$axios.post("/api/negative",submitData);
       }
     },
   }

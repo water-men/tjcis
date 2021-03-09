@@ -75,9 +75,9 @@ export default {
     let submitData = {
       course_no: this.selectedCourse.course_no,
     }
-    let request = JSON.stringify(submitData);
-    this.$axios.post("/api/getSimilarCoursesList",request).then((response)=>{
-      if(response.ret_msg=="success")
+    //let request = JSON.stringify(submitData);
+    this.$axios.post("/api/getSimilarCoursesList",submitData).then((response)=>{
+      if(response.ret_code==0)
       {
         this.relatedlist = response.data.courses;
       }

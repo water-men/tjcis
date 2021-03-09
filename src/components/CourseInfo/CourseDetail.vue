@@ -131,8 +131,8 @@ export default {
       user_no: this.userInfo.user_no,
       course_no: this.selectedCourse.course_no,
     };
-    let request = JSON.stringify(submitObject);
-    this.$axios.post("/api/isFavorite",request).then((response)=>{
+    //let request = JSON.stringify(submitObject);
+    this.$axios.post("/api/isFavorite",submitObject).then((response)=>{
       if(response.ret_code == 0)
       {
         this.hasCollected = response.data.favorite;
@@ -146,8 +146,8 @@ export default {
         user_no: this.userInfo.user_no,
         course_no: this.selectedCourse.course_no,
       };
-      let collect_request = JSON.stringify(submitObject);
-      this.$axios.post("/api/addToFavorite",collect_request);
+      //let collect_request = JSON.stringify(submitObject);
+      this.$axios.post("/api/addToFavorite",submitObject);
     },
     cancelCollect(){
       this.hasCollected = false;

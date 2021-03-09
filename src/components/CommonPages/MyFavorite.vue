@@ -98,9 +98,9 @@ export default {
     let submitObject = {
       user_no: this.userInfo.user_no,
     };
-    let submitData = JSON.stringify(submitObject);
-    this.$axios.post("/api/getMyFavorite",submitData).then((response) => {
-      if(response.ret_msg == "success") {
+    //let submitData = JSON.stringify(submitObject);
+    this.$axios.post("/api/getMyFavorite",submitObject).then((response) => {
+      if(response.ret_code == 0) {
         this.myFavorite = response.data.courses;
       }
       else

@@ -270,9 +270,9 @@ export default {
     let request = {
       user_no: this.userInfo.user_no,
     }
-    let submitData = JSON.stringify(request);
+    //let submitData = JSON.stringify(request);
 
-    this.$axios.post("/api/getUserInfo",submitData).then((response) => {
+    this.$axios.post("/api/getUserInfo",request).then((response) => {
       if(response.ret_code == 0) {
         this.realname = response.data.stu_name;
         this.slogan = response.data.stu_slogan;
@@ -310,8 +310,8 @@ export default {
             submitObject.stu_slogan = values.slogan;
           else
             submitObject.stu_slogan = this.slogan;
-          let submitForm = JSON.stringify(submitObject);
-          this.$axios.post("/api/updateUserInfo", submitForm).then((response) => {
+          //let submitForm = JSON.stringify(submitObject);
+          this.$axios.post("/api/updateUserInfo", submitObject).then((response) => {
             if(response.ret_code == 0) {
               if(values.depart != null)
                 this.depart = values.depart;
@@ -346,8 +346,8 @@ export default {
           submitObject.user_no = this.userInfo.user_no;
           submitObject.oldPassword = values.oldpass;
           submitObject.newPassword = values.newpass;
-          let submitForm = JSON.stringify(submitObject);
-          this.$axios.post("/api/updateUserPassword", submitForm).then((response) => {
+          //let submitForm = JSON.stringify(submitObject);
+          this.$axios.post("/api/updateUserPassword", submitObject).then((response) => {
             if(response.ret_code == 0) {
               this.$message.success('修改成功');
             }
