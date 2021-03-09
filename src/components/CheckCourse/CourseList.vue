@@ -15,14 +15,14 @@
         </a-row>
         <a-divider />
         <a-row style="min-height: 0.9rem; font-size: 0.4rem;">
-          <a-table :columns="columns" :data-source="datalt" :custom-row="selectCourse">
-            <span slot="course_tag" slot-scope="course_tag">
+          <a-table :loading="isLoading" :columns="columns" :data-source="datalt" :custom-row="selectCourse">
+            <!-- <span slot="course_tag" slot-scope="course_tag">
               <a-tag
-                v-for="(tag,index) in course_tag"
-                :key="index"
+                v-for="tag in course_tag"
+                :key="tag.tag_content"
                 :color="index%2 == 1 ? 'geekblue' : 'green'"
               >{{ tag.tag_content.toUpperCase() }}</a-tag>
-            </span>
+            </span> -->
           </a-table>
         </a-row>
       </a-tab-pane>
@@ -48,6 +48,7 @@ export default {
   },
   data () {
     return {
+      isLoading: null,
       searchCourse: '',
       courseList: [
         // {
@@ -90,12 +91,12 @@ export default {
           dataIndex: 'course_depart',
           key: 'course_depart',
         },
-        {
-          title: '课程标签',
-          key: 'course_tag',
-          dataIndex: 'course_tag',
-          scopedSlots: { customRender: 'course_tag' },
-        },
+        // {
+        //   title: '课程标签',
+        //   key: 'course_tag',
+        //   dataIndex: 'course_tag',
+        //   scopedSlots: { customRender: 'course_tag' },
+        // },
       ],
       datalt:[
       ],
@@ -103,10 +104,12 @@ export default {
   },
   watch: {
     filterContent() {
+      this.isLoading = true;
       this.getCourseList();
     }
   },
   beforeMount() {
+    this.isLoading = true;
     this.getCourseList();
   },
   methods: {
@@ -140,14 +143,15 @@ export default {
       }
       //let request = JSON.stringify(submitData);
       this.$axios.post("/api/getCoursesList ", submitData).then((response) => {
-        if(response.data.ret_msg=="success")
+        if(response.data.ret_code==0)
         {
-          this.courseList=response.data.data.courses;
+          this.courseList=response.data.data.courses_list;
           for(let i=0;i<this.courseList.length;i++)
           {
-           this.courseList[i].key=toString(i+1);
+           this.courseList[i].key=i+1;
           }
           this.datalt=this.courseList;
+          this.isLoading = false;
         }
         else
           this.$message.error("获取课程列表失败");

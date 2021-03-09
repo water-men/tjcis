@@ -76,9 +76,9 @@ export default {
   },
   beforeMount(){
     this.$axios.get("/api/getHotComments").then((response)=>{
-      if(response.data.ret_code==0)
+      if(response.data.ret_code == 0)
       {
-        this.HotComments = response.data.data.comments;
+        this.HotComments = response.data.data.commentsList;
         for(let i=0;i<this.HotComments.length;i++)
         {
           this.HotComments[i].cardTile = '课号：'+this.HotComments[i].course_no+' 课程名称：'+this.HotComments[i].course_name+' 授课老师：'+this.HotComments[i].course_teacher;
@@ -98,7 +98,7 @@ export default {
         let submitData = new Object();
         submitData.user_no = this.HotComments[index].user_no;
         submitData.course_no = this.HotComments[index].course_no;
-        submitData.positive = false;
+        submitData.positive = 0;
         //let request = JSON.stringify(submitData);
         this.$axios.post("/api/positive",submitData);
       }
@@ -110,7 +110,7 @@ export default {
           let dislike = new Object();
           dislike.user_no = this.HotComments[index].user_no;
           dislike.course_no = this.HotComments[index].course_no;
-          dislike.negative = false;
+          dislike.negative = 0;
           //let request = JSON.stringify(dislike);
           this.$axios.post("/api/negative",dislike);
         }  
@@ -119,7 +119,7 @@ export default {
         let submitData = new Object();
         submitData.user_no = this.HotComments[index].user_no;
         submitData.course_no = this.HotComments[index].course_no;
-        submitData.positive = true;
+        submitData.positive = 1;
         //let like_request = JSON.stringify(submitData);
         this.$axios.post("/api/positive",submitData);
       }
@@ -132,7 +132,7 @@ export default {
         let submitData = new Object();
         submitData.user_no = this.HotComments[index].user_no;
         submitData.course_no = this.HotComments[index].course_no;
-        submitData.negative = false;
+        submitData.negative = 0;
         //let request = JSON.stringify(submitData);
         this.$axios.post("/api/negative",submitData);
       }
@@ -145,7 +145,7 @@ export default {
           let like = new Object();
           like.user_no = this.HotComments[index].user_no;
           like.course_no = this.HotComments[index].course_no;
-          like.positive = false;
+          like.positive = 0;
           //let request = JSON.stringify(like);
           this.$axios.post("/api/positive",like);
         }  
@@ -154,7 +154,7 @@ export default {
         let submitData = new Object();
         submitData.user_no = this.HotComments[index].user_no;
         submitData.course_no = this.HotComments[index].course_no;
-        submitData.negative = true;
+        submitData.negative = 1;
         //let dislike_request = JSON.stringify(submitData);
         this.$axios.post("/api/negative",submitData);
       }

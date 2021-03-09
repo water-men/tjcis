@@ -8,7 +8,7 @@
           <a-row :gutter="16" >
             <a-col v-for="(course,index) in recommendlist" :key="index" :bordered="true" :span="8" >
               <div @click="selectCourse(course)">
-                <a-card hoverable>
+                <a-card hoverable style="margin-top:8px;">
                   <h3>{{ course.course_name }}</h3>
                   <a-divider />
                   授课老师:{{ course.course_teacher }}
@@ -167,11 +167,11 @@ export default {
     let submitObject = {
       user_no: this.userInfo.user_no,
     }
-    let submitData = JSON.stringify(submitObject);
+    //let submitData = JSON.stringify(submitObject);
 
-    this.$axios.post("/api/getRecommendCoursesList",submitData).then((response) => {
-      if(response.data.ret_msg == "success") {
-        this.recommendlist = response.data.courses;
+    this.$axios.post("/api/getRecommendCoursesList",submitObject).then((response) => {
+      if(response.data.ret_code == 0) {
+        this.recommendlist = response.data.data.courses_list;
       }
       // else
       //   this.$message.error('获取推荐课程列表失败')

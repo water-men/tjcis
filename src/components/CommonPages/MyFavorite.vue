@@ -4,13 +4,13 @@
       <a-tab-pane key="1" tab="我的收藏" >
         <a-card>
           <a-table :columns="columns" :data-source="myFavorite" :custom-row="selectCourse">
-            <span slot="course_tag" slot-scope="course_tag">
+            <!-- <span slot="course_tag" slot-scope="course_tag">
               <a-tag
                 v-for="(tag,index) in course_tag"
                 :key="index"
                 :color="index%2 == 1 ? 'geekblue' : 'green'"
               >{{ tag.toUpperCase() }}</a-tag>
-            </span>
+            </span> -->
           </a-table>
         </a-card>
       </a-tab-pane>
@@ -85,12 +85,12 @@ export default {
           dataIndex: 'course_depart',
           key: 'course_depart',
         },
-        {
-          title: '课程标签',
-          key: 'course_tag',
-          dataIndex: 'course_tag',
-          scopedSlots: { customRender: 'course_tag' },
-        },
+        // {
+        //   title: '课程标签',
+        //   key: 'course_tag',
+        //   dataIndex: 'course_tag',
+        //   scopedSlots: { customRender: 'course_tag' },
+        // },
       ],
     };
   },
@@ -101,7 +101,7 @@ export default {
     //let submitData = JSON.stringify(submitObject);
     this.$axios.post("/api/getMyFavorite",submitObject).then((response) => {
       if(response.data.ret_code == 0) {
-        this.myFavorite = response.data.data.courses;
+        this.myFavorite = response.data.data.courses_list;
       }
       else
         this.$message.error("获取我的收藏失败");

@@ -2,16 +2,18 @@
   <div>
     <a-tabs default-active-key="1" align="left" size="large">
       <a-tab-pane key="1" tab="相关课程" >
-        <p v-for="course in relatedlist" :gutter="16" :key="course.key" :bordered="true" :span="8" hoverable>
-          <a-card hoverable>
-            <div @click="selectCourse(course)">
-              <h3>{{ course.course_name }}</h3>
-              <a-divider />
-              <!-- 点击推荐列表中的项目转到对应的课程页面 -->
-              授课老师:{{ course.course_teacher }}
-            </div>
-          </a-card>
-        </p>
+        <a-spin :spinning="isLoading">
+          <p v-for="course in relatedlist" :gutter="16" :key="course.key" :bordered="true" :span="8" hoverable>
+            <a-card hoverable>
+              <div @click="selectCourse(course)">
+                <h3>{{ course.course_name }}</h3>
+                <a-divider />
+                <!-- 点击推荐列表中的项目转到对应的课程页面 -->
+                授课老师:{{ course.course_teacher }}
+              </div>
+            </a-card>
+          </p>
+        </a-spin>
       </a-tab-pane>
     </a-tabs>
   </div>
@@ -36,6 +38,7 @@ export default {
   },
   data () {
     return {
+      isLoading:null,
       //推荐课程列表，先写死数据，以后要加载时发送请求，根据用户信息从后台获取
       relatedlist:[
         // {
@@ -72,6 +75,7 @@ export default {
     }
   },
   beforeMount(){
+    this.isLoading = true;
     let submitData = {
       course_no: this.selectedCourse.course_no,
     }
@@ -79,7 +83,8 @@ export default {
     this.$axios.post("/api/getSimilarCoursesList",submitData).then((response)=>{
       if(response.data.ret_code==0)
       {
-        this.relatedlist = response.data.data.courses;
+        this.relatedlist = response.data.data.courses_list;
+        this.isLoading = false;
       }
       else
         this.$message.error("获取相关课程失败");

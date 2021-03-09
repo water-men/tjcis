@@ -52,16 +52,16 @@
               </div>
             </a-button>
           </a-col>
-          <a-col :span="8" align="right">
+          <a-col :span="6" align="right">
             <h3 style="color: white;font-size:125%">
               <a-avatar icon="user" />{{ userInfo.username }}
             </h3>
           </a-col>
-          <!-- <a-col :span="4">
+          <a-col :span="4">
             <a style="color: white;font-size:125%" @click="logOutWeb">
-              <a-icon type="logout" />&nbsp;注销&nbsp;&nbsp;&nbsp;
+              <a-icon type="logout" />
             </a>
-          </a-col> -->
+          </a-col>
         </a-row>
       </a-layout-header>
       <a-layout-content :style="{ margin: '24px 16px 0', minHeight: '670px' }">  

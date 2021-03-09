@@ -7,7 +7,7 @@ import {
   Radio, Modal, Tag, Card, Table, Descriptions, Dropdown,
   Popconfirm, FormModel, Select, Progress, Statistic, Rate,
   BackTop, Divider, Avatar, Drawer, Carousel, Calendar, Comment,Alert,Badge,
-  Space,message,Upload,Timeline,
+  Space,message,Upload,Timeline,Spin,
 } from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 import { installCardDragger } from 'carddragger' //卡片拖拽组件
@@ -23,6 +23,7 @@ Vue.prototype.$moment = moment
 Vue.prototype.$message = message
 axios.defaults.baseURL = 'http://112.126.93.26:7001'
 
+Vue.use(Spin)
 Vue.use(Timeline)
 Vue.use(Upload)
 Vue.use(Space)

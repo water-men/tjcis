@@ -274,9 +274,9 @@ export default {
 
     this.$axios.post("/api/getUserInfo",request).then((response) => {
       if(response.data.ret_code == 0) {
-        this.realname = response.data.data.stu_name;
-        this.slogan = response.data.data.stu_slogan;
-        this.depart = response.data.data.stu_depart;
+        this.realname = response.data.data.userInfo.stu_name;
+        this.slogan = response.data.data.userInfo.stu_slogan;
+        this.depart = response.data.data.userInfo.stu_depart;
       }
     }).catch(() => { this.$message.error('获取用户个人信息失败!') }); //获取推荐课程列表
   },
@@ -307,9 +307,9 @@ export default {
           else
             submitObject.depart = this.depart;
           if(values.slogan != null)
-            submitObject.stu_slogan = values.slogan;
+            submitObject.slogan = values.slogan;
           else
-            submitObject.stu_slogan = this.slogan;
+            submitObject.slogan = this.slogan;
           //let submitForm = JSON.stringify(submitObject);
           this.$axios.post("/api/updateUserInfo", submitObject).then((response) => {
             if(response.data.ret_code == 0) {
@@ -318,6 +318,7 @@ export default {
               if(values.slogan != null)
                 this.slogan = values.slogan;
               this.$message.success('修改成功');
+              this.editUserinfo = false;
             }
           }).catch(()=>{this.$message.error('修改失败，请重试');});
         }
@@ -348,8 +349,9 @@ export default {
           submitObject.newPassword = values.newpass;
           //let submitForm = JSON.stringify(submitObject);
           this.$axios.post("/api/updateUserPassword", submitObject).then((response) => {
-            if(response.ret_code == 0) {
+            if(response.data.ret_code == 0) {
               this.$message.success('修改成功');
+              this.changePassword = false;
             }
             else
             {

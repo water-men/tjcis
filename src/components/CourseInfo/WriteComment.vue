@@ -11,81 +11,83 @@
       placement="bottom"
       @close="onClose"
     >
-      <div>
-        <a-steps :current="current">
-          <a-step v-for="item in steps" :key="item.title" :title="item.title" />
-        </a-steps>
-        <div class="steps-content">
-          <template v-if="current==0">
-            <span>请给这门课程评一个分:</span>&nbsp;
-            <a-rate v-model="rate" allow-half/>
-            &nbsp;&nbsp;<span>{{ rate*2 }}分</span>
-            <a-input v-model="title" :max-length="30" allow-clear placeholder="在这里输入评论的标题" />
-            <a-textarea v-model="content" :max-length="400" :auto-size="{minRows:7,maxRow:7}" style="margin-top:8px;" allow-clear placeholder="在这里输入评论内容，最多可输入400个字哟" @change="onChange" />
-          </template>
-          <template v-if="current==1">
-            <div style="margin-top:8px;border-bottom:1px solid #d6d6d69c;height:50px;text-align:left;">
-              <a-space size="middle" align="center">
-                <a-button type="primary" shape="round" icon="plus" @click="showInput=!showInput" >添加自定义标签（上限5个）</a-button>
-                <a-button shape="round" @click="clearAll">清空全部</a-button>
-                <a-input 
-                  v-show="showInput" 
-                  v-model="tempTag"
-                  :max-length="12" 
-                  :disabled="disabledInput"
-                  style="width: 250px;" 
-                  allow-clear 
-                  placeholder="输入标签内容，上限12个字哟" 
-                  @keyup.enter="add">
-                </a-input>
-                <a-button v-show="showInput" :disabled="disabledInput" icon="check" @click="add">添加</a-button>
-                <span style="color:red;">{{ errMsg }}</span>
-                <a-popconfirm
-                  v-for="(tag,index) in addTags"
-                  :key="index"
-                  title="你确定要删除这个标签吗?"
-                  ok-text="确定"
-                  cancel-text="取消"
-                  @confirm="remove(index)"
-                >
-                  <a-button 
-                    :key="tag.name" 
-                    type="primary" 
-                    shape="round" >
-                    {{ tag.name }}
-                    <a-icon type="close"/>
-                  </a-button>
-                </a-popconfirm>
-              </a-space>
-            </div>
-            <a-button 
-              v-for="(tag,index) in tags" 
-              :key="index" 
-              :type="tagsStyle[index].type" 
-              :disabled="tagsStyle[index].disable"
-              shape="round" 
-              style="margin-left:8px;margin-top:8px"
-              @click="tagset(index)">
-              {{ tag.tag_content }}
+      <a-spinning :spinning="pending">
+        <div>
+          <a-steps :current="current">
+            <a-step v-for="item in steps" :key="item.title" :title="item.title" />
+          </a-steps>
+          <div class="steps-content">
+            <template v-if="current==0">
+              <span>请给这门课程评一个分:</span>&nbsp;
+              <a-rate v-model="rate" allow-half/>
+              &nbsp;&nbsp;<span>{{ rate*2 }}分</span>
+              <a-input v-model="title" :max-length="30" allow-clear placeholder="在这里输入评论的标题" />
+              <a-textarea v-model="content" :max-length="400" :auto-size="{minRows:7,maxRow:7}" style="margin-top:8px;" allow-clear placeholder="在这里输入评论内容，最多可输入400个字哟" @change="onChange" />
+            </template>
+            <template v-if="current==1">
+              <div style="margin-top:8px;border-bottom:1px solid #d6d6d69c;height:50px;text-align:left;">
+                <a-space size="middle" align="center">
+                  <a-button type="primary" shape="round" icon="plus" @click="showInput=!showInput" >添加自定义标签（上限5个）</a-button>
+                  <a-button shape="round" @click="clearAll">清空全部</a-button>
+                  <a-input 
+                    v-show="showInput" 
+                    v-model="tempTag"
+                    :max-length="12" 
+                    :disabled="disabledInput"
+                    style="width: 250px;" 
+                    allow-clear 
+                    placeholder="输入标签内容，上限12个字哟" 
+                    @keyup.enter="add">
+                  </a-input>
+                  <a-button v-show="showInput" :disabled="disabledInput" icon="check" @click="add">添加</a-button>
+                  <span style="color:red;">{{ errMsg }}</span>
+                  <a-popconfirm
+                    v-for="(tag,index) in addTags"
+                    :key="index"
+                    title="你确定要删除这个标签吗?"
+                    ok-text="确定"
+                    cancel-text="取消"
+                    @confirm="remove(index)"
+                  >
+                    <a-button 
+                      :key="tag.name" 
+                      type="primary" 
+                      shape="round" >
+                      {{ tag.name }}
+                      <a-icon type="close"/>
+                    </a-button>
+                  </a-popconfirm>
+                </a-space>
+              </div>
+              <a-button 
+                v-for="(tag,index) in tags" 
+                :key="index" 
+                :type="tagsStyle[index].type" 
+                :disabled="tagsStyle[index].disable"
+                shape="round" 
+                style="margin-left:8px;margin-top:8px"
+                @click="tagset(index)">
+                {{ tag.tag_content }}
+              </a-button>
+            </template>
+          </div>
+          <div class="steps-action">
+            <a-button v-if="current < steps.length - 1" type="primary" @click="next">
+              下一步
             </a-button>
-          </template>
+            <a-button
+              v-if="current == steps.length - 1"
+              type="primary"
+              @click="showConfirm"
+            >
+              提交
+            </a-button>
+            <a-button v-if="current > 0" style="margin-left: 8px" @click="prev">
+              上一步
+            </a-button>
+          </div>
         </div>
-        <div class="steps-action">
-          <a-button v-if="current < steps.length - 1" type="primary" @click="next">
-            下一步
-          </a-button>
-          <a-button
-            v-if="current == steps.length - 1"
-            type="primary"
-            @click="showConfirm"
-          >
-            提交
-          </a-button>
-          <a-button v-if="current > 0" style="margin-left: 8px" @click="prev">
-            上一步
-          </a-button>
-        </div>
-      </div>
+      </a-spinning>
     </a-drawer>
   </div>
 </template>
@@ -128,6 +130,8 @@ export default {
       errMsg:'',
       rate: 2.5,
       activeCount:0,
+      pending: false,
+      submitFail: false,
       steps: [
         {
           title: '评分与写评论',
@@ -177,16 +181,16 @@ export default {
     };
     //let request = JSON.stringify(submitObject);
     this.$axios.post("/api/isComment",submitObject).then((response)=>{
-      if(response.ret_code == 0)
+      if(response.data.ret_code == 0)
       {
-        this.disableComment = response.data.commented;
+        this.disableComment = response.data.data.commented;
         if(this.disableComment == false)
         {
           this.$axios.get("/api/getTag").then((response)=>
           {
-            if(response.ret_code==0)
+            if(response.data.ret_code==0)
             {
-              this.tags = response.data.tags;
+              this.tags = response.data.data.tag_set;
               for(let i=0;i<this.tags.length;i++) {
                 this.tagsStyle.push({
                   type: "dashed",
@@ -294,24 +298,38 @@ export default {
         this.disabledInput=false;
       }
     },
-    submitComment(){
-      if(this.addTags.length>0)
+    async submitComment(){
+      this.pending = true;
+      if(this.addTags.length>0)//需要自定义标签
       {
-        for(let i=0;i<this.addTags.length;i++)
+        let res = await this.addNewTags();//先添加自定义标签
+        console.log(res);
+        if(this.submitFail == true || res.data.ret_code != 0)
         {
-          let submitObject = {
-            tag_name: this.addTags[i].name,
-          };
-          //let request = JSON.stringify(submitObject);
-          this.$axios.post("/api/addTag",submitObject);
-        }//添加自定义标签
-      
-        this.$axios.get("/api/getTag").then((response)=>{
-          if(response.ret_code == 0)
+          this.$message.error("评论提交失败，请重试");
+          this.pending = false;
+          return;
+        }
+        else
+        {
+          let ret = await this.getTagsAgain();//再获取一次标签列表
+          if(this.submitFail == true || ret.data.ret_code != 0)
           {
-            this.tags = response.data.tags;
+            this.$message.error("评论提交失败，请重试");
+            this.pending = false;
+            return;
           }
-        });//重新调用一次获取标签
+          let beforeLen = this.tags.length;
+          this.tags = ret.data.data.tag_set;
+          for(let i=beforeLen;i<this.tags.length;i++) {
+            this.tagsStyle.push({
+              type: "primary",
+              value: 1,
+              disable: true,
+            });
+          }
+          this.addTags.splice(0,this.addTags.length);
+        }
       }
 
       let selectedTags = [];
@@ -347,12 +365,11 @@ export default {
         course_no: this.selectedCourse.course_no,
         comm_title: this.title,
         comm_content: this.content,
-        comm_score: this.rate,
+        comm_score: this.rate*2,
         comm_tag: selectedTags,
       };
-      let request = JSON.stringify(submitObject);
-      this.$axios.post("/api/writeComments",request).then((response)=>{
-        if(response.ret_code == 0)
+      this.$axios.post("/api/writeComments",submitObject).then((response)=>{
+        if(response.data.ret_code == 0)
         {
           this.$message.success("评论提交成功!");
           this.disableComment=true;
@@ -362,7 +379,44 @@ export default {
         {
           this.$message.error("评论提交失败，请重试");
         }
-      }).catch(()=>{this.$message.error("评论提交失败，请重试")});//提交评论
+        this.pending = false;
+      }).catch(()=>{
+        this.$message.error("评论提交失败，请重试");
+        this.pending = false;
+      });//提交评论
+      
+    },
+    addNewTags(){    
+      for(let i=0;i<this.addTags.length-1;i++)
+      {
+        let submitObject = {
+          tag_name: this.addTags[i].name,
+        };
+        this.$axios.post("/api/addTag",submitObject);
+      }//先添加n-1个自定义标签，不用阻塞
+      let submitObject = {
+        tag_name: this.addTags[this.addTags.length-1].name,
+      }//阻塞在最后一个标签这里
+      return new Promise((resolve,reject)=>{
+        this.$axios.post("/api/addTag",submitObject).then((response)=>{
+          resolve(response);
+          this.submitFail = false;
+        }).catch((err)=>{
+          reject(err);
+          this.submitFail = true;
+        });
+      })
+    },
+    getTagsAgain(){
+      return new Promise((resolve,reject)=>{
+        this.$axios.get("/api/getTag").then((response)=>{
+          resolve(response);
+          this.submitFail = false;
+        }).catch((err)=>{
+          reject(err);
+          this.submitFail = true;
+        })
+      })
     },
     showConfirm(){
       this.$confirm({
