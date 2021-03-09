@@ -96,7 +96,7 @@ export default {
         this.HotComments[index].comm_positive--;
         this.HotComments[index].action=null;
         let submitData = new Object();
-        submitData.user_no = this.HotComments[index].user_no;
+        submitData.user_no = this.HotComments[index].stu_no;
         submitData.course_no = this.HotComments[index].course_no;
         submitData.positive = 0;
         //let request = JSON.stringify(submitData);
@@ -108,7 +108,7 @@ export default {
         {
           this.HotComments[index].comm_negative--;
           let dislike = new Object();
-          dislike.user_no = this.HotComments[index].user_no;
+          dislike.user_no = this.HotComments[index].stu_no;
           dislike.course_no = this.HotComments[index].course_no;
           dislike.negative = 0;
           //let request = JSON.stringify(dislike);
@@ -117,7 +117,7 @@ export default {
         this.HotComments[index].comm_positive++;
         this.HotComments[index].action = 'liked';
         let submitData = new Object();
-        submitData.user_no = this.HotComments[index].user_no;
+        submitData.user_no = this.HotComments[index].stu_no;
         submitData.course_no = this.HotComments[index].course_no;
         submitData.positive = 1;
         //let like_request = JSON.stringify(submitData);
@@ -130,7 +130,7 @@ export default {
         this.HotComments[index].comm_negative--;
         this.HotComments[index].action=null;
         let submitData = new Object();
-        submitData.user_no = this.HotComments[index].user_no;
+        submitData.user_no = this.HotComments[index].stu_no;
         submitData.course_no = this.HotComments[index].course_no;
         submitData.negative = 0;
         //let request = JSON.stringify(submitData);
@@ -143,7 +143,7 @@ export default {
         {
           this.HotComments[index].comm_positive--;
           let like = new Object();
-          like.user_no = this.HotComments[index].user_no;
+          like.user_no = this.HotComments[index].stu_no;
           like.course_no = this.HotComments[index].course_no;
           like.positive = 0;
           //let request = JSON.stringify(like);
@@ -152,7 +152,7 @@ export default {
         that.HotComments[index].comm_negative++;
         that.HotComments[index].action = 'disliked';
         let submitData = new Object();
-        submitData.user_no = this.HotComments[index].user_no;
+        submitData.user_no = this.HotComments[index].stu_no;
         submitData.course_no = this.HotComments[index].course_no;
         submitData.negative = 1;
         //let dislike_request = JSON.stringify(submitData);
