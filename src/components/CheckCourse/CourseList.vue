@@ -139,7 +139,7 @@ export default {
         submitData.depart = this.filterContent.name;
       }
       //let request = JSON.stringify(submitData);
-      this.$axios.post("/api/getCoursesList ", request).then((response) => {
+      this.$axios.post("/api/getCoursesList ", submitData).then((response) => {
         if(response.data.ret_msg=="success")
         {
           this.courseList=response.data.data.courses;
