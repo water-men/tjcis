@@ -100,8 +100,8 @@ export default {
     };
     //let submitData = JSON.stringify(submitObject);
     this.$axios.post("/api/getMyFavorite",submitObject).then((response) => {
-      if(response.ret_code == 0) {
-        this.myFavorite = response.data.courses;
+      if(response.data.ret_code == 0) {
+        this.myFavorite = response.data.data.courses;
       }
       else
         this.$message.error("获取我的收藏失败");

@@ -133,9 +133,9 @@ export default {
     };
     //let request = JSON.stringify(submitObject);
     this.$axios.post("/api/isFavorite",submitObject).then((response)=>{
-      if(response.ret_code == 0)
+      if(response.data.ret_code == 0)
       {
-        this.hasCollected = response.data.favorite;
+        this.hasCollected = response.data.data.favorite;
       }
     });
   },

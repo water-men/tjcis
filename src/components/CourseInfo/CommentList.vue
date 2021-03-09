@@ -83,7 +83,7 @@ export default {
     };
     //let request = JSON.stringify(submitObject);
     this.$axios.post("/api/getCourseComments",submitObject).then((response)=>{
-      if(response.ret_code == 0)
+      if(response.data.ret_code == 0)
       {
         this.commentlist = response.data.comments;
         for(let i=0;i<this.commentlist.length;i++)

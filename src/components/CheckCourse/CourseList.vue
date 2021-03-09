@@ -140,9 +140,9 @@ export default {
       }
       let request = JSON.stringify(submitData);
       this.$axios.post("/api/getCoursesList ", request).then((response) => {
-        if(response.ret_msg=="success")
+        if(response.data.ret_msg=="success")
         {
-          this.courseList=response.data.courses;
+          this.courseList=response.data.data.courses;
           for(let i=0;i<this.courseList.length;i++)
           {
            this.courseList[i].key=toString(i+1);

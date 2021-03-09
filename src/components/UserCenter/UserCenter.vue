@@ -273,10 +273,10 @@ export default {
     //let submitData = JSON.stringify(request);
 
     this.$axios.post("/api/getUserInfo",request).then((response) => {
-      if(response.ret_code == 0) {
-        this.realname = response.data.stu_name;
-        this.slogan = response.data.stu_slogan;
-        this.depart = response.data.stu_depart;
+      if(response.data.ret_code == 0) {
+        this.realname = response.data.data.stu_name;
+        this.slogan = response.data.data.stu_slogan;
+        this.depart = response.data.data.stu_depart;
       }
     }).catch(() => { this.$message.error('获取用户个人信息失败!') }); //获取推荐课程列表
   },
@@ -312,7 +312,7 @@ export default {
             submitObject.stu_slogan = this.slogan;
           //let submitForm = JSON.stringify(submitObject);
           this.$axios.post("/api/updateUserInfo", submitObject).then((response) => {
-            if(response.ret_code == 0) {
+            if(response.data.ret_code == 0) {
               if(values.depart != null)
                 this.depart = values.depart;
               if(values.slogan != null)
@@ -353,8 +353,8 @@ export default {
             }
             else
             {
-              this.ret.ret_code = response.ret_code;
-              this.ret.ret_msg = response.ret_msg;
+              this.ret.ret_code = response.data.ret_code;
+              this.ret.ret_msg = response.data.ret_msg;
             }
           }).catch(()=>{this.$message.error('修改失败，请重试')});
         }

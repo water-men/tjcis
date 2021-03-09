@@ -170,7 +170,7 @@ export default {
     let submitData = JSON.stringify(submitObject);
 
     this.$axios.post("/api/getRecommendCoursesList",submitData).then((response) => {
-      if(response.ret_msg == "success") {
+      if(response.data.ret_msg == "success") {
         this.recommendlist = response.data.courses;
       }
       // else

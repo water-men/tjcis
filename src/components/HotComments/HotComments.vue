@@ -76,9 +76,9 @@ export default {
   },
   beforeMount(){
     this.$axios.get("/api/getHotComments").then((response)=>{
-      if(response.ret_code==0)
+      if(response.data.ret_code==0)
       {
-        this.HotComments = response.data.comments;
+        this.HotComments = response.data.data.comments;
         for(let i=0;i<this.HotComments.length;i++)
         {
           this.HotComments[i].cardTile = '课号：'+this.HotComments[i].course_no+' 课程名称：'+this.HotComments[i].course_name+' 授课老师：'+this.HotComments[i].course_teacher;

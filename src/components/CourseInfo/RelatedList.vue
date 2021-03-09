@@ -77,9 +77,9 @@ export default {
     }
     //let request = JSON.stringify(submitData);
     this.$axios.post("/api/getSimilarCoursesList",submitData).then((response)=>{
-      if(response.ret_code==0)
+      if(response.data.ret_code==0)
       {
-        this.relatedlist = response.data.courses;
+        this.relatedlist = response.data.data.courses;
       }
       else
         this.$message.error("获取相关课程失败");

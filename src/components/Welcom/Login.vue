@@ -74,10 +74,9 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.$axios.post("/api/login", this.ruleForm).then((response) =>{ 
-            this.ret.ret_code=response.ret_code;
-            this.ret.ret_msg=response.ret_msg;
-            this.ret.data=response.data;
-            console.log(response);
+            this.ret.ret_code=response.data.ret_code;
+            this.ret.ret_msg=response.data.ret_msg;
+            this.ret.data=response.data.data;
             if (this.ret.ret_code==0) {
               sessionStorage.setItem("user_no",this.ruleForm.user_no);
               sessionStorage.setItem("username",this.ret.data.stu_username);
