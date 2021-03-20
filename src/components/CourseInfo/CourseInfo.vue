@@ -47,8 +47,6 @@ export default {
         course_name: '',
         course_teacher: '',
         course_depart: '',
-        course_tag: [
-        ],
         course_score: 5,
       }),
       require: true
